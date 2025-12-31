@@ -1,0 +1,537 @@
+{
+    "Rugor Nass": {
+        "Region": "Camelot",
+        "Location": "District 1",
+        "Party": "order"
+    },
+    "Jafar": {
+        "Region": "Camelot",
+        "Location": "District 1",
+        "Party": "conservative"
+    },
+    "Itassis Shurima": {
+        "Region": "Camelot",
+        "Location": "District 1",
+        "Party": "order"
+    },
+    "Jar-Jar Binks": {
+        "Region": "Camelot",
+        "Location": "District 1",
+        "Party": "order"
+    },
+    "Rosalind Hale": {
+        "Region": "Camelot",
+        "Location": "District 1",
+        "Party": "order"
+    },
+    "Qui-Gon Jinn": {
+        "Region": "Camelot",
+        "Location": "District 1",
+        "Party": "conservative"
+    },
+    "Asajj Ventress": {
+        "Region": "Camelot",
+        "Location": "District 1",
+        "Party": "order"
+    },
+    "Ben Solo": {
+        "Region": "Camelot",
+        "Location": "District 1",
+        "Party": "order"
+    },
+    "Sophie Hatter": {
+        "Region": "Camelot",
+        "Location": "District 2",
+        "Party": "order"
+    },
+    "Udonna Atlantica": {
+        "Region": "Camelot",
+        "Location": "District 2",
+        "Party": "liberal"
+    },
+    "Poseidon Atlantica": {
+        "Region": "Camelot",
+        "Location": "District 2",
+        "Party": "unknown"
+    },
+    "Wilhuff Tarkin": {
+        "Region": "Camelot",
+        "Location": "District 2",
+        "Party": "order"
+    },
+    "Dr. Samdi Facillier": {
+        "Location": "District 2",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Jon Gideon": {
+        "Location": "District 2",
+        "Party": "order",
+        "Region": "Camelot"
+    },
+    "Xerneas": {
+        "Location": "District 3",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Hisirdoux Casparan": {
+        "Location": "District 3",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "James Lake Jr": {
+        "Location": "District 3",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Claire Nunez": {
+        "Location": "District 3",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Tobias Domzalski": {
+        "Location": "District 3",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Blinkous Galadrigal": {
+        "Location": "District 3",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Hera Syndulla": {
+        "Location": "District 3",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Leia Organa": {
+        "Location": "District 3",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Yveltal": {
+        "Location": "District 4",
+        "Party": "conservative",
+        "Region": "Camelot"
+    },
+    "Maleficent Jenkins": {
+        "Location": "District 4",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Howl Jenkins": {
+        "Location": "District 4",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Dooku Serenno": {
+        "Location": "District 4",
+        "Party": "conservative",
+        "Region": "Camelot"
+    },
+    "Mallory Jenkins": {
+        "Location": "District 4",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Ellis Black": {
+        "Location": "District 4",
+        "Party": "order",
+        "Region": "Camelot"
+    },
+    "Trilla Suduri": {
+        "Location": "District 4",
+        "Party": "order",
+        "Region": "Camelot"
+    },
+    "Triton Atlantica": {
+        "Location": "District 5",
+        "Party": "conservative",
+        "Region": "Camelot"
+    },
+    "Ursula Atlantica": {
+        "Location": "District 5",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Alistair Snoke": {
+        "Location": "District 5",
+        "Party": "order",
+        "Region": "Camelot"
+    },
+    "Armitage Hux": {
+        "Location": "District 5",
+        "Party": "order",
+        "Region": "Camelot"
+    },
+    "Regina Von Hamsterviel": {
+        "Location": "District 5",
+        "Party": "conservative",
+        "Region": "Camelot"
+    },
+    "Jacques Von Hamsterviel": {
+        "Location": "District 5",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Cassandra LeFay": {
+        "Location": "District 5",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Maude Swaly": {
+        "Location": "District 5",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Royce Hemlock": {
+        "Location": "District 5",
+        "Party": "order",
+        "Region": "Camelot"
+    },
+    "Hades Olympus": {
+        "Location": "District 6",
+        "Party": "conservative",
+        "Region": "Camelot"
+    },
+    "Gial Ackbar": {
+        "Location": "District 6",
+        "Party": "conservative",
+        "Region": "Camelot"
+    },
+    "Piccolo Namek": {
+        "Location": "District 6",
+        "Party": "conservative",
+        "Region": "Camelot"
+    },
+    "Baelfire LeFay": {
+        "Location": "District 6",
+        "Party": "conservative",
+        "Region": "Camelot"
+    },
+    "Sheev Palpatine": {
+        "Location": "District 6",
+        "Party": "conservative",
+        "Region": "Camelot"
+    },
+    "Morgan Elsbeth": {
+        "Location": "District 6",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Vegeta LeFay": {
+        "Location": "District 6",
+        "Party": "conservative",
+        "Region": "Camelot"
+    },
+    "Virginia LeFay": {
+        "Location": "District 6",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Pre Vizsla": {
+        "Location": "District 6",
+        "Party": "order",
+        "Region": "Camelot"
+    },
+    "Cad Bane": {
+        "Location": "District 7",
+        "Party": "independant",
+        "Region": "Camelot"
+    },
+    "Morgana LeFay": {
+        "Location": "District 7",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Mas Amedda": {
+        "Location": "District 7",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Vendel Heartstone": {
+        "Location": "District 7",
+        "Party": "order",
+        "Region": "Camelot"
+    },
+    "Emerie Karr": {
+        "Location": "District 7",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Zeb Orrelios": {
+        "Location": "District 7",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Sabine Wren": {
+        "Location": "District 8",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Ezra Bridger": {
+        "Location": "District 8",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Ahsoka Tano": {
+        "Location": "District 8",
+        "Party": "unknown",
+        "Region": "Camelot"
+    },
+    "Elena LeFay": {
+        "Location": "District 8",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Kelly Pearson": {
+        "Location": "District 8",
+        "Party": "liberal",
+        "Region": "Camelot"
+    },
+    "Cruella Deville": {
+        "Location": "West Hyperion",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Merriweather": {
+        "Location": "West Hyperion",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Vander Nox": {
+        "Location": "West Hyperion",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Silco Nox": {
+        "Location": "West Hyperion",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Caitlyn Kiramman": {
+        "Location": "West Hyperion",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Violet (Vi) Anderson": {
+        "Location": "West Hyperion",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Viktor Lloyd": {
+        "Location": "West Hyperion",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Jayce Talis": {
+        "Location": "West Hyperion",
+        "Party": "order",
+        "Region": "Storybrooke"
+    },
+    "Mel Madarda": {
+        "Location": "West Hyperion",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Walter Strickler": {
+        "Location": "West Hyperion",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Victoria Belfrey": {
+        "Location": "Hyperion Heights",
+        "Party": "conservative",
+        "Region": "Storybrooke"
+    },
+    "Claude Belfrey": {
+        "Location": "Hyperion Heights",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Drizella Belfrey": {
+        "Location": "Hyperion Heights",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Anastasia Belfrey": {
+        "Location": "Hyperion Heights",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Zeus Olympus": {
+        "Location": "Hyperion Heights",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Gaston LeGume": {
+        "Location": "Hyperion Heights",
+        "Party": "order",
+        "Region": "Storybrooke"
+    },
+    "Mace Windu": {
+        "Location": "Hyperion Heights",
+        "Party": "conservative",
+        "Region": "Storybrooke"
+    },
+    "Goku LeFay": {
+        "Location": "Hyperion Heights",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Jeanette LeFay": {
+        "Location": "Hyperion Heights",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Bo-Katan Kryze": {
+        "Location": "Hyperion Heights",
+        "Party": "order",
+        "Region": "Storybrooke"
+    },
+    "Baylan Skoll": {
+        "Location": "Hyperion Heights",
+        "Party": "conservative",
+        "Region": "Storybrooke"
+    },
+    "Frieza LeFay": {
+        "Location": "Industrial District",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Robert Callaghan": {
+        "Location": "Industrial District",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Victor Makota": {
+        "Location": "Industrial District",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Magda Callaghan": {
+        "Location": "Industrial District",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Abigail Callaghan": {
+        "Location": "Industrial District",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Bulma Von Hamsterviel": {
+        "Location": "Industrial District",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Chi-Chi Kavu": {
+        "Location": "Industrial District",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Trunks Kavu": {
+        "Location": "Industrial District",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Cell Von Hamsterviel": {
+        "Location": "Industrial District",
+        "Party": "order",
+        "Region": "Storybrooke"
+    },
+    "Anjelica Von Hamsterviel": {
+        "Location": "Industrial District",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Aiden Von Hamsterviel": {
+        "Location": "Industrial District",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Gerhardt Frankenstein": {
+        "Location": "Industrial District",
+        "Party": "conservative",
+        "Region": "Storybrooke"
+    },
+    "David Nolan": {
+        "Location": "Industrial District",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Blue Fairy": {
+        "Location": "Downtown",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Rumplestiltskin LeFay": {
+        "Location": "Downtown",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Belle French": {
+        "Location": "Downtown",
+        "Party": "liberal",
+        "Region": "Storybrooke"
+    },
+    "Gideon LeFay": {
+        "Location": "Downtown",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Flora": {
+        "Location": "Downtown",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Fauna": {
+        "Location": "Downtown",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Fiona LeFay": {
+        "Location": "Downtown",
+        "Party": "conservative",
+        "Region": "Storybrooke"
+    },
+    "Cora Mills": {
+        "Location": "Downtown",
+        "Party": "conservative",
+        "Region": "Storybrooke"
+    },
+    "Edward Talzen": {
+        "Location": "Downtown",
+        "Party": "conservative",
+        "Region": "Storybrooke"
+    },
+    "Raditz LeFay": {
+        "Location": "Downtown",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Valeria LeFay": {
+        "Location": "Downtown",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Aurora LeFay": {
+        "Location": "Downtown",
+        "Party": "unknown",
+        "Region": "Storybrooke"
+    },
+    "Rei Palpatine": {
+        "Location": "Capitol",
+        "Party": "liberal",
+        "Region": "Capitol"
+    },
+    "Kanaan Jaris": {
+        "Location": "Capitol",
+        "Party": "liberal",
+        "Region": "Capitol"
+    },
+    "Jaro Tepal": {
+        "Location": "Capitol",
+        "Party": "order",
+        "Region": "Capitol"
+    }
+}

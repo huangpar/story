@@ -1,0 +1,105 @@
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* padding: 2rem; */
+  background: transparent;
+  border-radius: 25px;
+  min-width: 1000px;
+  margin: 0 auto auto auto;
+  /* padding: 30px 50px; */
+}
+
+.add-person-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 30px;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    font-weight: 500;
+    width: 50%;
+    color: #DB2777;
+}
+
+.form-wrapper {
+  position: relative;
+}
+
+/* Glow behind the form; expand beyond the box so it shows around the edges */
+.form-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  background: linear-gradient(
+    125deg,
+    #9333EA, #DB2777, #F97316
+  );
+  filter: blur(28px);
+  opacity: 0.5;
+  z-index: 0;
+  border-radius: 28px;
+  pointer-events: none;
+  transform: rotate(1deg);
+}
+
+/* Ensure form content renders above the glow */
+.form-wrapper > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Move the white background to the inner form container so it sits above the glow */
+.form-wrapper .add-person-form {
+  background: white;
+  border-radius: 25px;
+  padding: 30px 40px;
+  position: relative;
+  z-index: 3;
+}
+
+.home {
+    padding-bottom: 70px;
+}
+
+h2 {
+    color: #DB2777;
+}
+
+input {
+    color: #DB2777;
+    border-color: #9333EA;
+    border-radius: 15px; 
+}
+
+button {
+    background: linear-gradient(125deg,#9333EA, #DB2777, #F97316);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 15px;
+}
+
+

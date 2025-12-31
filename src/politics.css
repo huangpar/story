@@ -1,0 +1,36 @@
+.politics {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom right, #DBEAFE, #FAF5FF, #E0E7FF);
+  padding-bottom: 70px;
+}
+
+.politics .header {
+  margin-top: 0%;
+  padding-bottom: 50px;
+  justify-content: space-between;
+}
+
+.politics .header-center{
+   display: flex;
+  position: relative;
+  align-items: center;
+  gap: 12px;
+}
+
+.politics .addPerson {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background: linear-gradient(to right, #DB2777,#9333EA);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0;
+  transform: none;
+}
+
+.politics .gradient-text {
+  font-size: 2rem;
+}
