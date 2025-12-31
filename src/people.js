@@ -39,20 +39,24 @@ export function People() {
 
         if (view !== "republic") return;
 
-        fetch("/.netlify/functions/people", {
+        fetch("/.netlify/functions/people?nocache=1", {
             cache: "no-store",
-            headers: {
-                "accept": "application/json",
-            },
+            headers: {"accept": "application/json"},
         })
-            .then(res => {
-                console.log("fetch response:", res);
+            .then(async (res) => {
+                const ct = res.headers.get("content-type") || "";
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+                if (!ct.includes("application/json")) {
+                    const text = await res.text();
+                    throw new Error(
+                        `Expected JSON but got ${ct}. First 200 chars:\n` + text.slice(0, 200)
+                    );
+                }
+
                 return res.json();
             })
-            .then(data => {
-                console.log("data loaded:", data);
-                setGroupedPeople(group(data));
-            })
+            .then((data) => setGroupedPeople(group(data)))
             .catch(err => console.error("fetch error:", err));
     }, [view]);
 
