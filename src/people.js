@@ -13,23 +13,61 @@ import 'bootstrap/dist/css/bootstrap.css';
 export function People() {
     const [activeTab, setActiveTab] = useState("camelot")
 
-    function group(data) {
+    function group(input) {
         const grouped = {};
 
-        for (const [name, info] of Object.entries(data)) {
-            const { ID, Region, District, Party, FID, MID, SID } = info;
+        // If the function returned { count, data }, unwrap it
+        const payload = input?.data ?? input;
 
-            // Create region if it doesn't exist
+        // Case 1: array of DB rows
+        if (Array.isArray(payload)) {
+            for (const row of payload) {
+            const Region = row.Region ?? row.region;
+            const Location = row.Location ?? row.district ?? row.location;
+            const Party = row.Party ?? row.party;
+            const name = row.name;
+
+            if (!Region || !Location || !Party || !name) continue;
+
             if (!grouped[Region]) grouped[Region] = {};
+            if (!grouped[Region][Location]) grouped[Region][Location] = [];
 
-            // Create district inside region if it doesn't exist
-            if (!grouped[Region][District]) grouped[Region][District] = [];
-
-            // Add person
-            grouped[Region][District].push({ name, Party, FID: FID, MID: MID, SID: SID, ID: ID });
+            grouped[Region][Location].push({
+                name,
+                Party,
+                id: row.id,
+                fid: row.fid,
+                mid: row.mid,
+                sid: row.sid,
+            });
+            }
+            return grouped;
         }
+
+        // Case 2: object keyed by name
+        for (const [name, info] of Object.entries(payload || {})) {
+            const Region = info.Region ?? info.region;
+            const Location = info.Location ?? info.district ?? info.location;
+            const Party = info.Party ?? info.party;
+
+            if (!Region || !Location || !Party) continue;
+
+            if (!grouped[Region]) grouped[Region] = {};
+            if (!grouped[Region][Location]) grouped[Region][Location] = [];
+
+            grouped[Region][Location].push({
+                name,
+                Party,
+                id: info.id,
+                fid: info.fid,
+                mid: info.mid,
+                sid: info.sid,
+            });
+        }
+
         return grouped;
     }
+
 
     const [groupedPeople, setGroupedPeople] = useState({});
     const [view, setView] = useState("default");
@@ -56,14 +94,22 @@ export function People() {
 
                 return res.json();
             })
-            .then((data) => {
-                console.log("RAW function JSON:", data);
+            .then((json) => {
+                console.log("RAW function JSON:", json);
+                const g = group(json);
+                console.log("GROUPED REGIONS:", Object.keys(g));
+                setGroupedPeople(g);
                 // TEMP: inspect keys
-                console.log("Top-level keys:", Object.keys(data));
-                setGroupedPeople(group(data));
+                console.log("Top-level keys:", Object.keys(json));
+                setGroupedPeople(group(json));
             })
             .catch(err => console.error("fetch error:", err));
     }, [view]);
+    
+    useEffect(() => {
+        console.log("GROUPED:", groupedPeople);
+        console.log("Regions:", Object.keys(groupedPeople));
+    }, [groupedPeople]);
 
     return (
         <div className="people">
