@@ -17,16 +17,16 @@ export function People() {
         const grouped = {};
 
         for (const [name, info] of Object.entries(data)) {
-            const { Region, Location, Party } = info;
+            const { ID, Region, District, Party, FID, MID, SID } = info;
 
             // Create region if it doesn't exist
             if (!grouped[Region]) grouped[Region] = {};
 
-            // Create location inside region if it doesn't exist
-            if (!grouped[Region][Location]) grouped[Region][Location] = [];
+            // Create district inside region if it doesn't exist
+            if (!grouped[Region][District]) grouped[Region][District] = [];
 
             // Add person
-            grouped[Region][Location].push({ name, Party });
+            grouped[Region][District].push({ name, Party, FID, MID, SID, ID });
         }
         return grouped;
     }
@@ -39,7 +39,7 @@ export function People() {
 
         if (view !== "republic") return;
 
-        fetch("/people.json")
+        fetch("/.netlify/functions/people")
             .then(res => {
                 console.log("fetch response:", res);
                 return res.json();
