@@ -39,7 +39,12 @@ export function People() {
 
         if (view !== "republic") return;
 
-        fetch("/.netlify/functions/people")
+        fetch("/.netlify/functions/people", {
+            cache: "no-store",
+            headers: {
+                "accept": "application/json",
+            },
+        })
             .then(res => {
                 console.log("fetch response:", res);
                 return res.json();
