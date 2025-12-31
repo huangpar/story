@@ -26,7 +26,7 @@ export function People() {
             if (!grouped[Region][District]) grouped[Region][District] = [];
 
             // Add person
-            grouped[Region][District].push({ name, Party, FID, MID, SID, ID });
+            grouped[Region][District].push({ name, Party, FID: FID, MID: MID, SID: SID, ID: ID });
         }
         return grouped;
     }

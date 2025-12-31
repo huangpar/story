@@ -1,18 +1,13 @@
-import { neon } from "@neondatabase/serverless";
+const { neon } = require("@neondatabase/serverless");
 
-export default async (req) => {
+exports.handler = async () => {
   try {
-    // Netlify provides this automatically when you enable Netlify DB:
-    // - NETLIFY_DATABASE_URL
-    // - NETLIFY_DATABASE_URL_UNPOOLED (sometimes)
     const sql = neon(process.env.NETLIFY_DATABASE_URL);
 
-    // Adjust table/column names to match your schema
-    // Example schema: people(name text, region text, location text, party text)
     const rows = await sql`
       SELECT id, name, region, district, party, fid, mid, sid
       FROM people
-      ORDER BY name, id, region, district, party, fid, mid, sid
+      ORDER BY region, district, name
     `;
 
     // Convert DB rows -> the same "object keyed by name" shape your group() expects
@@ -30,19 +25,16 @@ export default async (req) => {
       };
     }
 
-    return new Response(JSON.stringify(data), {
+    return {
       status: 200,
-      headers: {
-        "content-type": "application/json",
-        // optional if your function is called from same origin; safe to keep:
-        "access-control-allow-origin": "*",
-      },
-    });
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(data),
+    };
   } catch (err) {
     console.error("people function error:", err);
-    return new Response(
-      JSON.stringify({ error: "Failed to load people" }),
-      { status: 500, headers: { "content-type": "application/json" } }
-    );
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err.message }),
+    };
   }
 };
