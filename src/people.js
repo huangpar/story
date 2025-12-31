@@ -56,7 +56,12 @@ export function People() {
 
                 return res.json();
             })
-            .then((data) => setGroupedPeople(group(data)))
+            .then((data) => {
+                console.log("RAW function JSON:", data);
+                // TEMP: inspect keys
+                console.log("Top-level keys:", Object.keys(data));
+                setGroupedPeople(group(data));
+            })
             .catch(err => console.error("fetch error:", err));
     }, [view]);
 
