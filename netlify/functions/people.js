@@ -10,23 +10,21 @@ exports.handler = async () => {
       ORDER BY region, district, name
     `;
 
-    // Convert DB rows -> the same "object keyed by name" shape your group() expects
-    // (so you don't have to rewrite group())
     const data = {};
     for (const r of rows) {
       data[r.name] = {
-        ID: r.id,
+        id: r.id,
+        fid: r.fid,
+        mid: r.mid,
+        sid: r.sid,
         Region: r.region,
-        District: r.district,
+        Location: r.district,
         Party: r.party,
-        FID: r.fid,
-        MID: r.mid,
-        SID: r.sid,
       };
     }
 
     return {
-      status: 200,
+      statusCode: 200,
       headers: { "content-type": "application/json" },
       body: JSON.stringify(data),
     };
@@ -34,7 +32,8 @@ exports.handler = async () => {
     console.error("people function error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message }),
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ error: String(err?.message ?? err) }),
     };
   }
 };
