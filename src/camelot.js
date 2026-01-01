@@ -85,27 +85,27 @@ export default function CamelotLayout({ groupedPeople }) {
     <main className="camelotWrap">
       {/* Row 1: 5 | 6 */}
       <div className="camelotRow rowTop">
-        <DistrictBox number={5} people={districts[5]} />
-        <DistrictBox number={6} people={districts[6]} />
+        <DistrictBox location={'District5'} people={districts['District5']} />
+        <DistrictBox location={'District6'} people={districts['District6']} />
       </div>
 
       {/* Row 2: 3 | 8 | 4 */}
       <div className="camelotRow rowMid">
-        <DistrictBox number={3} people={districts[3]} />
-        <DistrictBox number={8} people={districts[8]} />
-        <DistrictBox number={4} people={districts[4]} />
+        <DistrictBox location={'District3'} people={districts['District3']} />
+        <DistrictBox location={'District8'} people={districts['District8']} />
+        <DistrictBox location={'District4'} people={districts['District4']} />
       </div>
 
       {/* Row 3: 1 | 7 | 2 */}
       <div className="camelotRow rowBot">
-        <DistrictBox number={1} people={districts[1]} />
-        <DistrictBox number={7} people={districts[7]} />
-        <DistrictBox number={2} people={districts[2]} />
+        <DistrictBox location={'District1'} people={districts['District1']} />
+        <DistrictBox location={'District7'} people={districts['District7']} />
+        <DistrictBox location={'District2'} people={districts['District2']} />
       </div>
 
       {other.length > 0 && (
         <div className="camelotRow rowOther">
-          <DistrictBox number={"Other"} people={other} />
+          <DistrictBox location={"Other"} people={other} />
         </div>
       )}
     </main>
