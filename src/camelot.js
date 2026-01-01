@@ -66,17 +66,20 @@ export default function CamelotLayout({ groupedPeople }) {
 
   // Build an array districts[1..8] where each is a list of people in that district
   const districts = Array.from({ length: 9 }, () => []);
-  const other = [];
-
   for (const [location, people] of Object.entries(camelot)) {
-    const d = getDistrictNumber(location);
-    if (d && d >= 1 && d <= 8) {
-      districts[d] = people;
-    } else {
-      // push everyone from non-1..8 locations into "Other"
-      other.push(...people.map(p => ({ ...p, Location: location })));
-    }
+    districts[location] = people;
   }
+  // const other = [];
+
+  // for (const [location, people] of Object.entries(camelot)) {
+  //   const d = getDistrictNumber(location);
+  //   if (d && d >= 1 && d <= 8) {
+  //     districts[d] = people;
+  //   } else {
+  //     // push everyone from non-1..8 locations into "Other"
+  //     other.push(...people.map(p => ({ ...p, Location: location })));
+  //   }
+  // }
 
   return (
     <main className="camelotWrap">
