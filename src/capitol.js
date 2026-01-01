@@ -12,7 +12,7 @@ function DistrictBox({ location, people = [] }) {
       <ul className="districtList">
         {people.map((p) => (
           <li
-            key={p.name}
+            key={p.id}
             className={`${p.Party}`}   // uses Party as class
             onClick={() => setSelectedPerson(p)}
           >
