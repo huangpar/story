@@ -24,7 +24,7 @@ function DistrictBox({ number, people = [] }) {
   return (
     <>
     <div className="districtBox">
-      <div className="districtNum">{number}</div>
+      <div className="districtName">{location}</div>
 
       <ul className="districtList">
         {people.map((p) => (
