@@ -634,6 +634,8 @@ main.home a {
 }
 
 .districtBox {
+  display: flex;
+  justify-content: center;
   position: relative;
   border: 2px solid #99F6E4;
   min-height: 220px;
@@ -674,17 +676,14 @@ main.home a {
 
 .districtList {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, auto);
+  column-gap: 20px;
   list-style: none;
   padding: 0;
   margin: 0;
   text-align: center;
   line-height: 1.4;
   cursor: pointer;
-}
-
-.districtList.split {
-  grid-template-columns: repeat(2, auto);
 }
 
 .person {
