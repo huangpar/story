@@ -1,11 +1,11 @@
 import React from "react";
 import { useState } from "react";
 
-function getDistrictNumber(location) {
-  // "District 1" -> 1
-  const match = String(location).match(/\d+/);
-  return match ? Number(match[0]) : null;
-}
+// function getDistrictNumber(location) {
+//   // "District 1" -> 1
+//   const match = String(location).match(/\d+/);
+//   return match ? Number(match[0]) : null;
+// }
 
 function DistrictBox({ number, people = [] }) {
   const [selectedPerson, setSelectedPerson] = useState(null);
