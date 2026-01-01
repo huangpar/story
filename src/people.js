@@ -103,6 +103,21 @@ export function People() {
                 console.log("Top-level keys:", Object.keys(json));
                 setGroupedPeople(group(json));
             })
+            .then((data) => {
+                const grouped = group(data);
+                setGroupedPeople(grouped);
+
+                // Count how many people exist after grouping
+                const count = Object.values(grouped).reduce((sum, regionObj) => {
+                    return (
+                        sum +
+                        Object.values(regionObj).reduce((s2, arr) => s2 + arr.length, 0)
+                    );
+                }, 0);
+
+                console.log("COUNT AFTER GROUPING:", count);
+                console.log("RAW COUNT (top-level keys):", Object.keys(data).length);
+            })
             .catch(err => console.error("fetch error:", err));
     }, [view]);
     
