@@ -13,6 +13,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 export function People() {
     const [activeTab, setActiveTab] = useState("camelot")
 
+    function normalize(str) {
+        return String(str).trim().replace(/\s+/g, " ");
+    }
+
     function group(input) {
         const grouped = {};
 
@@ -22,8 +26,8 @@ export function People() {
         // Case 1: array of DB rows
         if (Array.isArray(payload)) {
             for (const row of payload) {
-            const Region = row.Region ?? row.region;
-            const Location = row.Location ?? row.district ?? row.location;
+            const Region = normalize(row.Region ?? row.region);
+            const Location = normalize(row.Location ?? row.district ?? row.location);
             const Party = row.Party ?? row.party;
             const name = row.name;
 
@@ -46,8 +50,8 @@ export function People() {
 
         // Case 2: object keyed by name
         for (const [name, info] of Object.entries(payload || {})) {
-            const Region = info.Region ?? info.region;
-            const Location = info.Location ?? info.district ?? info.location;
+            const Region = normalize(info.Region ?? info.region);
+            const Location = normalize(info.Location ?? info.district ?? info.location);
             const Party = info.Party ?? info.party;
 
             if (!Region || !Location || !Party) continue;
