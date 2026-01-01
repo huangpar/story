@@ -96,27 +96,19 @@ export function People() {
             })
             .then((json) => {
                 console.log("RAW function JSON:", json);
-                const g = group(json);
-                console.log("GROUPED REGIONS:", Object.keys(g));
-                setGroupedPeople(g);
-                // TEMP: inspect keys
-                console.log("Top-level keys:", Object.keys(json));
-                setGroupedPeople(group(json));
-            })
-            .then((data) => {
-                const grouped = group(data);
+                const grouped = group(json);
                 setGroupedPeople(grouped);
 
-                // Count how many people exist after grouping
-                const count = Object.values(grouped).reduce((sum, regionObj) => {
-                    return (
-                        sum +
-                        Object.values(regionObj).reduce((s2, arr) => s2 + arr.length, 0)
-                    );
-                }, 0);
+                console.log("GROUPED REGIONS:", Object.keys(grouped));
+                
+                const rawCount = Array.isArray(json) ? json.length : Object.keys(json).length;
+                console.log("RAW COUNT:", rawCount);
 
-                console.log("COUNT AFTER GROUPING:", count);
-                console.log("RAW COUNT (top-level keys):", Object.keys(data).length);
+                // Count after grouping
+                const groupedCount = Object.values(grouped).reduce((sum, regionObj) => {
+                    return sum + Object.values(regionObj).reduce((s2, arr) => s2 + arr.length, 0);
+                }, 0);
+                console.log("COUNT AFTER GROUPING:", groupedCount);
             })
             .catch(err => console.error("fetch error:", err));
     }, [view]);
