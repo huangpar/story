@@ -103,11 +103,11 @@ export default function CamelotLayout({ groupedPeople }) {
         <DistrictBox location={'District2'} people={districts['District2']} />
       </div>
 
-      {other.length > 0 && (
+      {/* {other.length > 0 && (
         <div className="camelotRow rowOther">
           <DistrictBox location={"Other"} people={other} />
         </div>
-      )}
+      )} */}
     </main>
   );
 }
