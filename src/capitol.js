@@ -13,7 +13,7 @@ function DistrictBox({ location, people = [] }) {
         {people.map((p) => (
           <li
             key={p.name}
-            className={`person ${p.Party}`}   // uses Party as class
+            className={`${p.Party}`}   // uses Party as class
             onClick={() => setSelectedPerson(p)}
           >
             {p.name}
