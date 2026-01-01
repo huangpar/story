@@ -10,6 +10,17 @@ function getDistrictNumber(location) {
 function DistrictBox({ number, people = [] }) {
   const [selectedPerson, setSelectedPerson] = useState(null);
 
+  const missing = people.filter(p => p.id == null);
+  if (missing.length) {
+    console.warn("MISSING IDS in", number, "count:", missing.length, missing.slice(0, 5));
+  }
+
+  const ids = people.map(p => p.id);
+  const dupIds = ids.filter((id, i) => id != null && ids.indexOf(id) !== i);
+  if (dupIds.length) {
+    console.warn("DUP IDS in", number, dupIds.slice(0, 10));
+  }
+
   return (
     <>
     <div className="districtBox">
