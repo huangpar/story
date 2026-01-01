@@ -686,9 +686,9 @@ main.home a {
 }
 
 /* Party-based coloring (edit to match your desired palette) */
-.order { color: #d4a100; }          /* gold-ish */
-.conservative { color: #ff33aa; }
-.liberal { color:blue}
+.Order { color: #EAB308; }          /* gold-ish */
+.Conservative { color: #F472B6; }
+.Liberal { color:#3B82F6}
 
 .modalOverlay {
   position: fixed;
