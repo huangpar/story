@@ -74,22 +74,22 @@ export default function CamelotLayout({ groupedPeople }) {
     <main className="camelotWrap">
       {/* Row 1: 5 | 6 */}
       <div className="camelotRow rowTop">
-        <DistrictBox location={'District5'} people={districts['District5']} />
-        <DistrictBox location={'District6'} people={districts['District6']} />
+        <DistrictBox location={'District 5'} people={districts['District 5']} />
+        <DistrictBox location={'District 6'} people={districts['District 6']} />
       </div>
 
       {/* Row 2: 3 | 8 | 4 */}
       <div className="camelotRow rowMid">
-        <DistrictBox location={'District3'} people={districts['District3']} />
-        <DistrictBox location={'District8'} people={districts['District8']} />
-        <DistrictBox location={'District4'} people={districts['District4']} />
+        <DistrictBox location={'District 3'} people={districts['District 3']} />
+        <DistrictBox location={'District 8'} people={districts['District 8']} />
+        <DistrictBox location={'District 4'} people={districts['District 4']} />
       </div>
 
       {/* Row 3: 1 | 7 | 2 */}
       <div className="camelotRow rowBot">
-        <DistrictBox location={'District1'} people={districts['District1']} />
-        <DistrictBox location={'District7'} people={districts['District7']} />
-        <DistrictBox location={'District2'} people={districts['District2']} />
+        <DistrictBox location={'District 1'} people={districts['District 1']} />
+        <DistrictBox location={'District 7'} people={districts['District 7']} />
+        <DistrictBox location={'District 2'} people={districts['District 2']} />
       </div>
 
       {/* {other.length > 0 && (
