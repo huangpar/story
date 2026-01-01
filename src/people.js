@@ -9,68 +9,67 @@ import CapitolLayout from './capitol';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
-
-export function People() {
-    const [activeTab, setActiveTab] = useState("camelot")
-
-    function normalize(str) {
+function normalize(str) {
         return String(str).trim().replace(/\s+/g, " ");
     }
 
-    function group(input) {
-        const grouped = {};
+function group(input) {
+    const grouped = {};
 
-        // If the function returned { count, data }, unwrap it
-        const payload = input?.data ?? input;
+    // If the function returned { count, data }, unwrap it
+    const payload = input?.data ?? input;
 
-        // Case 1: array of DB rows
-        if (Array.isArray(payload)) {
-            for (const row of payload) {
-            const Region = normalize(row.Region ?? row.region);
-            const Location = normalize(row.Location ?? row.district ?? row.location);
-            const Party = row.Party ?? row.party;
-            const name = row.name;
+    // Case 1: array of DB rows
+    if (Array.isArray(payload)) {
+        for (const row of payload) {
+        const Region = normalize(row.Region ?? row.region);
+        const Location = normalize(row.Location ?? row.district ?? row.location);
+        const Party = row.Party ?? row.party;
+        const name = row.name;
 
-            if (!Region || !Location || !Party || !name) continue;
+        if (!Region || !Location || !Party || !name) continue;
 
-            if (!grouped[Region]) grouped[Region] = {};
-            if (!grouped[Region][Location]) grouped[Region][Location] = [];
+        if (!grouped[Region]) grouped[Region] = {};
+        if (!grouped[Region][Location]) grouped[Region][Location] = [];
 
-            grouped[Region][Location].push({
-                name,
-                Party,
-                id: row.id,
-                fid: row.fid,
-                mid: row.mid,
-                sid: row.sid,
-            });
-            }
-            return grouped;
+        grouped[Region][Location].push({
+            name,
+            Party,
+            id: row.id,
+            fid: row.fid,
+            mid: row.mid,
+            sid: row.sid,
+        });
         }
-
-        // Case 2: object keyed by name
-        for (const [name, info] of Object.entries(payload || {})) {
-            const Region = normalize(info.Region ?? info.region);
-            const Location = normalize(info.Location ?? info.district ?? info.location);
-            const Party = info.Party ?? info.party;
-
-            if (!Region || !Location || !Party) continue;
-
-            if (!grouped[Region]) grouped[Region] = {};
-            if (!grouped[Region][Location]) grouped[Region][Location] = [];
-
-            grouped[Region][Location].push({
-                name,
-                Party,
-                id: info.id,
-                fid: info.fid,
-                mid: info.mid,
-                sid: info.sid,
-            });
-        }
-
         return grouped;
     }
+
+    // Case 2: object keyed by name
+    for (const [name, info] of Object.entries(payload || {})) {
+        const Region = normalize(info.Region ?? info.region);
+        const Location = normalize(info.Location ?? info.district ?? info.location);
+        const Party = info.Party ?? info.party;
+
+        if (!Region || !Location || !Party) continue;
+
+        if (!grouped[Region]) grouped[Region] = {};
+        if (!grouped[Region][Location]) grouped[Region][Location] = [];
+
+        grouped[Region][Location].push({
+            name,
+            Party,
+            id: info.id,
+            fid: info.fid,
+            mid: info.mid,
+            sid: info.sid,
+        });
+    }
+
+    return grouped;
+}
+
+export function People() {
+    const [activeTab, setActiveTab] = useState("camelot")
 
 
     const [groupedPeople, setGroupedPeople] = useState({});
