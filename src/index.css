@@ -42,6 +42,7 @@ code {
   border-radius: 25px;
   position: relative;
   border: 5px solid #5EEAD4;
+  box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
 }
 
 .info .head {
@@ -293,7 +294,8 @@ main.home .card-wrapper-left:hover::before,
 main.home .card-wrapper-centerleft:hover::before,
 main.home .card-wrapper-centerright:hover::before,
 main.home .card-wrapper-right:hover::before,
-.people .card-wrapper-centerright:hover::before
+.people .card-wrapper-centerright:hover::before,
+.politics .card-wrapper-centerright:hover::before
  {
   rotate: 0deg;
   transform: scale(1.05);
@@ -304,7 +306,8 @@ main.home .card-wrapper-centerleft,
 main.home .card-wrapper-left, 
 main.home .card-wrapper-centerright, 
 main.home .card-wrapper-right,
-.people .card-wrapper-centerright
+.people .card-wrapper-centerright,
+.politics .card-wrapper-centerright
 {
   position: relative;
 }
@@ -513,12 +516,14 @@ main.home .card {
 }
 
 main.home .card:hover,
-.people .card:hover {
+.people .card:hover,
+.politics .card:hover {
   transform: rotate(0deg) scale(1.05) translateY(-4px);
 }
 
 main.home .card:hover .circle,
-.people .card:hover .circle {
+.people .card:hover .circle,
+.politics .card:hover .circle {
   animation-name: spin;
   animation-duration: 1000ms;
   animation-iteration-count: infinite;
@@ -545,7 +550,8 @@ main.home .card a:hover {
 } */
 
 main.home .card-title,
-.people .card-title {
+.people .card-title,
+.politics .card-title {
   text-decoration: none;
   text-align: center;
   white-space: nowrap;
@@ -557,7 +563,8 @@ main.home .card-title,
 }
 
 main.home .card-body,
-.people .card-body {
+.people .card-body,
+.politics .card-body {
   text-align: center;
   display: flex;
   align-items: center;
@@ -694,6 +701,7 @@ main.home a {
 .Order { color: #EAB308; }          /* gold-ish */
 .Conservative { color: #F472B6; }
 .Liberal { color:#3B82F6}
+.Independant { color: #34D399; }
 
 .modalOverlay {
   position: fixed;

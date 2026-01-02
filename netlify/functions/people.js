@@ -1,8 +1,24 @@
 const { neon } = require("@neondatabase/serverless");
 
-exports.handler = async () => {
+exports.handler = async (event) => {
   try {
     const sql = neon(process.env.NETLIFY_DATABASE_URL);
+
+    if (event.httpMethod === 'POST') {
+        const body = JSON.parse(event.body);
+        const { name, region, location, party } = body;
+
+        await sql`
+            INSERT INTO people (name, region, district, party)
+            VALUES (${name}, ${region}, ${location}, ${party})
+        `;
+
+        return {
+            statusCode: 201,
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ message: "Person added successfully" }),
+        };
+    }
 
     const rows = await sql`
       SELECT id, name, region, district, party, fid, mid, sid

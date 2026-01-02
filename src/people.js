@@ -81,7 +81,7 @@ export function People() {
         if (view !== "republic") return;
 
         fetch("/.netlify/functions/people?nocache=1", {
-            cache: "no-store",
+            cache: "no-store",                                                                                                                          
             headers: {"accept": "application/json"},
         })
             .then(async (res) => {
