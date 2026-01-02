@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import './politics.css';
 import { Sparkles } from 'lucide-react';
 import { Users } from 'lucide-react';
@@ -105,64 +105,51 @@ function DetailView({
                         <div className="governorRow rowTop">
                             <div className="governorBox">
                                 <div className="districtName">District 1</div>
-                                <h2></h2>
                             </div>
                             <div className="governorBox">
                                 <div className="districtName">District 2</div>
-                                <h2></h2>
                             </div>
                             <div className="governorBox">
                                 <div className="districtName">District 3</div>
-                                <h2></h2>
                             </div>
                         </div>
                         <div className="governorRow rowTop">
                             <div className="governorBox">
                                 <div className="districtName">District 4</div>
-                                <h2></h2>
                             </div>
                             <div className="governorBox">
                                 <div className="districtName">District 5</div>
-                                <h2></h2>
                             </div>
                             <div className="governorBox">
                                 <div className="districtName">District 6</div>
-                                <h2></h2>
                             </div>
                         </div>
                         <div className="governorRow rowTop">
                             <div className="governorBox">
                                 <div className="districtName">District 7</div>
-                                <h2></h2>
                             </div>
                             <div className="governorBox">
                                 <div className="districtName">District 8</div>
-                                <h2></h2>
                             </div>
                             <div className="governorBox">
                                 <div className="districtName">Downtown</div>
-                                <h2></h2>
                             </div>
                         </div>
                         <div className="governorRow rowTop">
                             <div className="governorBox">
                                 <div className="districtName">Hyperion Hights</div>
-                                <h2></h2>
                             </div>
                             <div className="governorBox">
                                 <div className="districtName">West Hyperion</div>
-                                <h2></h2>
                             </div>
                             <div className="governorBox">
                                 <div className="districtName">Industrial District</div>
-                                <h2></h2>
                             </div>
                         </div>
                         <div className="governorRow rowBot">
                             <div></div>
                             <div className="governorBox">
                                 <div className="districtName">Capitol</div>
-                                <h2></h2>
                             </div>
                         </div>
                     </div>
@@ -174,55 +161,42 @@ function DetailView({
                     <div className="senators">
                         <div className="senatorBox seat-1" style={{position: "absolute", top: "86%", left: "7%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-2"  style={{position: "absolute", top: "74%", left: "7.5%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-3" style={{position: "absolute", top: "62%", left: "10%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-4" style={{position: "absolute", top: "50%", left: "14%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-5" style={{position: "absolute", top: "38%", left: "21%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-6" style={{position: "absolute", top: "29%", left: "33%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="chancellorBox" style={{position: "absolute", top: "26%", right: "50%", left : "50%", transform: "translateX(-50%)"}}>
                             <div className="senatorName">chancellor</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-7" style={{position: "absolute", top: "29%", right: "33%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-8" style={{position: "absolute", top: "38%", right: "21%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-9" style={{position: "absolute", top: "50%", right: "14%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-10" style={{position: "absolute", top: "62%", right: "10%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-11" style={{position: "absolute", top: "74%", right: "7.5%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                         <div className="senatorBox seat-12" style={{position: "absolute", top: "86%", right: "7%"}}>
                             <div className="senatorName">Senator 1</div>
-                            <h2></h2>
                         </div>
                     </div>
                     <div className="half-circle"></div>
