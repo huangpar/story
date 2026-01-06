@@ -112,7 +112,9 @@ export function People() {
                 console.log("RAW function JSON:", json);
 
                 // create flat list for lookups
-                const flat = Array.isArray(json) ? json : Object.values(json);
+                const flat = Array.isArray(json)
+                    ? json
+                    : Object.entries(json).map(([name, val]) => ({ ...val, name }));
                 setPeopleList(flat);
 
                 const grouped = group(json);

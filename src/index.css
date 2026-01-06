@@ -797,7 +797,7 @@ main.home a {
 }
 
 .actions button:first-child {
-    background: #10B981;
+    background: linear-gradient(125deg,#10B981,#14B8A6);
     color: white;
 }
 
