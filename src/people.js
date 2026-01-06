@@ -42,6 +42,8 @@ function group(input) {
                 is_educator: row.is_educator,
                 is_politician: row.is_politician,
                 is_entertainer: row.is_entertainer,
+                Region,
+                Location,
             });
         }
         return grouped;
@@ -68,6 +70,8 @@ function group(input) {
             is_educator: info.is_educator,
             is_politician: info.is_politician,
             is_entertainer: info.is_entertainer,
+            Region,
+            Location,
         });
     }
 
