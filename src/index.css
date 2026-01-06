@@ -737,3 +737,79 @@ main.home a {
 .back {
   cursor: pointer;
 }
+
+.form-group {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #444;
+}
+
+.form-group input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.toggles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+    text-align: left;
+}
+
+.toggles label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.toggles input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.actions button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.actions button:first-child {
+    background: #10B981;
+    color: white;
+}
+
+.actions button:first-child:hover {
+    background: #059669;
+}
+
+.actions button:last-child {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.actions button:last-child:hover {
+    background: #d1d5db;
+}

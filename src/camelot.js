@@ -7,50 +7,41 @@ import { useState } from "react";
 //   return match ? Number(match[0]) : null;
 // }
 
-function DistrictBox({ location, people = [] }) {
+import PersonModal from "./PersonModal";
+
+function DistrictBox({ location, people = [], refreshData }) {
   const [selectedPerson, setSelectedPerson] = useState(null);
 
   return (
     <>
-    <div className="districtBox">
-      <div className="districtName">{location}</div>
+      <div className="districtBox">
+        <div className="districtName">{location}</div>
 
-      <ul className="districtList">
-        {people.map((p) => (
-          <li
-            key={p.id}
-            className={`${p.Party}`}   // uses Party as class
-            onClick={() => setSelectedPerson(p)}
-          >
-            {p.name}
-          </li>
-        ))}
-      </ul>
-    </div>
+        <ul className="districtList">
+          {people.map((p) => (
+            <li
+              key={p.id}
+              className={`${p.Party}`}   // uses Party as class
+              onClick={() => setSelectedPerson(p)}
+            >
+              {p.name}
+            </li>
+          ))}
+        </ul>
+      </div>
 
-    {selectedPerson && (
-        <div
-          className="modalOverlay"
-          onClick={() => setSelectedPerson(null)}
-        >
-          <div
-            className="modalBox"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3>{selectedPerson.name}</h3>
-            <p>Party: {selectedPerson.Party}</p>
-
-            <button onClick={() => setSelectedPerson(null)}>
-              Close
-            </button>
-          </div>
-        </div>
+      {selectedPerson && (
+        <PersonModal
+          person={selectedPerson}
+          onClose={() => setSelectedPerson(null)}
+          onSave={refreshData}
+        />
       )}
     </>
   );
 }
 
-export default function CamelotLayout({ groupedPeople }) {
+export default function CamelotLayout({ groupedPeople, refreshData }) {
   const camelot = groupedPeople?.Camelot ?? {};
 
   // Build an array districts[1..8] where each is a list of people in that district
@@ -74,27 +65,27 @@ export default function CamelotLayout({ groupedPeople }) {
     <main className="camelotWrap">
       {/* Row 1: 5 | 6 */}
       <div className="camelotRow rowTop">
-        <DistrictBox location={'District 5'} people={districts['District 5']} />
-        <DistrictBox location={'District 6'} people={districts['District 6']} />
+        <DistrictBox location={'District 5'} people={districts['District 5']} refreshData={refreshData} />
+        <DistrictBox location={'District 6'} people={districts['District 6']} refreshData={refreshData} />
       </div>
 
       {/* Row 2: 3 | 8 | 4 */}
       <div className="camelotRow rowMid">
-        <DistrictBox location={'District 3'} people={districts['District 3']} />
-        <DistrictBox location={'District 8'} people={districts['District 8']} />
-        <DistrictBox location={'District 4'} people={districts['District 4']} />
+        <DistrictBox location={'District 3'} people={districts['District 3']} refreshData={refreshData} />
+        <DistrictBox location={'District 8'} people={districts['District 8']} refreshData={refreshData} />
+        <DistrictBox location={'District 4'} people={districts['District 4']} refreshData={refreshData} />
       </div>
 
       {/* Row 3: 1 | 7 | 2 */}
       <div className="camelotRow rowBot">
-        <DistrictBox location={'District 1'} people={districts['District 1']} />
-        <DistrictBox location={'District 7'} people={districts['District 7']} />
-        <DistrictBox location={'District 2'} people={districts['District 2']} />
+        <DistrictBox location={'District 1'} people={districts['District 1']} refreshData={refreshData} />
+        <DistrictBox location={'District 7'} people={districts['District 7']} refreshData={refreshData} />
+        <DistrictBox location={'District 2'} people={districts['District 2']} refreshData={refreshData} />
       </div>
 
       {/* {other.length > 0 && (
         <div className="camelotRow rowOther">
-          <DistrictBox location={"Other"} people={other} />
+          <DistrictBox location={"Other"} people={other} refreshData={refreshData} />
         </div>
       )} */}
     </main>

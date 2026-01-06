@@ -1,50 +1,41 @@
 import React from "react";
 import { useState } from "react";
 
-function DistrictBox({ location, people = [] }) {
+import PersonModal from "./PersonModal";
+
+function DistrictBox({ location, people = [], refreshData }) {
   const [selectedPerson, setSelectedPerson] = useState(null);
 
   return (
     <>
-    <div className="districtBox">
-      <div className="districtName">{location}</div>
+      <div className="districtBox">
+        <div className="districtName">{location}</div>
 
-      <ul className="districtList">
-        {people.map((p) => (
-          <li
-            key={p.id}
-            className={`${p.Party}`}   // uses Party as class
-            onClick={() => setSelectedPerson(p)}
-          >
-            {p.name}
-          </li>
-        ))}
-      </ul>
-    </div>
+        <ul className="districtList">
+          {people.map((p) => (
+            <li
+              key={p.id}
+              className={`${p.Party}`}   // uses Party as class
+              onClick={() => setSelectedPerson(p)}
+            >
+              {p.name}
+            </li>
+          ))}
+        </ul>
+      </div>
 
-    {selectedPerson && (
-        <div
-          className="modalOverlay"
-          onClick={() => setSelectedPerson(null)}
-        >
-          <div
-            className="modalBox"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3>{selectedPerson.name}</h3>
-            <p>Party: {selectedPerson.Party}</p>
-
-            <button onClick={() => setSelectedPerson(null)}>
-              Close
-            </button>
-          </div>
-        </div>
+      {selectedPerson && (
+        <PersonModal
+          person={selectedPerson}
+          onClose={() => setSelectedPerson(null)}
+          onSave={refreshData}
+        />
       )}
     </>
   );
 }
 
-export default function StorybrookeLayout({ groupedPeople }) {
+export default function StorybrookeLayout({ groupedPeople, refreshData }) {
   const storybrooke = groupedPeople?.Storybrooke ?? {};
 
   const districts = Array.from({ length: 5 }, () => []);
@@ -55,13 +46,13 @@ export default function StorybrookeLayout({ groupedPeople }) {
   return (
     <main className="storybrookeWrap">
       <div className="storybrookeRow rowTop">
-        <DistrictBox location={'West Hyperion'} people={districts['West Hyperion']} />
-        <DistrictBox location={'Hyperion Heights'} people={districts['Hyperion Heights']} />
+        <DistrictBox location={'West Hyperion'} people={districts['West Hyperion']} refreshData={refreshData} />
+        <DistrictBox location={'Hyperion Heights'} people={districts['Hyperion Heights']} refreshData={refreshData} />
       </div>
 
       <div className="storybrookeRow rowTop">
-        <DistrictBox location={'Industrial District'} people={districts['Industrial District']} />
-        <DistrictBox location={'Downtown'} people={districts['Downtown']} />
+        <DistrictBox location={'Industrial District'} people={districts['Industrial District']} refreshData={refreshData} />
+        <DistrictBox location={'Downtown'} people={districts['Downtown']} refreshData={refreshData} />
       </div>
     </main>
   );

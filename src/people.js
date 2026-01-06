@@ -10,8 +10,8 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function normalize(str) {
-        return String(str).trim().replace(/\s+/g, " ");
-    }
+    return String(str).trim().replace(/\s+/g, " ");
+}
 
 function group(input) {
     const grouped = {};
@@ -22,24 +22,27 @@ function group(input) {
     // Case 1: array of DB rows
     if (Array.isArray(payload)) {
         for (const row of payload) {
-        const Region = normalize(row.Region ?? row.region);
-        const Location = normalize(row.Location ?? row.district ?? row.location);
-        const Party = row.Party ?? row.party;
-        const name = row.name;
+            const Region = normalize(row.Region ?? row.region);
+            const Location = normalize(row.Location ?? row.district ?? row.location);
+            const Party = row.Party ?? row.party;
+            const name = row.name;
 
-        if (!Region || !Location || !Party || !name) continue;
+            if (!Region || !Location || !Party || !name) continue;
 
-        if (!grouped[Region]) grouped[Region] = {};
-        if (!grouped[Region][Location]) grouped[Region][Location] = [];
+            if (!grouped[Region]) grouped[Region] = {};
+            if (!grouped[Region][Location]) grouped[Region][Location] = [];
 
-        grouped[Region][Location].push({
-            name,
-            Party,
-            id: row.id,
-            fid: row.fid,
-            mid: row.mid,
-            sid: row.sid,
-        });
+            grouped[Region][Location].push({
+                name,
+                Party,
+                id: row.id,
+                fid: row.fid,
+                mid: row.mid,
+                sid: row.sid,
+                is_educator: row.is_educator,
+                is_politician: row.is_politician,
+                is_entertainer: row.is_entertainer,
+            });
         }
         return grouped;
     }
@@ -62,6 +65,9 @@ function group(input) {
             fid: info.fid,
             mid: info.mid,
             sid: info.sid,
+            is_educator: info.is_educator,
+            is_politician: info.is_politician,
+            is_entertainer: info.is_entertainer,
         });
     }
 
@@ -81,8 +87,8 @@ export function People() {
         if (view !== "republic") return;
 
         fetch("/.netlify/functions/people?nocache=1", {
-            cache: "no-store",                                                                                                                          
-            headers: {"accept": "application/json"},
+            cache: "no-store",
+            headers: { "accept": "application/json" },
         })
             .then(async (res) => {
                 const ct = res.headers.get("content-type") || "";
@@ -103,7 +109,7 @@ export function People() {
                 setGroupedPeople(grouped);
 
                 console.log("GROUPED REGIONS:", Object.keys(grouped));
-                
+
                 const rawCount = Array.isArray(json) ? json.length : Object.keys(json).length;
                 console.log("RAW COUNT:", rawCount);
 
@@ -115,7 +121,7 @@ export function People() {
             })
             .catch(err => console.error("fetch error:", err));
     }, [view]);
-    
+
     useEffect(() => {
         console.log("GROUPED:", groupedPeople);
         console.log("Regions:", Object.keys(groupedPeople));
@@ -123,25 +129,34 @@ export function People() {
 
     return (
         <div className="people">
-            <h1 className="header"> 
+            <h1 className="header">
                 <div className="header-center">
                     <Sparkles size={35} color="#EAB308" />
                     <Link to="/"><span className="gradient-text">The Republic/Storia</span></Link>
                     <Sparkles size={35} color="#EC4899" />
                 </div>
                 <Link to="/add" className="addPerson">
-                    <Users className="users" size={25} color="#ffffffff"/>
+                    <Users className="users" size={25} color="#ffffffff" />
                 </Link>
             </h1>
             {view === "default" ? (
                 <DefaultView onSelect={setView} />
             ) : (
-                <DetailView 
-                    view={view} 
-                    onBack={() => setView("default")} 
+                <DetailView
+                    view={view}
+                    onBack={() => setView("default")}
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
                     groupedPeople={groupedPeople}
+                    refreshData={() => {
+                        // Re-trigger the effect by invalidating view temporarily or ideally calling a fetch function.
+                        // For simplicity, let's just re-run the fetch logic.
+                        // A better pattern: extract fetch to a function or depend on a 'version' state.
+                        // setView(v => v); // This might not work if view doesn't change value.
+                        // Let's force a reload by re-mounting or just rely on reloading page for now, 
+                        // or better: add a toggle.
+                        window.location.reload(); // Simplest consistent way for now without major refactor
+                    }}
                 />
             )}
         </div>
@@ -172,7 +187,7 @@ function DefaultView({ onSelect }) {
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-centerright">
                         <div className="card rotate-centerright">
                             <div className="card-body" onClick={() => onSelect("storia")}>
-                                <div className="circle"><Sparkles className="sparkle"/></div>
+                                <div className="circle"><Sparkles className="sparkle" /></div>
                                 <h5 className="card-title">Storia</h5>
                                 <div className="divider">
                                     <div className="dash"></div>
@@ -185,7 +200,7 @@ function DefaultView({ onSelect }) {
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-centerright">
                         <div className="card rotate-centerright">
                             <div className="card-body" onClick={() => onSelect("familyTree")}>
-                                <div className="circle"><Sparkles className="sparkle"/></div>
+                                <div className="circle"><Sparkles className="sparkle" /></div>
                                 <h5 className="card-title">Family Tree</h5>
                                 <div className="divider">
                                     <div className="dash"></div>
@@ -201,35 +216,36 @@ function DefaultView({ onSelect }) {
     )
 }
 
-function DetailView({ 
-    view, 
-    onBack, 
-    activeTab, 
-    setActiveTab, 
-    groupedPeople
+function DetailView({
+    view,
+    onBack,
+    activeTab,
+    setActiveTab,
+    groupedPeople,
+    refreshData
 }) {
     const VIEWS = {
-    storia: <div></div>,
-    republic: <div>
-                <div className="bar">
-                    <div className={`region pos-0 ${activeTab === "camelot" ? "active" : ""}`} onClick={() => setActiveTab("camelot")}>Camelot</div>
-                    <div className={`region pos-1 ${activeTab === "storybrooke" ? "active" : ""}`} onClick={() => setActiveTab("storybrooke")}>Storybrooke</div>
-                    <div className={`region pos-2 ${activeTab === "capitol" ? "active" : ""}`} onClick={() => setActiveTab("capitol")}>The Capitol</div>
-                </div>
-                <div className='map'>
-                    {activeTab === "camelot" && <CamelotLayout groupedPeople={groupedPeople} />}
-                    {activeTab === "storybrooke" && <StorybrookeLayout groupedPeople={groupedPeople} />}
-                    {activeTab === "capitol" && <CapitolLayout groupedPeople={groupedPeople} />}
-                </div>
-            </div>,
-    familyTree: <div></div>,
+        storia: <div></div>,
+        republic: <div>
+            <div className="bar">
+                <div className={`region pos-0 ${activeTab === "camelot" ? "active" : ""}`} onClick={() => setActiveTab("camelot")}>Camelot</div>
+                <div className={`region pos-1 ${activeTab === "storybrooke" ? "active" : ""}`} onClick={() => setActiveTab("storybrooke")}>Storybrooke</div>
+                <div className={`region pos-2 ${activeTab === "capitol" ? "active" : ""}`} onClick={() => setActiveTab("capitol")}>The Capitol</div>
+            </div>
+            <div className='map'>
+                {activeTab === "camelot" && <CamelotLayout groupedPeople={groupedPeople} refreshData={refreshData} />}
+                {activeTab === "storybrooke" && <StorybrookeLayout groupedPeople={groupedPeople} refreshData={refreshData} />}
+                {activeTab === "capitol" && <CapitolLayout groupedPeople={groupedPeople} refreshData={refreshData} />}
+            </div>
+        </div>,
+        familyTree: <div></div>,
     };
 
     return (
         <div className="info">
             <div className="head">
                 <h1 className="peopleTitle">People</h1>
-                <p className="back" onClick={onBack}><ArrowLeft size={20}/> Back</p>
+                <p className="back" onClick={onBack}><ArrowLeft size={20} /> Back</p>
             </div>
 
             {VIEWS[view] ?? <div>Unknown view: {view}</div>}
