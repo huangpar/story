@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import PersonModal from "./PersonModal";
 
-function DistrictBox({ location, people = [], refreshData }) {
+function DistrictBox({ location, people = [], refreshData, peopleList }) {
   const [selectedPerson, setSelectedPerson] = useState(null);
 
   return (
@@ -29,13 +29,14 @@ function DistrictBox({ location, people = [], refreshData }) {
           person={selectedPerson}
           onClose={() => setSelectedPerson(null)}
           onSave={refreshData}
+          peopleList={peopleList}
         />
       )}
     </>
   );
 }
 
-export default function StorybrookeLayout({ groupedPeople, refreshData }) {
+export default function StorybrookeLayout({ groupedPeople, refreshData, peopleList }) {
   const storybrooke = groupedPeople?.Storybrooke ?? {};
 
   const districts = Array.from({ length: 5 }, () => []);
@@ -46,13 +47,13 @@ export default function StorybrookeLayout({ groupedPeople, refreshData }) {
   return (
     <main className="storybrookeWrap">
       <div className="storybrookeRow rowTop">
-        <DistrictBox location={'West Hyperion'} people={districts['West Hyperion']} refreshData={refreshData} />
-        <DistrictBox location={'Hyperion Heights'} people={districts['Hyperion Heights']} refreshData={refreshData} />
+        <DistrictBox location={'West Hyperion'} people={districts['West Hyperion']} refreshData={refreshData} peopleList={peopleList} />
+        <DistrictBox location={'Hyperion Heights'} people={districts['Hyperion Heights']} refreshData={refreshData} peopleList={peopleList} />
       </div>
 
       <div className="storybrookeRow rowTop">
-        <DistrictBox location={'Industrial District'} people={districts['Industrial District']} refreshData={refreshData} />
-        <DistrictBox location={'Downtown'} people={districts['Downtown']} refreshData={refreshData} />
+        <DistrictBox location={'Industrial District'} people={districts['Industrial District']} refreshData={refreshData} peopleList={peopleList} />
+        <DistrictBox location={'Downtown'} people={districts['Downtown']} refreshData={refreshData} peopleList={peopleList} />
       </div>
     </main>
   );

@@ -83,6 +83,7 @@ export function People() {
 
 
     const [groupedPeople, setGroupedPeople] = useState({});
+    const [peopleList, setPeopleList] = useState([]);
     const [view, setView] = useState("default");
 
     useEffect(() => {
@@ -109,6 +110,11 @@ export function People() {
             })
             .then((json) => {
                 console.log("RAW function JSON:", json);
+
+                // create flat list for lookups
+                const flat = Array.isArray(json) ? json : Object.values(json);
+                setPeopleList(flat);
+
                 const grouped = group(json);
                 setGroupedPeople(grouped);
 
@@ -152,6 +158,7 @@ export function People() {
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
                     groupedPeople={groupedPeople}
+                    peopleList={peopleList}
                     refreshData={() => {
                         // Re-trigger the effect by invalidating view temporarily or ideally calling a fetch function.
                         // For simplicity, let's just re-run the fetch logic.
@@ -226,7 +233,8 @@ function DetailView({
     activeTab,
     setActiveTab,
     groupedPeople,
-    refreshData
+    refreshData,
+    peopleList
 }) {
     const VIEWS = {
         storia: <div></div>,
@@ -237,9 +245,9 @@ function DetailView({
                 <div className={`region pos-2 ${activeTab === "capitol" ? "active" : ""}`} onClick={() => setActiveTab("capitol")}>The Capitol</div>
             </div>
             <div className='map'>
-                {activeTab === "camelot" && <CamelotLayout groupedPeople={groupedPeople} refreshData={refreshData} />}
-                {activeTab === "storybrooke" && <StorybrookeLayout groupedPeople={groupedPeople} refreshData={refreshData} />}
-                {activeTab === "capitol" && <CapitolLayout groupedPeople={groupedPeople} refreshData={refreshData} />}
+                {activeTab === "camelot" && <CamelotLayout groupedPeople={groupedPeople} refreshData={refreshData} peopleList={peopleList} />}
+                {activeTab === "storybrooke" && <StorybrookeLayout groupedPeople={groupedPeople} refreshData={refreshData} peopleList={peopleList} />}
+                {activeTab === "capitol" && <CapitolLayout groupedPeople={groupedPeople} refreshData={refreshData} peopleList={peopleList} />}
             </div>
         </div>,
         familyTree: <div></div>,

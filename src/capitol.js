@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import PersonModal from "./PersonModal";
 
-function DistrictBox({ location, people = [], refreshData }) {
+function DistrictBox({ location, people = [], refreshData, peopleList }) {
   const [selectedPerson, setSelectedPerson] = useState(null);
 
   return (
@@ -29,13 +29,14 @@ function DistrictBox({ location, people = [], refreshData }) {
           person={selectedPerson}
           onClose={() => setSelectedPerson(null)}
           onSave={refreshData}
+          peopleList={peopleList}
         />
       )}
     </>
   );
 }
 
-export default function CapitolLayout({ groupedPeople, refreshData }) {
+export default function CapitolLayout({ groupedPeople, refreshData, peopleList }) {
   const capitol = groupedPeople?.Capitol ?? {};
 
   const districts = Array.from({ length: 5 }, () => []);
@@ -46,7 +47,7 @@ export default function CapitolLayout({ groupedPeople, refreshData }) {
   return (
     <main className="capitolWrap">
       <div className="capitolRow">
-        <DistrictBox location={'Capitol'} people={districts['Capitol']} refreshData={refreshData} />
+        <DistrictBox location={'Capitol'} people={districts['Capitol']} refreshData={refreshData} peopleList={peopleList} />
       </div>
     </main>
   );

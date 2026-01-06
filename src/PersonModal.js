@@ -1,33 +1,54 @@
 import React, { useState, useEffect } from "react";
 import './index.css';
 
-export default function PersonModal({ person, onClose, onSave }) {
+export default function PersonModal({ person, onClose, onSave, peopleList = [] }) {
     const [formData, setFormData] = useState({
         region: "",
         district: "",
-        fid: "",
-        mid: "",
-        sid: "",
+        fidName: "",
+        midNames: "",
+        sidNames: "",
         is_educator: false,
         is_politician: false,
         is_entertainer: false,
     });
     const [saving, setSaving] = useState(false);
 
+    // Helpers for Name <-> ID resolution
+    const getName = (id) => {
+        const p = peopleList.find(p => p.id === id);
+        return p ? p.name : id; // fallback to ID if not found
+    };
+
+    const getId = (name) => {
+        const cleanName = name.trim().toLowerCase();
+        const p = peopleList.find(p => p.name.toLowerCase() === cleanName);
+        return p ? p.id : null;
+    };
+
     useEffect(() => {
         if (person) {
+            // Convert IDs to names for display
+            const fidName = person.fid ? getName(person.fid) : "";
+
+            const midArr = Array.isArray(person.mid) ? person.mid : (person.mid ? [person.mid] : []);
+            const midNames = midArr.map(id => getName(id)).join(", ");
+
+            const sidArr = Array.isArray(person.sid) ? person.sid : (person.sid ? [person.sid] : []);
+            const sidNames = sidArr.map(id => getName(id)).join(", ");
+
             setFormData({
                 region: person.Region || "",
                 district: person.Location || "",
-                fid: person.fid || "",
-                mid: Array.isArray(person.mid) ? person.mid.join(", ") : (person.mid || ""),
-                sid: Array.isArray(person.sid) ? person.sid.join(", ") : (person.sid || ""),
+                fidName: fidName,
+                midNames: midNames,
+                sidNames: sidNames,
                 is_educator: person.is_educator || false,
                 is_politician: person.is_politician || false,
                 is_entertainer: person.is_entertainer || false,
             });
         }
-    }, [person]);
+    }, [person, peopleList]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -40,19 +61,27 @@ export default function PersonModal({ person, onClose, onSave }) {
     const handleSave = async () => {
         setSaving(true);
         try {
-            // Helper to parse comma-separated integers to array
-            const parseArray = (str) => {
+            // Helper to parse comma-separated names to array of IDs
+            const parseNamesToIds = (str) => {
                 if (!str) return null;
-                return str.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+                return str.split(',')
+                    .map(s => s.trim())
+                    .filter(s => s.length > 0)
+                    .map(name => getId(name))
+                    .filter(id => id !== null); // Filter out unresolved names
             };
+
+            const fid = formData.fidName ? getId(formData.fidName) : null;
+            const mid = parseNamesToIds(formData.midNames);
+            const sid = parseNamesToIds(formData.sidNames);
 
             const payload = {
                 id: person.id,
                 region: formData.region,
                 district: formData.district,
-                fid: formData.fid ? parseInt(formData.fid) : null,
-                mid: parseArray(formData.mid),
-                sid: parseArray(formData.sid),
+                fid: fid,
+                mid: mid,
+                sid: sid,
                 is_educator: formData.is_educator,
                 is_politician: formData.is_politician,
                 is_entertainer: formData.is_entertainer,
@@ -70,7 +99,7 @@ export default function PersonModal({ person, onClose, onSave }) {
             onClose();
         } catch (error) {
             console.error("Save failed", error);
-            alert("Failed to save changes.");
+            alert("Failed to save changes. Ensure all names are correct.");
         } finally {
             setSaving(false);
         }
@@ -94,18 +123,18 @@ export default function PersonModal({ person, onClose, onSave }) {
                 </div>
 
                 <div className="form-group">
-                    <label>FID</label>
-                    <input type="number" name="fid" value={formData.fid} onChange={handleChange} />
+                    <label>Father (Name)</label>
+                    <input name="fidName" value={formData.fidName} onChange={handleChange} placeholder="e.g. John Doe" />
                 </div>
 
                 <div className="form-group">
-                    <label>MID (comma separated)</label>
-                    <input name="mid" value={formData.mid} onChange={handleChange} placeholder="1, 2, 3" />
+                    <label>Mother (Names, comma separated)</label>
+                    <input name="midNames" value={formData.midNames} onChange={handleChange} placeholder="e.g. Jane Doe, Mary Smith" />
                 </div>
 
                 <div className="form-group">
-                    <label>SID (comma separated)</label>
-                    <input name="sid" value={formData.sid} onChange={handleChange} placeholder="4, 5, 6" />
+                    <label>Spouse (Names, comma separated)</label>
+                    <input name="sidNames" value={formData.sidNames} onChange={handleChange} placeholder="e.g. Partner Name" />
                 </div>
 
                 <div className="toggles">
