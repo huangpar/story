@@ -15,11 +15,6 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
     const [saving, setSaving] = useState(false);
 
     // Helpers for Name <-> ID resolution
-    const getName = (id) => {
-        const p = peopleList.find(p => p.id === id);
-        return p ? p.name : id; // fallback to ID if not found
-    };
-
     const getId = (name) => {
         const cleanName = name.trim().toLowerCase();
         const p = peopleList.find(p => p.name.toLowerCase() === cleanName);
@@ -28,6 +23,11 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
 
     useEffect(() => {
         if (person) {
+            const getName = (id) => {
+                const p = peopleList.find(p => p.id === id);
+                return p ? p.name : id; // fallback to ID if not found
+            };
+
             // Convert IDs to names for display
             const fidName = person.fid ? getName(person.fid) : "";
 
