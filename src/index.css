@@ -802,7 +802,7 @@ main.home a {
 }
 
 .actions button:first-child:hover {
-    background: #059669;
+    background: linear-gradient(125deg, #059669, #0D9488);
 }
 
 .actions button:last-child {
