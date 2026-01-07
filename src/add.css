@@ -102,4 +102,8 @@ button {
     border-radius: 15px;
 }
 
+.add-person-form label {
+  display: flex;
+  gap: 10px;
+}
 

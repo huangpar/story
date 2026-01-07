@@ -1,36 +1,126 @@
 .entertainment {
+  background-color: #1a1a1a;
+  min-height: 100vh;
+  color: white;
+}
+
+.ent-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-title {
+  text-align: center;
+  color: #ec4899;
+  margin-bottom: 40px;
+  font-size: 2.5rem;
+}
+
+.studios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.studio-card {
+  background: #252525;
+  border: 1px solid #444;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.studio-header {
+  background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+  padding: 20px;
+  border-bottom: 1px solid #444;
+}
+
+.studio-header h2 {
+  margin: 0;
+  color: #ffd700;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.studio-section {
+  padding: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.studio-section:last-child {
+  border-bottom: none;
+}
+
+.studio-section h3 {
+  font-size: 1rem;
+  color: #aaa;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-left: 3px solid #ec4899;
+  padding-left: 10px;
+}
+
+.staff-list {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-image: linear-gradient(to bottom right, #F3E8FF, #FDF2F8,#FAE8FF);
-  padding-bottom: 70px;
+  gap: 8px;
 }
 
-.entertainment .header {
-  margin-top: 0%;
-  padding-bottom: 50px;
+.staff-member {
+  display: flex;
   justify-content: space-between;
+  font-size: 0.95rem;
+  padding: 5px 0;
+  border-bottom: 1px solid #333;
 }
 
-.entertainment .header-center{
-   display: flex;
-  position: relative;
-  align-items: center;
-  gap: 12px;
+.staff-member .role {
+  color: #888;
+  font-size: 0.85rem;
+  font-style: italic;
 }
 
-.entertainment .addPerson {
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  background: linear-gradient(to right, #DB2777,#9333EA);
+.shows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.show-card {
+  background: #333;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.show-title {
+  font-weight: bold;
+  color: white;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-left: 0;
-  transform: none;
+  gap: 8px;
 }
 
-.entertainment .gradient-text {
-  font-size: 2rem;
+.cast-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cast-name {
+  background: #444;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  color: #ddd;
+}
+
+.empty {
+  font-style: italic;
+  color: #666;
+  font-size: 0.9rem;
 }

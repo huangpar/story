@@ -6,6 +6,8 @@ import { Politics } from "./politics";
 import { Entertainment } from "./entertainment";
 import { Education } from "./education";
 import { Add } from "./add";
+import { Politicians } from "./politicians";
+import { Entertainers } from "./entertainers";
 
 
 
@@ -18,6 +20,8 @@ function App() {
       <Route path="/entertainment" element={<Entertainment />} />
       <Route path="/education" element={<Education />} />
       <Route path="/add" element={<Add />} />
+      <Route path="/politicians" element={<Politicians />} />
+      <Route path="/entertainers" element={<Entertainers />} />
     </Routes>
   );
 }
