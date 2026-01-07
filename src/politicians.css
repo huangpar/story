@@ -29,15 +29,18 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background: #f5fcff;
-    border: 5px solid #93C5FD;
+    background: linear-gradient(to right, #F8F7FC, #FAF7FB);
+    /* border: 5px solid #93C5FD; */
     box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
     border-radius: 25px;
 }
 
 .politician-card {
     background: white;
-    border: 2px solid #BFDBFE;
+    border: 2px solid #E5E7EB !important;
+    box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
     border-radius: 10px;
     padding: 20px;
     display: flex;
@@ -154,4 +157,8 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 500;
+}
+
+.senateWrap .my-5 {
+    margin-top: 0 !important;
 }

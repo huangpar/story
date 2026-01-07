@@ -35,13 +35,13 @@ code {
 .info {
   /* flex: 1; */
   /* min-height: 0; */
-  background: #F2FEFC;
+  background: linear-gradient(to right, #F8F7FC, #FAF7FB);
   min-width: 1200px;
   margin: 0 auto auto auto;
   padding: 30px 50px;
   border-radius: 25px;
   position: relative;
-  border: 5px solid #5EEAD4;
+  /* border: 5px solid #5EEAD4; */
   box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
 }
 
@@ -511,8 +511,19 @@ main.home .card {
   box-sizing: border-box;
   overflow: hidden;
   border-radius: 25px;
-  border: 2px solid #99F6E4 !important;
+  border: 2px solid #E5E7EB !important;
   padding: 1rem; /* keep content clear of the border */
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+  transition: all 300ms ease;
+}
+
+.people .card:hover {
+  border: 2px solid #99F6E4 !important;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
 }
 
 main.home .card:hover,
@@ -560,6 +571,10 @@ main.home .card-title,
   padding: 0 0.5rem;
   box-sizing: border-box;
   font-size: 200%;
+}
+
+.people .card-title {
+  font-size: 1.25rem;
 }
 
 main.home .card-body,

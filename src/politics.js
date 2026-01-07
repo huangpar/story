@@ -5,6 +5,7 @@ import './politics.css';
 import { Sparkles } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
+import 'bootstrap/dist/css/bootstrap.css';
 
 export function Politics() {
     const [activeTab, setActiveTab] = useState("governors");
@@ -58,8 +59,9 @@ function DefaultView({ onSelect, peopleList = [] }) {
                 <h1 className="politicsTitle">Politics</h1>
             </div>
             <div className="executive">
-                <div className="president"><h2>President:</h2><h2>{president ? president.name : "Vacant"}</h2></div>
-                <div className="vicePresident"><h2>Vice President:</h2><h2>{vicePresident ? vicePresident.name : "Vacant"}</h2></div>
+                <div className="president"><p>President</p><h2>{president ? president.name : "Vacant"}</h2></div>
+                <div className="spacer"></div>
+                <div className="vicePresident"><p>Vice President</p><h2>{vicePresident ? vicePresident.name : "Vacant"}</h2></div>
             </div>
             <div className="container">
                 <div className="row row-cols-1 row-cols-md-3 g-5">
@@ -137,7 +139,14 @@ function DetailView({
     const VIEWS = {
         governors: <div>
             <div className="governorWrap">
-                <h1 className="governorTitle">Governors</h1>
+                <div class="d-flex justify-content-center mb-5">
+                    <div className="position-relative">
+                        <div className="glow-bg position-absolute top-0 start-0 w-100 h-100 rounded-pill"></div>
+                        <div className="glow-pill position-relative px-5 py-3 rounded-pill shadow-lg">
+                            <h1 className="h4 fw-bold text-white mb-0">Governors</h1>
+                        </div>
+                    </div>
+                </div>
                 <div className="governors">
                     <div className="governorRow rowTop">
                         <div className="governorBox">
@@ -207,63 +216,134 @@ function DetailView({
         </div>,
         senate: <div>
             <div className="senateWrap">
-                <h1 className="governorTitle">Senate</h1>
-                <div className="senators">
-                    <div className="senatorBox seat-1" style={{ position: "absolute", top: "86%", left: "7%" }}>
-                        <div className="senatorName">{formatSenator(0)}</div>
-                    </div>
-                    <div className="senatorBox seat-2" style={{ position: "absolute", top: "74%", left: "7.5%" }}>
-                        <div className="senatorName">{formatSenator(1)}</div>
-                    </div>
-                    <div className="senatorBox seat-3" style={{ position: "absolute", top: "62%", left: "10%" }}>
-                        <div className="senatorName">{formatSenator(2)}</div>
-                    </div>
-                    <div className="senatorBox seat-4" style={{ position: "absolute", top: "50%", left: "14%" }}>
-                        <div className="senatorName">{formatSenator(3)}</div>
-                    </div>
-                    <div className="senatorBox seat-5" style={{ position: "absolute", top: "38%", left: "21%" }}>
-                        <div className="senatorName">{formatSenator(4)}</div>
-                    </div>
-                    <div className="senatorBox seat-6" style={{ position: "absolute", top: "29%", left: "33%" }}>
-                        <div className="senatorName">{formatSenator(5)}</div>
-                    </div>
-                    <div className="chancellorBox" style={{ position: "absolute", top: "26%", right: "50%", left: "50%", transform: "translateX(-50%)" }}>
-                        <div className="senatorName">{chancellor ? chancellor.name : "Chancellor"}</div>
-                    </div>
-                    <div className="senatorBox seat-7" style={{ position: "absolute", top: "29%", right: "33%" }}>
-                        <div className="senatorName">{formatSenator(6)}</div>
-                    </div>
-                    <div className="senatorBox seat-8" style={{ position: "absolute", top: "38%", right: "21%" }}>
-                        <div className="senatorName">{formatSenator(7)}</div>
-                    </div>
-                    <div className="senatorBox seat-9" style={{ position: "absolute", top: "50%", right: "14%" }}>
-                        <div className="senatorName">{formatSenator(8)}</div>
-                    </div>
-                    <div className="senatorBox seat-10" style={{ position: "absolute", top: "62%", right: "10%" }}>
-                        <div className="senatorName">{formatSenator(9)}</div>
-                    </div>
-                    <div className="senatorBox seat-11" style={{ position: "absolute", top: "74%", right: "7.5%" }}>
-                        <div className="senatorName">{formatSenator(10)}</div>
-                    </div>
-                    <div className="senatorBox seat-12" style={{ position: "absolute", top: "86%", right: "7%" }}>
-                        <div className="senatorName">{formatSenator(11)}</div>
+                <div className="d-flex justify-content-center mb-5">
+                    <div className="position-relative">
+                        <div className="glow-bg position-absolute top-0 start-0 w-100 h-100 rounded-pill"></div>
+                        <div className="glow-pill position-relative px-5 py-3 rounded-pill shadow-lg">
+                            <h1 className="h4 fw-bold text-white mb-0">Senate</h1>
+                        </div>
                     </div>
                 </div>
-                <div className="half-circle"></div>
+                <div className="senators">
+                    <div className="senatorBox seat-1" style={{ position: "absolute", top: "81%", left: "9.5%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(0)}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-2" style={{ position: "absolute", top: "70%", left: "10.5%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(1)}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-3" style={{ position: "absolute", top: "59%", left: "13%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(2)}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-4" style={{ position: "absolute", top: "48%", left: "17%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(3)}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-5" style={{ position: "absolute", top: "38%", left: "24%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(4)}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-6" style={{ position: "absolute", top: "30%", left: "33%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(5)}</div>
+                        </div>
+                    </div>
+                    <div className="chancellorBox" style={{ position: "absolute", top: "27%", right: "50%", left: "50%", transform: "translateX(-50%)" }}>
+                        <div className="chancellorAura" />
+                        <div className="chancellorContent">
+                            <div className="senatorName">{chancellor ? chancellor.name : "Chancellor"}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-7" style={{ position: "absolute", top: "30%", right: "33%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(6)}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-8" style={{ position: "absolute", top: "38%", right: "24%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(7)}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-9" style={{ position: "absolute", top: "48%", right: "17%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(8)}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-10" style={{ position: "absolute", top: "59%", right: "13%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(9)}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-11" style={{ position: "absolute", top: "70%", right: "10.5%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(10)}</div>
+                        </div>
+                    </div>
+                    <div className="senatorBox seat-12" style={{ position: "absolute", top: "81%", right: "9.5%" }}>
+                        <div className="senatorAura" />
+                        <div className="senatorContent">
+                            <div className="senatorName">{formatSenator(11)}</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="d-flex justify-content-center my-5">
+                    <svg width="900" height="400" viewBox="0 5 220 120">
+                        <defs>
+                            <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stopColor="#3b82f6" />
+                                <stop offset="50%" stopColor="#8b5cf6" />
+                                <stop offset="100%" stopColor="#ec4899" />
+                            </linearGradient>
+                        </defs>
+
+                        <path
+                            d="M 0 120 A 90 90 1 1 1 220 120"
+                            fill="none"
+                            stroke="url(#arcGradient)"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                        />
+                    </svg>
+                </div>
             </div>
         </div>,
         highCourt: <div>
             <div className="highCourtWrap">
-                <h1 className="governorTitle">High Court</h1>
+                <div className="d-flex justify-content-center mb-5">
+                    <div className="position-relative">
+                        <div className="glow-bg position-absolute top-0 start-0 w-100 h-100 rounded-pill"></div>
+                        <div className="glow-pill position-relative px-5 py-3 rounded-pill shadow-lg">
+                            <h1 className="h4 fw-bold text-white mb-0">High Court</h1>
+                        </div>
+                    </div>
+                </div>
                 <div className="justices">
-                    <div className="justiceBox" style={{ position: "absolute", top: "65%", left: "25%" }}>
-                        <div className="senatorName">{formatJustice(0)}</div>
+                    <div className="justiceBox">
+                        <div className="justiceName">{formatJustice(0)}</div>
                     </div>
-                    <div className="justiceBox" style={{ position: "absolute", top: "65%", left: "50%", right: "50%", transform: "translateX(-50%)" }}>
-                        <div className="senatorName">{formatJustice(1)}</div>
+                    <div className="justiceBox">
+                        <div className="justiceName">{formatJustice(1)}</div>
                     </div>
-                    <div className="justiceBox" style={{ position: "absolute", top: "65%", right: "25%" }}>
-                        <div className="senatorName">{formatJustice(2)}</div>
+                    <div className="justiceBox">
+                        <div className="justiceName">{formatJustice(2)}</div>
                     </div>
                     <div className="line"></div>
                 </div>
