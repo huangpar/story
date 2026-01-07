@@ -34,7 +34,7 @@ function CustomDropdown({ value, options, onChange }) {
             {isOpen && (
                 <div className="dropdown-list">
                     <div className="dropdown-item" onClick={(e) => { e.stopPropagation(); handleSelect(""); setIsOpen(false); }}>
-                        -- None --
+                        <span className="gradient-text-item">-- None --</span>
                     </div>
                     {options.map(opt => (
                         <div key={opt.id} className="dropdown-item" onClick={(e) => { e.stopPropagation(); handleSelect(opt.id); setIsOpen(false); }}>
