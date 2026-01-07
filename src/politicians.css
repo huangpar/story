@@ -36,8 +36,8 @@
 }
 
 .politician-card {
-    background: #2a2a2a;
-    border: 1px solid #444;
+    background: white;
+    border: 2px solid #BFDBFE;
     border-radius: 10px;
     padding: 20px;
     display: flex;
@@ -48,7 +48,7 @@
 .pol-info h3 {
     margin: 0 0 5px 0;
     font-size: 1.2rem;
-    color: #ffd700;
+    color: #555;
 }
 
 .pol-info p {
@@ -63,11 +63,16 @@
     gap: 10px;
 }
 
+.pol-role label {
+    font-weight: 500;
+    color: #555;
+}
+
 .pol-role select {
     padding: 5px 10px;
     border-radius: 5px;
-    background: #333;
-    color: white;
+    background: white;
+    color: #555;
     border: 1px solid #555;
 }
 
