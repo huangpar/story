@@ -128,7 +128,7 @@ function DetailView({
     const getByRole = (roleName) => peopleList.filter(p => p.role_name === roleName);
 
     const senators = getByRole("Senator");
-    const justices = getByRole("High Court Justice"); // Or whatever the role name is
+    const justices = getByRole("Justice"); // Or whatever the role name is
     const chancellor = getByRole("Chancellor")[0]; // Assuming one
 
     const formatSenator = (index) => senators[index] ? senators[index].name : "Vacant";

@@ -1,17 +1,38 @@
 .politicians-page {
-    background-color: #1a1a1a;
+    background-image: linear-gradient(to bottom right, #DBEAFE, #FAF5FF, #E0E7FF);
     min-height: 100vh;
     color: white;
     padding-bottom: 50px;
 }
 
+.politicians-page .header {
+    margin-top: 0;
+    padding-bottom: 50px;
+    justify-content: space-between;
+}
+
+.politicians-page .header-center{
+    display: flex;
+    position: relative;
+    align-items: center;
+    gap: 12px;
+}
+
+.politicians-page .gradient-text {
+    font-size: 2rem;
+}
+
 .politicians-container {
     max-width: 800px;
-    margin: 40px auto;
-    padding: 0 20px;
+    margin: 0 auto auto auto;
+    padding: 30px 50px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    background: #f5fcff;
+    border: 5px solid #93C5FD;
+    box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
+    border-radius: 25px;
 }
 
 .politician-card {
@@ -48,4 +69,12 @@
     background: #333;
     color: white;
     border: 1px solid #555;
+}
+
+.head a {
+    text-decoration: none;
+}
+
+.politicians-page .politicsTitle {
+    font-weight: 500;
 }

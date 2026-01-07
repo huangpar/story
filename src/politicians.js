@@ -73,15 +73,18 @@ export function Politicians() {
 
     return (
         <div className="politicians-page">
-            <header className="header">
+            <h1 className="header">
                 <div className="header-center">
                     <Sparkles size={35} color="#EAB308" />
-                    <Link to="/politics"><span className="gradient-text">Politicians</span></Link>
+                    <Link to="/"><span className="gradient-text">The Republic/Storia</span></Link>
                     <Sparkles size={35} color="#EC4899" />
                 </div>
-            </header>
+            </h1>
 
             <div className="politicians-container">
+                <div className="head">
+                    <Link to="/politics"><span className="politicsTitle">Politicians</span></Link>
+                </div>
                 {politicians.map(p => (
                     <div key={p.id} className="politician-card">
                         <div className="pol-info">
