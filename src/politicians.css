@@ -11,7 +11,7 @@
     justify-content: space-between;
 }
 
-.politicians-page .header-center{
+.politicians-page .header-center {
     display: flex;
     position: relative;
     align-items: center;
@@ -74,18 +74,84 @@
     -webkit-text-fill-color: transparent;
 }
 
-.pol-role select {
-    padding: 5px 10px;
-    border-radius: 5px;
-    background: white;
-    color: #BFDBFE;
-    border: 2px solid #BFDBFE;
-}
-
 .head a {
     text-decoration: none;
 }
 
 .politicians-page .politicsTitle {
+    font-weight: 500;
+}
+
+/* Custom Dropdown Styles */
+.custom-dropdown {
+    position: relative;
+    width: 200px;
+    /* Adjust as needed */
+    user-select: none;
+    font-size: 0.9rem;
+}
+
+.dropdown-header {
+    background: white;
+    border: 2px solid #BFDBFE;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #444;
+    /* Default text color */
+    /* If selected, we might want gradient text there too? User said "text of the options", usually implies header too? */
+}
+
+/* Apply gradient to the text in header if selected, assuming we want it consistent */
+.dropdown-header.has-value span:first-child {
+    background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 500;
+}
+
+.dropdown-header .arrow {
+    margin-left: 10px;
+    transition: transform 0.2s;
+    color: #93C5FD;
+}
+
+.dropdown-header .arrow.open {
+    transform: rotate(180deg);
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #BFDBFE;
+    border-radius: 5px;
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.dropdown-item:hover {
+    background: #EFF6FF;
+}
+
+.gradient-text-item {
+    background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-weight: 500;
 }

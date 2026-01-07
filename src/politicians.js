@@ -1,7 +1,51 @@
 import { Link } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Sparkles, ChevronDown } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import './politicians.css';
+
+function CustomDropdown({ value, options, onChange }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    const selected = options.find(o => String(o.id) === String(value));
+
+    // Close on click outside
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [dropdownRef]);
+
+    const handleSelect = (val) => {
+        onChange(val);
+        // setIsOpen(false); // Optional: keep open or close? Standard is close.
+    };
+
+    return (
+        <div className="custom-dropdown" ref={dropdownRef} onClick={() => setIsOpen(!isOpen)}>
+            <div className={`dropdown-header ${selected ? 'has-value' : ''}`}>
+                <span>{selected ? selected.name : "-- None --"}</span>
+                <ChevronDown size={16} className={`arrow ${isOpen ? 'open' : ''}`} />
+            </div>
+            {isOpen && (
+                <div className="dropdown-list">
+                    <div className="dropdown-item" onClick={(e) => { e.stopPropagation(); handleSelect(""); setIsOpen(false); }}>
+                        -- None --
+                    </div>
+                    {options.map(opt => (
+                        <div key={opt.id} className="dropdown-item" onClick={(e) => { e.stopPropagation(); handleSelect(opt.id); setIsOpen(false); }}>
+                            <span className="gradient-text-item">{opt.name}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    )
+}
 
 export function Politicians() {
     const [politicians, setPoliticians] = useState([]);
@@ -93,15 +137,11 @@ export function Politicians() {
                         </div>
                         <div className="pol-role">
                             <label>Role:</label>
-                            <select
-                                value={p.role_id || ""}
-                                onChange={(e) => handleRoleChange(p, e.target.value)}
-                            >
-                                <option value="">-- None --</option>
-                                {roles.map(r => (
-                                    <option key={r.id} value={r.id}>{r.name}</option>
-                                ))}
-                            </select>
+                            <CustomDropdown
+                                value={p.role_id}
+                                options={roles}
+                                onChange={(val) => handleRoleChange(p, val)}
+                            />
                         </div>
                     </div>
                 ))}
