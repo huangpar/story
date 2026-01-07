@@ -48,12 +48,15 @@
 .pol-info h3 {
     margin: 0 0 5px 0;
     font-size: 1.2rem;
-    color: #555;
+    background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .pol-info p {
     margin: 0;
-    color: #ccc;
+    color: #BFDBFE;
     font-size: 0.9rem;
 }
 
@@ -65,15 +68,18 @@
 
 .pol-role label {
     font-weight: 500;
-    color: #555;
+    background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .pol-role select {
     padding: 5px 10px;
     border-radius: 5px;
     background: white;
-    color: #555;
-    border: 1px solid #555;
+    color: #BFDBFE;
+    border: 2px solid #BFDBFE;
 }
 
 .head a {
