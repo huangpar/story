@@ -36,8 +36,8 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 enableSearch: false,
                 mouseScrool: FamilyTree.action.zoom,
                 minPartnerSeparation: 100,
-                levelSeparation: 100,
-                siblingSeparation: 100,
+                levelSeparation: 300,
+                siblingSeparation: 400,
                 // menu: {
                 //     pdf: { text: "Export PDF" },
                 //     png: { text: "Export PNG" },
