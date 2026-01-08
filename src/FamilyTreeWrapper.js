@@ -19,13 +19,13 @@ const initTemplates = () => {
         </linearGradient>
     `;
 
-    FamilyTree.templates.male_gradient = Object.assign({}, FamilyTree.templates.base_gradient);
-    FamilyTree.templates.male_gradient.node = '<rect x="0" y="0" height="100" width="250" fill="url(#gradient_male)" rx="15" ry="15"></rect>';
-    FamilyTree.templates.male_gradient.field_0 = '<text data-width="230" x="125" y="55" text-anchor="middle" class="field_0" fill="#ffffff" style="font-size: 20px; font-weight: bold; font-family: Inter, sans-serif;">{val}</text>';
+    FamilyTree.templates.gradient_male = Object.assign({}, FamilyTree.templates.base_gradient);
+    FamilyTree.templates.gradient_male.node = '<rect x="0" y="0" height="100" width="250" fill="url(#gradient_male)" rx="15" ry="15"></rect>';
+    FamilyTree.templates.gradient_male.field_0 = '<text data-width="230" x="125" y="55" text-anchor="middle" class="field_0" fill="#ffffff" style="font-size: 20px; font-weight: bold; font-family: Inter, sans-serif;">{val}</text>';
 
-    FamilyTree.templates.female_gradient = Object.assign({}, FamilyTree.templates.base_gradient);
-    FamilyTree.templates.female_gradient.node = '<rect x="0" y="0" height="100" width="250" fill="url(#gradient_female)" rx="15" ry="15"></rect>';
-    FamilyTree.templates.female_gradient.field_0 = '<text data-width="230" x="125" y="55" text-anchor="middle" class="field_0" fill="#ffffff" style="font-size: 20px; font-weight: bold; font-family: Inter, sans-serif;">{val}</text>';
+    FamilyTree.templates.gradient_female = Object.assign({}, FamilyTree.templates.base_gradient);
+    FamilyTree.templates.gradient_female.node = '<rect x="0" y="0" height="100" width="250" fill="url(#gradient_female)" rx="15" ry="15"></rect>';
+    FamilyTree.templates.gradient_female.field_0 = '<text data-width="230" x="125" y="55" text-anchor="middle" class="field_0" fill="#ffffff" style="font-size: 20px; font-weight: bold; font-family: Inter, sans-serif;">{val}</text>';
 };
 
 export default function FamilyTreeWrapper({ people = [] }) {
@@ -71,8 +71,6 @@ export default function FamilyTreeWrapper({ people = [] }) {
             const nodes = people
                 .filter(p => (p.fid || p.mid || (spouseMap[p.id] && spouseMap[p.id].size > 0)) || referencedIds.has(p.id))
                 .map(p => {
-                    const template = (p.gender && p.gender.toLowerCase() === 'female') ? 'female_gradient' : 'male_gradient';
-
                     // Get spouses array
                     let pids = null;
                     if (spouseMap[p.id] && spouseMap[p.id].size > 0) {
@@ -85,8 +83,8 @@ export default function FamilyTreeWrapper({ people = [] }) {
                         fid: p.fid || null,
                         pids: pids,
                         name: p.name,
-                        gender: p.gender ? p.gender.toLowerCase() : undefined,
-                        template: template
+                        gender: p.gender ? p.gender.toLowerCase() : undefined
+                        // No explicit template set, rely on default 'gradient' + gender logic
                     };
                 });
 
@@ -96,7 +94,7 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 nodeBinding: {
                     field_0: "name"
                 },
-                template: "male_gradient",
+                template: "gradient", // Use the base name, library appends _male/_female
                 enableSearch: false,
                 mouseScrool: FamilyTree.action.zoom,
                 siblingSeparation: 60,
