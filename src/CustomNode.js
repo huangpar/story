@@ -43,6 +43,8 @@ const CustomNode = ({ data }) => {
     return (
         <div style={style}>
             <Handle type="target" position={Position.Top} style={{ background: '#555' }} />
+            <Handle type="source" position={Position.Left} id="left" style={{ background: '#555', left: 0 }} />
+            <Handle type="source" position={Position.Right} id="right" style={{ background: '#555', right: 0 }} />
             <div>{data.label}</div>
             <Handle type="source" position={Position.Bottom} style={{ background: '#555' }} />
         </div>
