@@ -6,82 +6,75 @@ export default function FamilyTreeWrapper({ people = [] }) {
 
     useEffect(() => {
         const container = divRef.current;
-        if (container) {
-            container.innerHTML = "";
+        if (!container || people.length === 0) return;
 
-            // Calculate Spouse Map (Bidirectional)
-            const spouseMap = {};
-            people.forEach(p => {
-                if (!spouseMap[p.id]) spouseMap[p.id] = new Set();
-                if (p.sid) {
-                    spouseMap[p.id].add(p.sid);
-                    if (!spouseMap[p.sid]) spouseMap[p.sid] = new Set();
-                    spouseMap[p.sid].add(p.id);
-                }
-            });
+        // Clear previous tree
+        container.innerHTML = "";
 
-            // Identify referenced IDs
-            const referencedIds = new Set();
-            people.forEach(p => {
-                if (p.fid) referencedIds.add(p.fid);
-                if (p.mid) referencedIds.add(p.mid);
-                if (spouseMap[p.id] && spouseMap[p.id].size > 0) {
-                    spouseMap[p.id].forEach(sId => referencedIds.add(sId));
-                }
-            });
+        // Build spouse map (bidirectional)
+        const spouseMap = {};
+        people.forEach(p => {
+            if (!spouseMap[p.id]) spouseMap[p.id] = new Set();
+            if (p.sid) {
+                spouseMap[p.id].add(p.sid);
+                if (!spouseMap[p.sid]) spouseMap[p.sid] = new Set();
+                spouseMap[p.sid].add(p.id);
+            }
+        });
 
-            // Filter and Map Nodes
-            const nodes = people
-                .filter(p => (p.fid || p.mid || (spouseMap[p.id] && spouseMap[p.id].size > 0)) || referencedIds.has(p.id))
-                .map(p => {
-                    let pids = null;
-                    if (spouseMap[p.id] && spouseMap[p.id].size > 0) {
-                        pids = Array.from(spouseMap[p.id]);
-                    }
+        // Find people who should be included (have family connections)
+        const referencedIds = new Set();
+        people.forEach(p => {
+            if (p.fid) referencedIds.add(p.fid);
+            if (p.mid) referencedIds.add(p.mid);
+            if (spouseMap[p.id]?.size > 0) {
+                spouseMap[p.id].forEach(sId => referencedIds.add(sId));
+            }
+        });
 
-                    return {
-                        id: p.id,
-                        mid: p.mid || null,
-                        fid: p.fid || null,
-                        pids: pids,
-                        name: p.name,
-                        gender: p.gender ? p.gender.toLowerCase() : undefined
-                    };
-                });
+        // Filter and transform data for Balkan FamilyTree
+        const nodes = people
+            .filter(p => p.fid || p.mid || spouseMap[p.id]?.size > 0 || referencedIds.has(p.id))
+            .map(p => ({
+                id: p.id,
+                fid: p.fid || null,
+                mid: p.mid || null,
+                pids: spouseMap[p.id]?.size > 0 ? Array.from(spouseMap[p.id]) : null,
+                name: p.name,
+                gender: p.gender?.toLowerCase()
+            }));
 
-            // Initialize tree without collapse to avoid blank screen issues
-            new FamilyTree(container, {
-                nodes: nodes,
-                nodeBinding: {
-                    field_0: "name"
-                },
-                template: "hugo",
-                enableSearch: false,
-                mouseScrool: FamilyTree.action.zoom,
-                siblingSeparation: 60,
-                levelSeparation: 80,
-                subTreeSeparation: 80,
-                nodeMenu: {
-                    details: { text: "Details" },
-                    edit: { text: "Edit" },
-                    add: { text: "Add" },
-                    remove: { text: "Remove" }
-                },
-                menu: {
-                    pdf: { text: "Export PDF" },
-                    png: { text: "Export PNG" },
-                    svg: { text: "Export SVG" }
-                }
-            });
+        // Initialize Balkan FamilyTree
+        new FamilyTree(container, {
+            nodes: nodes,
+            nodeBinding: {
+                field_0: "name"
+            },
+            template: "hugo",
+            enableSearch: false,
+            mouseScrool: FamilyTree.action.zoom,
+            siblingSeparation: 60,
+            levelSeparation: 80,
+            subTreeSeparation: 80
+        });
 
-            // Return cleanup function
-            return () => {
-                if (container) {
-                    container.innerHTML = "";
-                }
-            };
-        }
+        // Cleanup on unmount
+        return () => {
+            if (container) {
+                container.innerHTML = "";
+            }
+        };
     }, [people]);
 
-    return <div id="tree" ref={divRef} style={{ width: "100%", height: "800px", background: "#f0f0f0" }}></div>;
+    return (
+        <div
+            id="tree"
+            ref={divRef}
+            style={{
+                width: "100%",
+                height: "800px",
+                background: "#f0f0f0"
+            }}
+        />
+    );
 }
