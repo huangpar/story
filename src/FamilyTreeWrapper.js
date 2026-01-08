@@ -50,7 +50,7 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 });
 
             // Initialize tree
-            new FamilyTree(container, {
+            const tree = new FamilyTree(container, {
                 nodes: nodes,
                 nodeBinding: {
                     field_0: "name"
@@ -61,6 +61,10 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 siblingSeparation: 60,
                 levelSeparation: 80,
                 subTreeSeparation: 80,
+                collapse: {
+                    level: 4,
+                    allChildren: true
+                },
                 nodeMenu: {
                     details: { text: "Details" },
                     edit: { text: "Edit" },
@@ -72,6 +76,16 @@ export default function FamilyTreeWrapper({ people = [] }) {
                     png: { text: "Export PNG" },
                     svg: { text: "Export SVG" }
                 }
+            });
+
+            // Handle lazy loading when expanding nodes
+            tree.on('redraw', function () {
+                // Tree redraws, no action needed
+            });
+
+            tree.on('click', function (sender, args) {
+                // Handle node clicks if needed
+                return false; // Don't prevent default
             });
 
             // Return cleanup function
