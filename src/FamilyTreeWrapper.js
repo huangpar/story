@@ -35,6 +35,9 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 template: "hugo", // Use a nice template
                 enableSearch: false,
                 mouseScrool: FamilyTree.action.zoom,
+                minPartnerSeparation: 100,
+                levelSeparation: 100,
+                siblingSeparation: 100,
                 // menu: {
                 //     pdf: { text: "Export PDF" },
                 //     png: { text: "Export PNG" },
