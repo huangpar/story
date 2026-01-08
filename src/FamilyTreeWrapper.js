@@ -27,7 +27,12 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
     });
 
     edges.forEach((edge) => {
-        dagreGraph.setEdge(edge.source, edge.target);
+        // Increase weight on parent-to-union edges to keep parents together
+        // and pull them towards the center point of their children
+        let weight = 1;
+        if (edge.id.includes('parent-to-union')) weight = 5;
+
+        dagreGraph.setEdge(edge.source, edge.target, { weight });
     });
 
     dagre.layout(dagreGraph);
@@ -93,61 +98,61 @@ export default function FamilyTreeWrapper({ people = [] }) {
         // 3. Create edges and union nodes for parent-child relationships
         const initialEdges = [];
         const unionNodes = [];
-        const parentPairs = new Map();
-        const spousePairs = new Set();
+        const unionPairs = new Map(); // pairKey -> { children: [], isCoupleOnly: boolean }
+        const processedSpousePairs = new Set();
 
-        // Group children by parent pairs (Union Nodes)
+        // Pass 1: Identification of all unions (parents OR just spouses)
         filteredPeople.forEach(p => {
             const childId = String(p.id);
+            // Case 1: Person has two parents
             if (p.fid && p.mid) {
                 const pairKey = [String(p.fid), String(p.mid)].sort().join('-');
-                if (!parentPairs.has(pairKey)) {
-                    parentPairs.set(pairKey, []);
-                }
-                parentPairs.get(pairKey).push(childId);
-            } else {
-                // Single parent cases
-                if (p.fid) {
-                    initialEdges.push({
-                        id: `e-${p.fid}-${childId}`,
-                        source: String(p.fid),
-                        target: childId,
-                        type: ConnectionLineType.SmoothStep,
-                        markerEnd: { type: MarkerType.ArrowClosed },
-                    });
-                }
-                if (p.mid) {
-                    initialEdges.push({
-                        id: `e-${p.mid}-${childId}`,
-                        source: String(p.mid),
-                        target: childId,
-                        type: ConnectionLineType.SmoothStep,
-                        markerEnd: { type: MarkerType.ArrowClosed },
-                    });
-                }
+                if (!unionPairs.has(pairKey)) unionPairs.set(pairKey, { children: [], isCoupleOnly: false });
+                unionPairs.get(pairKey).children.push(childId);
+                processedSpousePairs.add(pairKey);
             }
 
-            // Spouse edge - only add if they don't already have children together (Union Node)
+            // Note: Single parent offspring handled below in Pass 2
+        });
+
+        // Sub-pass for Spouses without children
+        filteredPeople.forEach(p => {
             if (p.sid) {
                 const spouseId = String(p.sid);
-                const pair = [childId, spouseId].sort().join('-');
-                if (!spousePairs.has(pair) && !parentPairs.has(pair)) {
-                    initialEdges.push({
-                        id: `e-spouse-${pair}`,
-                        source: childId,
-                        target: spouseId,
-                        label: 'spouse',
-                        labelStyle: { fontSize: '8px', fill: '#64748b' },
-                        style: { strokeDasharray: '5,5', stroke: '#94a3b8' },
-                        type: ConnectionLineType.Straight,
-                    });
-                    spousePairs.add(pair);
+                const pairKey = [String(p.id), spouseId].sort().join('-');
+                if (!unionPairs.has(pairKey)) {
+                    unionPairs.set(pairKey, { children: [], isCoupleOnly: true });
                 }
+                processedSpousePairs.add(pairKey);
             }
         });
 
-        // Process paired parents to create union nodes
-        parentPairs.forEach((children, pairKey) => {
+        // Pass 2: Create Edges for single parents
+        filteredPeople.forEach(p => {
+            const childId = String(p.id);
+            // Single parent offspring (where only one parent exists or is known in DB)
+            if (p.fid && !p.mid) {
+                initialEdges.push({
+                    id: `e-${p.fid}-${childId}`,
+                    source: String(p.fid),
+                    target: childId,
+                    type: ConnectionLineType.SmoothStep,
+                    markerEnd: { type: MarkerType.ArrowClosed },
+                });
+            }
+            if (p.mid && !p.fid) {
+                initialEdges.push({
+                    id: `e-${p.mid}-${childId}`,
+                    source: String(p.mid),
+                    target: childId,
+                    type: ConnectionLineType.SmoothStep,
+                    markerEnd: { type: MarkerType.ArrowClosed },
+                });
+            }
+        });
+
+        // Pass 3: Process Union Nodes (the magic for keeping spouses together)
+        unionPairs.forEach((data, pairKey) => {
             const [p1, p2] = pairKey.split('-');
             const unionId = `union-${pairKey}`;
 
@@ -158,30 +163,35 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 style: { width: 4, height: 4, background: '#94a3b8', borderRadius: '50%', border: 'none' },
             });
 
-            // Edges from parents to union (no arrows)
+            // High-weight edges from parents to union
             initialEdges.push({
-                id: `e-${p1}-${unionId}`,
+                id: `e-parent-to-union-${p1}-${unionId}`,
                 source: p1,
                 target: unionId,
                 type: ConnectionLineType.SmoothStep,
+                style: { stroke: '#94a3b8' }
             });
             initialEdges.push({
-                id: `e-${p2}-${unionId}`,
+                id: `e-parent-to-union-${p2}-${unionId}`,
                 source: p2,
                 target: unionId,
                 type: ConnectionLineType.SmoothStep,
+                style: { stroke: '#94a3b8' }
             });
 
-            // Edges from union to children (with arrows)
-            children.forEach(childId => {
+            // Edges from union to children
+            data.children.forEach(childId => {
                 initialEdges.push({
-                    id: `e-${unionId}-${childId}`,
+                    id: `e-union-to-child-${unionId}-${childId}`,
                     source: unionId,
                     target: childId,
                     type: ConnectionLineType.SmoothStep,
                     markerEnd: { type: MarkerType.ArrowClosed },
                 });
             });
+
+            // If it was just a couple with no children, we still use the union to keep them together,
+            // we don't need a separate spouse edge because the union connection already ties them.
         });
 
         return getLayoutedElements([...initialNodes, ...unionNodes], initialEdges);
