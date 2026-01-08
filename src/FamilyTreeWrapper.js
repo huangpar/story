@@ -49,7 +49,7 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 });
 
             // Initialize tree
-            const tree = new FamilyTree(divRef.current, {
+            new FamilyTree(divRef.current, {
                 nodes: nodes,
                 nodeBinding: {
                     field_0: "name"
