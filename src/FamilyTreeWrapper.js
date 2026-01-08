@@ -16,34 +16,34 @@ const nodeHeight = 60;
 
 const getLayoutedElements = (nodes, edges, direction = 'TB') => {
     const isHorizontal = direction === 'LR';
-    dagreGraph.setGraph({ rankdir: direction, nodesep: 100, ranksep: 100 });
+    // nodesep determines horizontal gap, ranksep determines vertical gap
+    dagreGraph.setGraph({ rankdir: direction, nodesep: 150, ranksep: 100 });
 
     nodes.forEach((node) => {
-        dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+        // Set fixed size for layouting
+        const width = node.data?.isUnion ? 4 : nodeWidth;
+        const height = node.data?.isUnion ? 4 : nodeHeight;
+        dagreGraph.setNode(node.id, { width, height });
     });
 
-    // Only pass parent-child edges to dagre for rank calculation.
-    // This allows spouses to stay on the same level (rank) because they share children.
     edges.forEach((edge) => {
-        if (!edge.id.includes('spouse')) {
-            dagreGraph.setEdge(edge.source, edge.target);
-        }
+        dagreGraph.setEdge(edge.source, edge.target);
     });
 
     dagre.layout(dagreGraph);
 
     nodes.forEach((node) => {
         const nodeWithPosition = dagreGraph.node(node.id);
+        const width = node.data?.isUnion ? 4 : nodeWidth;
+        const height = node.data?.isUnion ? 4 : nodeHeight;
 
-        // If the node wasn't in the dagre graph (e.g. spouse with no parents/children)
-        // we might need to handle it. But filteredPeople logic ensures they are connected.
         if (nodeWithPosition) {
             node.targetPosition = isHorizontal ? 'left' : 'top';
             node.sourcePosition = isHorizontal ? 'right' : 'bottom';
 
             node.position = {
-                x: nodeWithPosition.x - nodeWidth / 2,
-                y: nodeWithPosition.y - nodeHeight / 2,
+                x: nodeWithPosition.x - width / 2,
+                y: nodeWithPosition.y - height / 2,
             };
         }
 
@@ -70,8 +70,8 @@ export default function FamilyTreeWrapper({ people = [] }) {
         // 2. Map to nodes
         const initialNodes = filteredPeople.map((p) => {
             let bgColor = '#fff';
-            if (p.gender?.toLowerCase() === 'male') bgColor = '#eff6ff'; // Blue-ish
-            if (p.gender?.toLowerCase() === 'female') bgColor = '#fff1f2'; // Red-ish/Pink
+            if (p.gender?.toLowerCase() === 'male') bgColor = '#eff6ff';
+            if (p.gender?.toLowerCase() === 'female') bgColor = '#fff1f2';
 
             return {
                 id: String(p.id),
@@ -90,44 +90,51 @@ export default function FamilyTreeWrapper({ people = [] }) {
             };
         });
 
-        // 3. Create edges
+        // 3. Create edges and union nodes for parent-child relationships
         const initialEdges = [];
+        const unionNodes = [];
+        const parentPairs = new Map();
         const spousePairs = new Set();
 
-        filteredPeople.forEach((p) => {
-            const personId = String(p.id);
-
-            // Parent edges
-            if (p.fid) {
-                initialEdges.push({
-                    id: `e-${p.fid}-${personId}`,
-                    source: String(p.fid),
-                    target: personId,
-                    type: ConnectionLineType.SmoothStep,
-                    animated: false,
-                    markerEnd: { type: MarkerType.ArrowClosed },
-                });
+        // Group children by parent pairs (Union Nodes)
+        filteredPeople.forEach(p => {
+            const childId = String(p.id);
+            if (p.fid && p.mid) {
+                const pairKey = [String(p.fid), String(p.mid)].sort().join('-');
+                if (!parentPairs.has(pairKey)) {
+                    parentPairs.set(pairKey, []);
+                }
+                parentPairs.get(pairKey).push(childId);
+            } else {
+                // Single parent cases
+                if (p.fid) {
+                    initialEdges.push({
+                        id: `e-${p.fid}-${childId}`,
+                        source: String(p.fid),
+                        target: childId,
+                        type: ConnectionLineType.SmoothStep,
+                        markerEnd: { type: MarkerType.ArrowClosed },
+                    });
+                }
+                if (p.mid) {
+                    initialEdges.push({
+                        id: `e-${p.mid}-${childId}`,
+                        source: String(p.mid),
+                        target: childId,
+                        type: ConnectionLineType.SmoothStep,
+                        markerEnd: { type: MarkerType.ArrowClosed },
+                    });
+                }
             }
-            if (p.mid) {
-                initialEdges.push({
-                    id: `e-${p.mid}-${personId}`,
-                    source: String(p.mid),
-                    target: personId,
-                    type: ConnectionLineType.SmoothStep,
-                    animated: false,
-                    markerEnd: { type: MarkerType.ArrowClosed },
-                });
-            }
 
-            // Spouse edge - detect and prevent duplicates
+            // Spouse edge - only add if they don't already have children together (Union Node)
             if (p.sid) {
                 const spouseId = String(p.sid);
-                const pair = [personId, spouseId].sort().join('-');
-
-                if (!spousePairs.has(pair)) {
+                const pair = [childId, spouseId].sort().join('-');
+                if (!spousePairs.has(pair) && !parentPairs.has(pair)) {
                     initialEdges.push({
                         id: `e-spouse-${pair}`,
-                        source: personId,
+                        source: childId,
                         target: spouseId,
                         label: 'spouse',
                         labelStyle: { fontSize: '8px', fill: '#64748b' },
@@ -139,7 +146,45 @@ export default function FamilyTreeWrapper({ people = [] }) {
             }
         });
 
-        return getLayoutedElements(initialNodes, initialEdges);
+        // Process paired parents to create union nodes
+        parentPairs.forEach((children, pairKey) => {
+            const [p1, p2] = pairKey.split('-');
+            const unionId = `union-${pairKey}`;
+
+            // Add tiny union node
+            unionNodes.push({
+                id: unionId,
+                data: { label: '', isUnion: true },
+                style: { width: 4, height: 4, background: '#94a3b8', borderRadius: '50%', border: 'none' },
+            });
+
+            // Edges from parents to union (no arrows)
+            initialEdges.push({
+                id: `e-${p1}-${unionId}`,
+                source: p1,
+                target: unionId,
+                type: ConnectionLineType.SmoothStep,
+            });
+            initialEdges.push({
+                id: `e-${p2}-${unionId}`,
+                source: p2,
+                target: unionId,
+                type: ConnectionLineType.SmoothStep,
+            });
+
+            // Edges from union to children (with arrows)
+            children.forEach(childId => {
+                initialEdges.push({
+                    id: `e-${unionId}-${childId}`,
+                    source: unionId,
+                    target: childId,
+                    type: ConnectionLineType.SmoothStep,
+                    markerEnd: { type: MarkerType.ArrowClosed },
+                });
+            });
+        });
+
+        return getLayoutedElements([...initialNodes, ...unionNodes], initialEdges);
     }, [people]);
 
     if (!nodes.length) {
