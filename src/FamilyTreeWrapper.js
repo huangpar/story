@@ -16,28 +16,36 @@ const nodeHeight = 60;
 
 const getLayoutedElements = (nodes, edges, direction = 'TB') => {
     const isHorizontal = direction === 'LR';
-    dagreGraph.setGraph({ rankdir: direction });
+    dagreGraph.setGraph({ rankdir: direction, nodesep: 100, ranksep: 100 });
 
     nodes.forEach((node) => {
         dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
     });
 
+    // Only pass parent-child edges to dagre for rank calculation.
+    // This allows spouses to stay on the same level (rank) because they share children.
     edges.forEach((edge) => {
-        dagreGraph.setEdge(edge.source, edge.target);
+        if (!edge.id.includes('spouse')) {
+            dagreGraph.setEdge(edge.source, edge.target);
+        }
     });
 
     dagre.layout(dagreGraph);
 
     nodes.forEach((node) => {
         const nodeWithPosition = dagreGraph.node(node.id);
-        node.targetPosition = isHorizontal ? 'left' : 'top';
-        node.sourcePosition = isHorizontal ? 'right' : 'bottom';
 
-        // We are shifting the dagre node position (which is center) to top left
-        node.position = {
-            x: nodeWithPosition.x - nodeWidth / 2,
-            y: nodeWithPosition.y - nodeHeight / 2,
-        };
+        // If the node wasn't in the dagre graph (e.g. spouse with no parents/children)
+        // we might need to handle it. But filteredPeople logic ensures they are connected.
+        if (nodeWithPosition) {
+            node.targetPosition = isHorizontal ? 'left' : 'top';
+            node.sourcePosition = isHorizontal ? 'right' : 'bottom';
+
+            node.position = {
+                x: nodeWithPosition.x - nodeWidth / 2,
+                y: nodeWithPosition.y - nodeHeight / 2,
+            };
+        }
 
         return node;
     });
@@ -47,7 +55,7 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
 
 export default function FamilyTreeWrapper({ people = [] }) {
     const { nodes, edges } = useMemo(() => {
-        // 1. Identify people to include (same logic as before)
+        // 1. Identify people to include
         const referencedIds = new Set();
         people.forEach(p => {
             if (p.fid) referencedIds.add(String(p.fid));
@@ -84,14 +92,17 @@ export default function FamilyTreeWrapper({ people = [] }) {
 
         // 3. Create edges
         const initialEdges = [];
-        filteredPeople.forEach((p) => {
-            const childId = String(p.id);
+        const spousePairs = new Set();
 
+        filteredPeople.forEach((p) => {
+            const personId = String(p.id);
+
+            // Parent edges
             if (p.fid) {
                 initialEdges.push({
-                    id: `e-${p.fid}-${childId}`,
+                    id: `e-${p.fid}-${personId}`,
                     source: String(p.fid),
-                    target: childId,
+                    target: personId,
                     type: ConnectionLineType.SmoothStep,
                     animated: false,
                     markerEnd: { type: MarkerType.ArrowClosed },
@@ -99,25 +110,32 @@ export default function FamilyTreeWrapper({ people = [] }) {
             }
             if (p.mid) {
                 initialEdges.push({
-                    id: `e-${p.mid}-${childId}`,
+                    id: `e-${p.mid}-${personId}`,
                     source: String(p.mid),
-                    target: childId,
+                    target: personId,
                     type: ConnectionLineType.SmoothStep,
                     animated: false,
                     markerEnd: { type: MarkerType.ArrowClosed },
                 });
             }
+
+            // Spouse edge - detect and prevent duplicates
             if (p.sid) {
-                // Spouse edge - dashed or distinct color
-                initialEdges.push({
-                    id: `e-spouse-${p.sid}-${childId}`,
-                    source: String(p.sid),
-                    target: childId,
-                    label: 'spouse',
-                    labelStyle: { fontSize: '8px', fill: '#64748b' },
-                    style: { strokeDasharray: '5,5', stroke: '#94a3b8' },
-                    type: ConnectionLineType.Straight,
-                });
+                const spouseId = String(p.sid);
+                const pair = [personId, spouseId].sort().join('-');
+
+                if (!spousePairs.has(pair)) {
+                    initialEdges.push({
+                        id: `e-spouse-${pair}`,
+                        source: personId,
+                        target: spouseId,
+                        label: 'spouse',
+                        labelStyle: { fontSize: '8px', fill: '#64748b' },
+                        style: { strokeDasharray: '5,5', stroke: '#94a3b8' },
+                        type: ConnectionLineType.Straight,
+                    });
+                    spousePairs.add(pair);
+                }
             }
         });
 
