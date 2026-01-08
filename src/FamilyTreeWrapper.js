@@ -49,7 +49,7 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 });
 
             // Initialize tree
-            new FamilyTree(divRef.current, {
+            const tree = new FamilyTree(divRef.current, {
                 nodes: nodes,
                 nodeBinding: {
                     field_0: "name"
@@ -60,10 +60,6 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 siblingSeparation: 60,
                 levelSeparation: 80,
                 subTreeSeparation: 80,
-                collapse: {
-                    level: 2,
-                    allChildren: true
-                },
                 nodeMenu: {
                     details: { text: "Details" },
                     edit: { text: "Edit" },
@@ -76,6 +72,13 @@ export default function FamilyTreeWrapper({ people = [] }) {
                     svg: { text: "Export SVG" }
                 }
             });
+
+            // Return cleanup function
+            return () => {
+                if (divRef.current) {
+                    divRef.current.innerHTML = "";
+                }
+            };
         }
     }, [people]);
 
