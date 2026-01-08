@@ -7,14 +7,37 @@ export default function FamilyTreeWrapper({ people = [] }) {
     useEffect(() => {
         if (divRef.current) {
             // Transform data for Balkan FamilyTree
-            const nodes = people.map(p => ({
-                id: p.id,
-                mid: p.mid || null,
-                fid: p.fid || null,
-                pids: p.sid ? [p.sid] : null,
+            // Filter out people with no family relationships
+            // But keep people who are referenced as parents or spouses by others
+            const referencedIds = new Set();
+            people.forEach(p => {
+                if (p.fid) referencedIds.add(p.fid);
+                if (p.mid) referencedIds.add(p.mid);
+                if (p.sid) referencedIds.add(p.sid);
+            });
+
+            console.log('Total people received:', people.length);
+            console.log('Referenced IDs:', Array.from(referencedIds));
+
+            const nodes = people
+                .filter(p => {
+                    const included = p.fid || p.mid || p.sid || referencedIds.has(p.id);
+                    if (!included) {
+                        console.log('Filtered out:', p.name, { fid: p.fid, mid: p.mid, sid: p.sid, id: p.id });
+                    }
+                    return included;
+                })
+                .map(p => ({
+                    id: p.id,
+                    mid: p.mid || null,
+                    fid: p.fid || null,
+                    pids: p.sid ? [p.sid] : null,
                     name: p.name,
                     gender: p.gender ? p.gender.toLowerCase() : undefined
                 }));
+
+            console.log('Nodes after filtering:', nodes.length);
+            console.log('Filtered nodes:', nodes);
 
             // Initialize tree
             new FamilyTree(divRef.current, {
