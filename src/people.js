@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import FamilyTreeWrapper from './FamilyTreeWrapper';
 import { useEffect, useState } from "react";
 import { Sparkles } from 'lucide-react';
 import { Users } from 'lucide-react';
@@ -252,7 +253,7 @@ function DetailView({
                 {activeTab === "capitol" && <CapitolLayout groupedPeople={groupedPeople} refreshData={refreshData} peopleList={peopleList} />}
             </div>
         </div>,
-        familyTree: <div></div>,
+        familyTree: <FamilyTreeWrapper people={peopleList} />,
     };
 
     return (

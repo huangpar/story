@@ -626,7 +626,7 @@ main.home a {
   display: grid;
   gap: 16px;
   margin-bottom: 16px;
-  max-width: 350px;
+  max-width: 45%;
   margin: 0 auto;
 }
 

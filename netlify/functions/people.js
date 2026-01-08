@@ -105,7 +105,7 @@ exports.handler = async (event) => {
 
     const rows = await sql`
       SELECT 
-        p.id, p.name, p.region, p.district, p.party, p.fid, p.mid, p.sid,
+        p.id, p.name, p.region, p.district, p.party, p.fid, p.mid, p.sid, p.gender,
         e.is_educator,
         pol.is_politician,
         ent.is_entertainer,
@@ -133,6 +133,7 @@ exports.handler = async (event) => {
           fid: r.fid,
           mid: r.mid,
           sid: r.sid,
+          gender: r.gender,
           Region: r.region,
           Location: r.district,
           Party: r.party,
