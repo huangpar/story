@@ -152,7 +152,7 @@ export default function FamilyTreeWrapper({ people = [] }) {
         );
 
         setNodes([...layoutedNodes]);
-        setEdges([...layoutedEdges]);
+        setEdges([...renderEdges]);
 
     }, [people, setNodes, setEdges]); // Only re-run if people data changes
 
