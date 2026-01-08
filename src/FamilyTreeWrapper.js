@@ -22,7 +22,7 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
     const nodeWidth = 250;
     const nodeHeight = 100;
 
-    dagreGraph.setGraph({ rankdir: direction });
+    dagreGraph.setGraph({ rankdir: direction, nodesep: 100, ranksep: 100 });
 
     nodes.forEach((node) => {
         dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
@@ -38,10 +38,13 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
     // so it matches the React Flow node anchor point (top left).
     nodes.forEach((node) => {
         const nodeWithPosition = dagreGraph.node(node.id);
+
+        // Handle case where node might not be in dagre (if we filtered it out?) 
+        // But we added all nodes, so it should be fine.
+
         node.targetPosition = 'top';
         node.sourcePosition = 'bottom';
 
-        // We leave it as is for now, dagre returns center point
         node.position = {
             x: nodeWithPosition.x - nodeWidth / 2,
             y: nodeWithPosition.y - nodeHeight / 2,
@@ -91,56 +94,61 @@ export default function FamilyTreeWrapper({ people = [] }) {
         }));
 
         // Create Edges
-        const initialEdges = [];
+        const layoutEdges = []; // Edges used for Dagre layout (Parent -> Child only)
+        const renderEdges = []; // All edges to render (including spouses)
+
         filteredPeople.forEach((p) => {
             // Parent edges (Directed for now: Parent -> Child)
             if (p.fid) {
-                // Check if father exists in filtered list to avoid dangling edges
                 if (initialNodes.find(n => n.id === p.fid.toString())) {
-                    initialEdges.push({
+                    const edge = {
                         id: `e${p.fid}-${p.id}`,
                         source: p.fid.toString(),
                         target: p.id.toString(),
                         type: 'smoothstep',
                         animated: true,
-                    });
+                        style: { stroke: '#b1b1b7', strokeWidth: 2 },
+                    };
+                    layoutEdges.push(edge);
+                    renderEdges.push(edge);
                 }
             }
             if (p.mid) {
                 if (initialNodes.find(n => n.id === p.mid.toString())) {
-                    initialEdges.push({
+                    const edge = {
                         id: `e${p.mid}-${p.id}`,
                         source: p.mid.toString(),
                         target: p.id.toString(),
                         type: 'smoothstep',
                         animated: true,
-                    });
+                        style: { stroke: '#b1b1b7', strokeWidth: 2 },
+                    };
+                    layoutEdges.push(edge);
+                    renderEdges.push(edge);
                 }
             }
 
-            // Spouse Edges?
-            // Dagre works best with hierarchical trees. Spouses on same rank can be tricky.
-            // For now, let's treat spouses as just nodes on the same level (potentially) or disable spouse edges for layout
-            // and just depend on common children to group them, OR add an invisible edge.
-            // Let's add a dashed edge for spouses for visualization.
+            // Spouse Edges
+            // Do NOT add to layoutEdges to prevent Dagre from forcing vertical hierarchy
             if (p.sid) {
                 // Avoid double edges (A->B and B->A), just do if id < sid
                 if (p.id < p.sid && initialNodes.find(n => n.id === p.sid.toString())) {
-                    initialEdges.push({
+                    renderEdges.push({
                         id: `e${p.id}-${p.sid}`,
                         source: p.id.toString(),
                         target: p.sid.toString(),
-                        type: 'straight',
-                        style: { stroke: '#333', strokeDasharray: '5,5' },
+                        type: 'straight', // Straight line for spouses
+                        style: { stroke: '#ff0072', strokeWidth: 3, strokeDasharray: '5,5' },
                         animated: false,
                     });
                 }
             }
         });
 
-        const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+        // Compute layout using ONLY hierarchical edges
+        const { nodes: layoutedNodes } = getLayoutedElements(
             initialNodes,
-            initialEdges
+            layoutEdges
         );
 
         setNodes([...layoutedNodes]);
