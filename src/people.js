@@ -90,7 +90,7 @@ export function People() {
     useEffect(() => {
         console.log("useEffect fired, view =", view);
 
-        if (view !== "republic") return;
+        if (view !== "republic" && view !== "familyTree") return;
 
         fetch("/.netlify/functions/people?nocache=1", {
             cache: "no-store",
