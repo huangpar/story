@@ -5,8 +5,9 @@ export default function FamilyTreeWrapper({ people = [] }) {
     const divRef = useRef(null);
 
     useEffect(() => {
-        if (divRef.current) {
-            divRef.current.innerHTML = "";
+        const container = divRef.current;
+        if (container) {
+            container.innerHTML = "";
 
             // Calculate Spouse Map (Bidirectional)
             const spouseMap = {};
@@ -49,7 +50,7 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 });
 
             // Initialize tree
-            new FamilyTree(divRef.current, {
+            new FamilyTree(container, {
                 nodes: nodes,
                 nodeBinding: {
                     field_0: "name"
@@ -75,8 +76,8 @@ export default function FamilyTreeWrapper({ people = [] }) {
 
             // Return cleanup function
             return () => {
-                if (divRef.current) {
-                    divRef.current.innerHTML = "";
+                if (container) {
+                    container.innerHTML = "";
                 }
             };
         }
