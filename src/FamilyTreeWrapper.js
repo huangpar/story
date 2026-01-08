@@ -105,7 +105,6 @@ const getFamilyTreeLayout = (people) => {
 
     // Position nodes
     const positions = {};
-    let maxGeneration = Math.max(...Object.keys(generationGroups).map(Number));
 
     Object.entries(familyUnits).forEach(([gen, units]) => {
         const genNum = parseInt(gen);
@@ -168,7 +167,7 @@ export default function FamilyTreeWrapper({ people = [] }) {
         );
 
         // Get custom layout
-        const { positions, spouseMap: layoutSpouseMap } = getFamilyTreeLayout(filteredPeople);
+        const { positions } = getFamilyTreeLayout(filteredPeople);
 
         // Create nodes with positions
         const layoutedNodes = filteredPeople
