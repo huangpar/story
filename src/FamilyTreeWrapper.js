@@ -180,7 +180,7 @@ export default function FamilyTreeWrapper({ people = [] }) {
             });
 
             // Edges from union to children
-            data.children.forEach(childId => {
+            data.children.forEach((childId, index) => {
                 initialEdges.push({
                     id: `e-union-to-child-${unionId}-${childId}`,
                     source: unionId,
@@ -188,13 +188,31 @@ export default function FamilyTreeWrapper({ people = [] }) {
                     type: ConnectionLineType.SmoothStep,
                     markerEnd: { type: MarkerType.ArrowClosed },
                 });
+
+                // Add horizontal helping edges between siblings to keep them together
+                if (index > 0) {
+                    const prevSiblingId = data.children[index - 1];
+                    initialEdges.push({
+                        id: `helping-sibling-${prevSiblingId}-${childId}`,
+                        source: prevSiblingId,
+                        target: childId,
+                        data: { isHidden: true }, // Don't show in UI
+                        style: { stroke: 'none', opacity: 0 },
+                    });
+                }
             });
 
             // If it was just a couple with no children, we still use the union to keep them together,
             // we don't need a separate spouse edge because the union connection already ties them.
         });
 
-        return getLayoutedElements([...initialNodes, ...unionNodes], initialEdges);
+        const layouted = getLayoutedElements([...initialNodes, ...unionNodes], initialEdges);
+
+        // Filter out helping edges before returning to React Flow
+        return {
+            nodes: layouted.nodes,
+            edges: layouted.edges.filter(e => !e.data?.isHidden)
+        };
     }, [people]);
 
     if (!nodes.length) {
