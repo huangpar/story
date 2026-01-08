@@ -8,23 +8,37 @@ export default function FamilyTreeWrapper({ people = [] }) {
         if (divRef.current) {
             // Transform data for Balkan FamilyTree
             // Filter out people with no family relationships
-            // But keep people who are referenced as parents by others
-            const referencedParentIds = new Set();
+            // But keep people who are referenced as parents or spouses by others
+            const referencedIds = new Set();
             people.forEach(p => {
-                if (p.fid) referencedParentIds.add(p.fid);
-                if (p.mid) referencedParentIds.add(p.mid);
+                if (p.fid) referencedIds.add(p.fid);
+                if (p.mid) referencedIds.add(p.mid);
+                if (p.sid) referencedIds.add(p.sid);
             });
 
+            console.log('Total people received:', people.length);
+            console.log('Referenced IDs:', Array.from(referencedIds));
+
             const nodes = people
-                .filter(p => p.fid || p.mid || p.sid || referencedParentIds.has(p.id))
+                .filter(p => {
+                    const included = p.fid || p.mid || p.sid || referencedIds.has(p.id);
+                    if (!included) {
+                        console.log('Filtered out:', p.name, { fid: p.fid, mid: p.mid, sid: p.sid, id: p.id });
+                    }
+                    return included;
+                })
                 .map(p => ({
                     id: p.id,
                     mid: p.mid || null,
                     fid: p.fid || null,
-                    pids: p.sid ? [p.sid] : null,
+                    // Don't use pids - let the library infer partnerships from children's fid/mid
+                    // This ensures children appear with biological parents, not current spouses
                     name: p.name,
                     gender: p.gender ? p.gender.toLowerCase() : undefined
                 }));
+
+            console.log('Nodes after filtering:', nodes.length);
+            console.log('Filtered nodes:', nodes);
 
             // Initialize tree
             new FamilyTree(divRef.current, {
