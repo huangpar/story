@@ -92,12 +92,27 @@ export default function FamilyTreeWrapper({ people = [] }) {
                 nodeBinding: {
                     field_0: "name"
                 },
-                template: "hugo", // Default fallback if node.template is missing
+                template: "hugo",
                 enableSearch: false,
                 mouseScrool: FamilyTree.action.zoom,
                 siblingSeparation: 60,
                 levelSeparation: 80,
-                subTreeSeparation: 80
+                subTreeSeparation: 80,
+                collapse: {
+                    level: 2,
+                    allChildren: true
+                },
+                nodeMenu: {
+                    details: { text: "Details" },
+                    edit: { text: "Edit" },
+                    add: { text: "Add" },
+                    remove: { text: "Remove" }
+                },
+                menu: {
+                    pdf: { text: "Export PDF" },
+                    png: { text: "Export PNG" },
+                    svg: { text: "Export SVG" }
+                }
             });
         }
     }, [people]);
