@@ -27,6 +27,25 @@ exports.handler = async (event) => {
       const body = JSON.parse(event.body);
       const { id, region, district, fid, mid, sid, is_educator, is_politician, is_entertainer, role_id } = body;
 
+      // Auto-migration: Ensure entertainment schema is correct
+      try {
+        await sql`ALTER TABLE entertainment ADD COLUMN IF NOT EXISTS company_id INTEGER`;
+        await sql`ALTER TABLE entertainment ADD COLUMN IF NOT EXISTS position TEXT`;
+        await sql`
+          CREATE TABLE IF NOT EXISTS person_show (
+            person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
+            show_id INTEGER NOT NULL REFERENCES shows(id) ON DELETE CASCADE,
+            first_season INTEGER,
+            last_season INTEGER,
+            duration TEXT,
+            PRIMARY KEY (person_id, show_id)
+          )
+        `;
+      } catch (migErr) {
+        console.error("Auto-migration during PUT failed:", migErr);
+        // Continue anyway, individual queries below have their own try/catches
+      }
+
       // Update main people table
       await sql`
             UPDATE people 
