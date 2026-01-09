@@ -119,41 +119,65 @@ exports.handler = async (event) => {
       };
     }
 
-    const rows = await sql`
-      SELECT 
-        p.id, p.name, p.region, p.district, p.party, p.fid, p.mid, p.sid, p.gender,
-        e.is_educator,
-        pol.is_politician,
-        ent.is_entertainer,
-        ent.position as ent_position,
-        ent.company_id as ent_company_id,
-        c.name as ent_company_name,
-        r.id as role_id,
-        r.name as role_name
-      FROM people p
-      LEFT JOIN education e ON p.id = e.person_id
-      LEFT JOIN politics pol ON p.id = pol.person_id
-      LEFT JOIN entertainment ent ON p.id = ent.person_id
-      LEFT JOIN companies c ON ent.company_id = c.id
-      LEFT JOIN politician_role pr ON p.id = pr.person_id
-      LEFT JOIN roles r ON pr.role_id = r.id
-      ORDER BY p.region, p.district, p.name
-    `;
+    let rows = [];
+    try {
+      rows = await sql`
+        SELECT 
+          p.id, p.name, p.region, p.district, p.party, p.fid, p.mid, p.sid, p.gender,
+          e.is_educator,
+          pol.is_politician,
+          ent.is_entertainer,
+          ent.position as ent_position,
+          ent.company_id as ent_company_id,
+          c.name as ent_company_name,
+          r.id as role_id,
+          r.name as role_name
+        FROM people p
+        LEFT JOIN education e ON p.id = e.person_id
+        LEFT JOIN politics pol ON p.id = pol.person_id
+        LEFT JOIN entertainment ent ON p.id = ent.person_id
+        LEFT JOIN companies c ON ent.company_id = c.id
+        LEFT JOIN politician_role pr ON p.id = pr.person_id
+        LEFT JOIN roles r ON pr.role_id = r.id
+        ORDER BY p.region, p.district, p.name
+      `;
+    } catch (queryErr) {
+      console.error("Primary query failed, falling back to basic join:", queryErr);
+      // Fallback to minimal join if extra entertainer columns or companies table JOIN fails
+      rows = await sql`
+        SELECT 
+          p.id, p.name, p.region, p.district, p.party, p.fid, p.mid, p.sid, p.gender,
+          e.is_educator,
+          pol.is_politician,
+          ent.is_entertainer,
+          r.id as role_id,
+          r.name as role_name
+        FROM people p
+        LEFT JOIN education e ON p.id = e.person_id
+        LEFT JOIN politics pol ON p.id = pol.person_id
+        LEFT JOIN entertainment ent ON p.id = ent.person_id
+        LEFT JOIN politician_role pr ON p.id = pr.person_id
+        LEFT JOIN roles r ON pr.role_id = r.id
+        ORDER BY p.region, p.district, p.name
+      `;
+    }
 
     // Fetch all show assignments to merge in JS
-    const allShowAssignments = await sql`
-      SELECT ps.*, s.name as show_name
-      FROM person_show ps
-      JOIN shows s ON ps.show_id = s.id
-    `;
+    let allShowAssignments = [];
+    try {
+      allShowAssignments = await sql`
+        SELECT ps.*, s.name as show_name
+        FROM person_show ps
+        JOIN shows s ON ps.show_id = s.id
+      `;
+    } catch (showErr) {
+      console.error("person_show query failed:", showErr);
+      // Fallback: no show assignments
+      allShowAssignments = [];
+    }
 
     const data = {};
     for (const r of rows) {
-      // If person already exists (due to multiple roles?), merge or just overwrite?
-      // Since we want single role logic for UI, just taking the first one or overwriting is fine for now.
-      // But wait, LEFT JOIN on roles could duplicate rows if a person has multiple roles.
-      // We should handle that.
-
       if (!data[r.name]) {
         const personShows = allShowAssignments
           .filter(ps => ps.person_id === r.id)
@@ -179,11 +203,11 @@ exports.handler = async (event) => {
           is_entertainer: !!r.is_entertainer,
           role_id: r.role_id,
           role_name: r.role_name,
-          company: r.is_entertainer ? {
+          company: r.is_entertainer && r.ent_company_id ? {
             id: r.ent_company_id,
             name: r.ent_company_name,
             position: r.ent_position
-          } : null,
+          } : (r.is_entertainer ? { id: null, name: "", position: "" } : null),
           shows: personShows
         };
       }
@@ -198,11 +222,11 @@ exports.handler = async (event) => {
       body: JSON.stringify(data),
     };
   } catch (err) {
-    console.error("people function error:", err);
+    console.error("Global people function error:", err);
     return {
       statusCode: 500,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ error: String(err?.message ?? err) }),
+      body: JSON.stringify({ error: String(err?.message ?? err), stack: err?.stack }),
     };
   }
 };
