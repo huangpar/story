@@ -87,13 +87,29 @@ exports.handler = async (event) => {
 
       // Handle Entertainer Role
       if (is_entertainer) {
+        const { entertainer_company_id, entertainer_position, show_assignments } = body;
         await sql`
-                INSERT INTO entertainment (person_id, is_entertainer) 
-                VALUES (${id}, true) 
-                ON CONFLICT (person_id) DO UPDATE SET is_entertainer = true
+                INSERT INTO entertainment (person_id, is_entertainer, company_id, position) 
+                VALUES (${id}, true, ${entertainer_company_id || null}, ${entertainer_position || null}) 
+                ON CONFLICT (person_id) DO UPDATE SET 
+                  is_entertainer = true,
+                  company_id = ${entertainer_company_id || null},
+                  position = ${entertainer_position || null}
             `;
+
+        // Handle show assignments
+        await sql`DELETE FROM person_show WHERE person_id = ${id}`;
+        if (show_assignments && show_assignments.length > 0) {
+          for (const sa of show_assignments) {
+            await sql`
+                        INSERT INTO person_show (person_id, show_id, first_season, last_season, duration)
+                        VALUES (${id}, ${sa.show_id}, ${sa.first_season || null}, ${sa.last_season || null}, ${sa.duration || null})
+                    `;
+          }
+        }
       } else {
         await sql`DELETE FROM entertainment WHERE person_id = ${id}`;
+        await sql`DELETE FROM person_show WHERE person_id = ${id}`;
       }
 
       return {
@@ -109,15 +125,26 @@ exports.handler = async (event) => {
         e.is_educator,
         pol.is_politician,
         ent.is_entertainer,
+        ent.position as ent_position,
+        ent.company_id as ent_company_id,
+        c.name as ent_company_name,
         r.id as role_id,
         r.name as role_name
       FROM people p
       LEFT JOIN education e ON p.id = e.person_id
       LEFT JOIN politics pol ON p.id = pol.person_id
       LEFT JOIN entertainment ent ON p.id = ent.person_id
+      LEFT JOIN companies c ON ent.company_id = c.id
       LEFT JOIN politician_role pr ON p.id = pr.person_id
       LEFT JOIN roles r ON pr.role_id = r.id
       ORDER BY p.region, p.district, p.name
+    `;
+
+    // Fetch all show assignments to merge in JS
+    const allShowAssignments = await sql`
+      SELECT ps.*, s.name as show_name
+      FROM person_show ps
+      JOIN shows s ON ps.show_id = s.id
     `;
 
     const data = {};
@@ -128,6 +155,16 @@ exports.handler = async (event) => {
       // We should handle that.
 
       if (!data[r.name]) {
+        const personShows = allShowAssignments
+          .filter(ps => ps.person_id === r.id)
+          .map(ps => ({
+            id: ps.show_id,
+            name: ps.show_name,
+            first_season: ps.first_season,
+            last_season: ps.last_season,
+            duration: ps.duration
+          }));
+
         data[r.name] = {
           id: r.id,
           fid: r.fid,
@@ -140,8 +177,14 @@ exports.handler = async (event) => {
           is_educator: !!r.is_educator,
           is_politician: !!r.is_politician,
           is_entertainer: !!r.is_entertainer,
-          role_id: r.role_id,         // Just take the first one found
-          role_name: r.role_name      // Just take the first one found
+          role_id: r.role_id,
+          role_name: r.role_name,
+          company: r.is_entertainer ? {
+            id: r.ent_company_id,
+            name: r.ent_company_name,
+            position: r.ent_position
+          } : null,
+          shows: personShows
         };
       }
     }
