@@ -86,30 +86,46 @@ exports.handler = async (event) => {
       }
 
       // Handle Entertainer Role
-      if (is_entertainer) {
-        const { entertainer_company_id, entertainer_position, show_assignments } = body;
-        await sql`
-                INSERT INTO entertainment (person_id, is_entertainer, company_id, position) 
-                VALUES (${id}, true, ${entertainer_company_id || null}, ${entertainer_position || null}) 
-                ON CONFLICT (person_id) DO UPDATE SET 
-                  is_entertainer = true,
-                  company_id = ${entertainer_company_id || null},
-                  position = ${entertainer_position || null}
-            `;
+      try {
+        if (is_entertainer) {
+          const { entertainer_company_id, entertainer_position, show_assignments } = body;
+          await sql`
+                  INSERT INTO entertainment (person_id, is_entertainer, company_id, position) 
+                  VALUES (${id}, true, ${entertainer_company_id || null}, ${entertainer_position || null}) 
+                  ON CONFLICT (person_id) DO UPDATE SET 
+                    is_entertainer = true,
+                    company_id = ${entertainer_company_id || null},
+                    position = ${entertainer_position || null}
+              `;
 
-        // Handle show assignments
-        await sql`DELETE FROM person_show WHERE person_id = ${id}`;
-        if (show_assignments && show_assignments.length > 0) {
-          for (const sa of show_assignments) {
-            await sql`
-                        INSERT INTO person_show (person_id, show_id, first_season, last_season, duration)
-                        VALUES (${id}, ${sa.show_id}, ${sa.first_season || null}, ${sa.last_season || null}, ${sa.duration || null})
-                    `;
+          // Handle show assignments
+          try {
+            await sql`DELETE FROM person_show WHERE person_id = ${id}`;
+            if (show_assignments && show_assignments.length > 0) {
+              for (const sa of show_assignments) {
+                await sql`
+                            INSERT INTO person_show (person_id, show_id, first_season, last_season, duration)
+                            VALUES (${id}, ${sa.show_id}, ${sa.first_season || null}, ${sa.last_season || null}, ${sa.duration || null})
+                        `;
+              }
+            }
+          } catch (showErr) {
+            console.error("PUT: person_show update failed:", showErr);
+          }
+        } else {
+          try {
+            await sql`DELETE FROM entertainment WHERE person_id = ${id}`;
+          } catch (e) {
+            console.error("PUT: delete entertainment failed:", e);
+          }
+          try {
+            await sql`DELETE FROM person_show WHERE person_id = ${id}`;
+          } catch (e) {
+            console.error("PUT: delete person_show failed:", e);
           }
         }
-      } else {
-        await sql`DELETE FROM entertainment WHERE person_id = ${id}`;
-        await sql`DELETE FROM person_show WHERE person_id = ${id}`;
+      } catch (entErr) {
+        console.error("PUT: entertainment update failed:", entErr);
       }
 
       return {
