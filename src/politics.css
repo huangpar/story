@@ -28,7 +28,12 @@
   align-items: center;
   justify-content: center;
   margin-left: 0;
-  transform: none;
+  box-shadow: 0 4px 10px rgba(219, 39, 119, 0.3);
+  transition: transform 0.2s;
+}
+
+.politics .addPerson:hover {
+  transform: scale(1.05);
 }
 
 .politics .gradient-text {
@@ -108,6 +113,10 @@
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 2rem;
+}
+
+.politicsinfo .back:hover {
+  color: #4F46E5;
 }
 
 .executive {
@@ -191,7 +200,7 @@
   -webkit-text-fill-color: transparent;
 }
 
-.glow-bg {
+.politicsinfo .glow-bg {
   background: linear-gradient(90deg, #3b82f6, #9333ea);
   /* blue-500 -> purple-600 */
   filter: blur(24px);
@@ -199,7 +208,7 @@
   z-index: 0;
 }
 
-.glow-pill {
+.politicsinfo .glow-pill {
   background: linear-gradient(90deg, #3b82f6, #9333ea);
   z-index: 1;
 }

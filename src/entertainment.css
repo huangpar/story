@@ -1,86 +1,273 @@
 .entertainment {
-  background-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(to bottom right, #FAE8FF, #FDF2F8, #F3E8FF);
   min-height: 100vh;
-  color: white;
+  color: #374151;
 }
 
-.ent-main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+.entertainment .header {
+  margin-top: 0;
+  padding-bottom: 50px;
+  justify-content: space-between;
 }
 
-.page-title {
-  text-align: center;
-  color: #ec4899;
+.entertainment .header-center {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 12px;
+}
+
+.entertainment .gradient-text {
+  font-size: 2rem;
+}
+
+.entertainmentinfo {
+  background: linear-gradient(to right, #F8F7FC, #FAF7FB);
+  min-width: 1200px;
+  margin: 0 auto auto auto;
+  padding: 30px 50px;
+  border-radius:25px;
+  position: relative;
+  box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
+}
+
+.entertainmentinfo .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 40px;
-  font-size: 2.5rem;
 }
 
-.studios-grid {
+.entertainmentinfo .container {
+  display: flex;
+  justify-content: center;
+  /* padding-left: 0; */
+}
+
+.entertainmentinfo .container > .row {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0; /* override Bootstrap negative margins */
+  --bs-gutter-x: 1rem; /* keep some horizontal spacing between cols */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 0;
+}
+
+.entertainmentinfo .container > .row > [class*="col-"] {
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
+}
+
+.entertainmentTitle {
+  font-size: 20pt;
+  /* font-weight: 700; */
+  background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0;
+}
+
+.entertainmentinfo .back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #6B7280;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.entertainmentinfo .back:hover {
+  color: #9333EA;
+}
+
+/* Studio Selection Cards */
+/* .card-wrapper-centerleft {
+  display: flex;
+  justify-content: center;
+} */
+
+.entertainment .rotate-centerleft {
+  transform: rotate(0deg);
+  position: relative;
+  background: white !important;
+  z-index: 1;
+  overflow: visible;
+  border: none !important;
+  /* box-shadow: none !important; */
+  min-height: 0px;
+  width: 0%;
+}
+
+.rotate-centerleft:hover {
+  transform: translateY(-10px) rotate(-2deg);
+}
+
+.entertainment .card {
+  min-height: 300px;
+  width: 100%;
+  max-width: 80%;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 25px;
+  border: 2px solid #E5E7EB !important;
+  padding: 1rem;
+  /* keep content clear of the border */
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+  transition: all 300ms ease;
+}
+
+.entertainment .card:hover {
+  min-height: 300px;
+  width: 100%;
+  max-width: 80%;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 25px;
+  border-color: #C026D3 !important;
+  padding: 1rem;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* .entertainment .circle {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(to bottom right, #FAF5FF, #FDF2F8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border: 1px solid #F3E8FF;
+} */
+
+/* .entertainment .sparkle {
+  color: #C026D3;
+} */
+
+.entertainment .card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1F2937;
+  /* margin-bottom: 15px; */
+}
+
+/* .divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.dash {
+  height: 2px;
+  background: #F3E8FF;
+  flex: 1;
+}
+
+.diamond {
+  color: #C026D3;
+  font-size: 1.2rem;
+}
+
+/* Detail View Styles */
+.entertainmentinfo .glow-bg {
+  background: linear-gradient(90deg, #C026D3, #DB2777);
+  filter: blur(24px);
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.entertainmentinfo .glow-pill {
+  background: linear-gradient(90deg, #C026D3, #DB2777);
+  z-index: 1;
+}
+
+.studio-grid-detail {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 30px;
+  margin-top: 20px;
 }
 
 .studio-card {
-  background: #252525;
-  border: 1px solid #444;
-  border-radius: 12px;
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 25px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.studio-card.detail {
+  height: 100%;
 }
 
 .studio-header {
-  background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
-  padding: 20px;
-  border-bottom: 1px solid #444;
+  background: linear-gradient(to right, #FAF5FF, #FDF2F8);
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 2px solid #F3E8FF;
+}
+
+.studio-icon {
+  color: #C026D3;
 }
 
 .studio-header h2 {
   margin: 0;
-  color: #ffd700;
   font-size: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-weight: 700;
+  color: #1F2937;
 }
 
-.studio-section {
-  padding: 20px;
-  border-bottom: 1px solid #333;
-}
-
-.studio-section:last-child {
-  border-bottom: none;
-}
-
-.studio-section h3 {
-  font-size: 1rem;
-  color: #aaa;
-  text-transform: uppercase;
-  margin-top: 0;
-  margin-bottom: 15px;
-  border-left: 3px solid #ec4899;
-  padding-left: 10px;
+.studio-content {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  flex: 1;
 }
 
 .staff-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .staff-member {
   display: flex;
   justify-content: space-between;
-  font-size: 0.95rem;
-  padding: 5px 0;
-  border-bottom: 1px solid #333;
+  align-items: center;
+  padding: 8px 12px;
+  background: #F9FAFB;
+  border-radius: 10px;
 }
 
-.staff-member .role {
-  color: #888;
+.member-name {
+  font-weight: 600;
+  background: linear-gradient(to right, #C026D3, #DB2777);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.member-role {
   font-size: 0.85rem;
+  color: #6B7280;
   font-style: italic;
 }
 
@@ -91,15 +278,16 @@
 }
 
 .show-card {
-  background: #333;
-  padding: 10px 15px;
-  border-radius: 8px;
+  border: 2px solid #F3E8FF;
+  border-radius: 15px;
+  padding: 15px;
 }
 
 .show-title {
-  font-weight: bold;
-  color: white;
-  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #111827;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -112,15 +300,35 @@
 }
 
 .cast-name {
-  background: #444;
-  padding: 2px 8px;
-  font-size: 0.8rem;
-  border-radius: 4px;
-  color: #ddd;
+  background: #FDF2F8;
+  color: #C026D3;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid #FBCFE8;
 }
 
 .empty {
+  color: #9CA3AF;
   font-style: italic;
-  color: #666;
   font-size: 0.9rem;
+  margin: 10px 0;
+}
+
+.entertainment .addPerson {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background: linear-gradient(to right, #DB2777, #9333EA);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0;
+  box-shadow: 0 4px 10px rgba(219, 39, 119, 0.3);
+  transition: transform 0.2s;
+}
+
+.entertainment .addPerson:hover {
+  transform: scale(1.05);
 }

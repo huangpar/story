@@ -219,7 +219,12 @@ code {
   align-items: center;
   justify-content: center;
   margin-left: 0;
-  transform: none;
+  box-shadow: 0 4px 10px rgba(219, 39, 119, 0.3);
+  transition: transform 0.2s;
+}
+
+.people .addPerson:hover {
+  transform: scale(1.05);
 }
 
 .addPerson {
@@ -231,7 +236,8 @@ code {
   border-radius: 1000px;
   background: linear-gradient(to right, #DB2777,#9333EA);
   margin-left: 0;
-  transform: none;
+  box-shadow: 0 4px 10px rgba(219, 39, 119, 0.3);
+  transition: none;
 }
 
 a {
@@ -528,13 +534,15 @@ main.home .card {
 
 main.home .card:hover,
 .people .card:hover,
-.politics .card:hover {
+.politics .card:hover,
+.entertainment .card:hover {
   transform: rotate(0deg) scale(1.05) translateY(-4px);
 }
 
 main.home .card:hover .circle,
 .people .card:hover .circle,
-.politics .card:hover .circle {
+.politics .card:hover .circle,
+.entertainment .card:hover .circle {
   animation-name: spin;
   animation-duration: 1000ms;
   animation-iteration-count: infinite;
@@ -562,7 +570,8 @@ main.home .card a:hover {
 
 main.home .card-title,
 .people .card-title,
-.politics .card-title {
+.politics .card-title,
+.entertainment .card-title {
   text-decoration: none;
   text-align: center;
   white-space: nowrap;
@@ -579,7 +588,8 @@ main.home .card-title,
 
 main.home .card-body,
 .people .card-body,
-.politics .card-body {
+.politics .card-body,
+.entertainment .card-body {
   text-align: center;
   display: flex;
   align-items: center;
@@ -750,7 +760,17 @@ main.home a {
 }
 
 .back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
+  color: #6B7280;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.info .back:hover {
+  color: #059669;
 }
 
 .form-group {

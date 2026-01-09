@@ -1,60 +1,111 @@
 .entertainers-page {
-    background-color: #1a1a1a;
+    background-image: linear-gradient(to bottom right, #FAE8FF, #FDF2F8, #F3E8FF);
     min-height: 100vh;
     color: white;
     padding-bottom: 50px;
 }
 
-.entertainers-page .container {
-    max-width: 800px;
-    margin: 40px auto;
+.entertainers-page .header {
+    margin-top: 0;
+    padding-bottom: 50px;
+    justify-content: space-between;
+}
+
+.entertainers-page .header-center {
+    display: flex;
+    position: relative;
+    align-items: center;
+    gap: 12px;
+}
+
+.entertainers-page .gradient-text {
+    font-size: 2rem;
+}
+
+.entertainers-container {
+    max-width: 900px;
+    margin: 0 auto auto auto;
+    padding: 30px 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: linear-gradient(to right, #F8F7FC, #FAF7FB);
+    box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
+    border-radius: 25px;
+}
+
+.entertainer-card {
+    background: white;
+    border: 2px solid #E5E7EB !important;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 15px;
+    padding: 25px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.entertainer-card {
-    background: #2a2a2a;
-    border: 1px solid #444;
-    border-radius: 10px;
-    padding: 20px;
+.ent-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.4rem;
+    background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.ent-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #444;
-    padding-bottom: 10px;
-}
-
-.ent-header h3 {
+.ent-info p {
     margin: 0;
-    color: #ffd700;
+    color: #6B7280;
+    font-size: 0.95rem;
 }
 
-.ent-company {
+.ent-controls {
     display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ent-section {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
-    margin-bottom: 15px;
+}
+
+.ent-section label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: linear-gradient(to right, #C026D3, #DB2777);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.ent-input-group {
+    display: flex;
+    gap: 15px;
     align-items: center;
 }
 
-.ent-company select,
-.ent-company input {
-    padding: 8px;
-    border-radius: 5px;
-    background: #333;
-    color: white;
-    border: 1px solid #555;
+.ent-input-group input {
     flex: 1;
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 2px solid #E5E7EB;
+    background: #F9FAFB;
+    color: #374151;
+    font-size: 0.95rem;
+    transition: all 0.2s;
 }
 
-.ent-shows label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 0.9em;
-    color: #aaa;
+.ent-input-group input:focus {
+    outline: none;
+    border-color: #F0ABFC;
+    background: white;
 }
 
 .shows-list {
@@ -64,18 +115,120 @@
 }
 
 .show-chip {
-    padding: 5px 12px;
-    background: #333;
-    border: 1px solid #555;
-    border-radius: 15px;
+    padding: 6px 16px;
+    background: #F3F4F6;
+    border: 2px solid #E5E7EB;
+    border-radius: 20px;
     cursor: pointer;
-    font-size: 0.9em;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #4B5563;
     transition: all 0.2s;
     user-select: none;
 }
 
+.show-chip:hover {
+    background: #FDF2F8;
+    border-color: #FBCFE8;
+}
+
 .show-chip.active {
-    background: #ec4899;
-    color: white;
-    border-color: #ec4899;
+    background: linear-gradient(to right, #FBCFE8, #F3E8FF);
+    color: #701A75;
+    border-color: #F0ABFC;
+    box-shadow: 0 2px 4px rgba(240, 171, 252, 0.2);
+}
+
+.head a {
+    text-decoration: none;
+}
+
+.storiaTitle {
+    font-weight: 600;
+    font-size: 1.5rem;
+    background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Custom Dropdown Overrides */
+.custom-dropdown {
+    position: relative;
+    width: 250px;
+    user-select: none;
+}
+
+.dropdown-header {
+    background: #F9FAFB;
+    border: 2px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #9CA3AF;
+    transition: all 0.2s;
+}
+
+.dropdown-header.has-value {
+    background: white;
+    border-color: #E5E7EB;
+    color: #374151;
+}
+
+.dropdown-header:hover {
+    border-color: #F0ABFC;
+}
+
+.dropdown-header.has-value span:first-child {
+    background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+}
+
+.dropdown-header .arrow {
+    transition: transform 0.2s;
+    color: #D1D5DB;
+}
+
+.dropdown-header .arrow.open {
+    transform: rotate(180deg);
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 115%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #F0ABFC;
+    border-radius: 12px;
+    z-index: 100;
+    max-height: 250px;
+    overflow-y: auto;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+}
+
+.dropdown-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.1s;
+}
+
+.dropdown-item:hover {
+    background: #FDF2F8;
+}
+
+.gradient-text-item {
+    background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 500;
 }
