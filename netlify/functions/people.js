@@ -154,6 +154,24 @@ exports.handler = async (event) => {
       };
     }
 
+    // Diagnostics
+    let diagnostics = {};
+    try {
+      const tableInfo = await sql`
+        SELECT table_name, column_name 
+        FROM information_schema.columns 
+        WHERE table_schema = 'public' 
+        AND table_name IN ('people', 'shows', 'entertainment', 'person_show')
+      `;
+      diagnostics.tables = tableInfo.reduce((acc, curr) => {
+        if (!acc[curr.table_name]) acc[curr.table_name] = [];
+        acc[curr.table_name].push(curr.column_name);
+        return acc;
+      }, {});
+    } catch (diagErr) {
+      diagnostics.error = String(diagErr);
+    }
+
     let rows = [];
     try {
       rows = await sql`
@@ -254,7 +272,7 @@ exports.handler = async (event) => {
         "content-type": "application/json",
         "cache-control": "no-store",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, _diagnostics: diagnostics }),
     };
   } catch (err) {
     console.error("Global people function error:", err);
