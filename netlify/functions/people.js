@@ -35,12 +35,12 @@ exports.handler = async (event) => {
           CREATE TABLE IF NOT EXISTS person_show (
             person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
             show_id INTEGER NOT NULL REFERENCES shows(id) ON DELETE CASCADE,
-            first_season INTEGER,
-            last_season INTEGER,
-            duration TEXT,
             PRIMARY KEY (person_id, show_id)
           )
         `;
+        await sql`ALTER TABLE person_show ADD COLUMN IF NOT EXISTS first_season INTEGER`;
+        await sql`ALTER TABLE person_show ADD COLUMN IF NOT EXISTS last_season INTEGER`;
+        await sql`ALTER TABLE person_show ADD COLUMN IF NOT EXISTS duration TEXT`;
       } catch (migErr) {
         console.error("Auto-migration during PUT failed:", migErr);
         // Continue anyway, individual queries below have their own try/catches
@@ -130,6 +130,7 @@ exports.handler = async (event) => {
 
           // Handle show assignments
           if (show_assignments !== undefined) {
+            console.log(`PUT: Updating shows for person ${id}`, show_assignments);
             try {
               const pid = parseInt(id);
               await sql`DELETE FROM person_show WHERE person_id = ${pid}`;
@@ -137,6 +138,7 @@ exports.handler = async (event) => {
                 for (const sa of show_assignments) {
                   const sid = parseInt(sa.show_id);
                   if (!isNaN(sid)) {
+                    console.log(`PUT: Inserting show ${sid} for person ${pid}`);
                     await sql`
                               INSERT INTO person_show (person_id, show_id, first_season, last_season, duration)
                               VALUES (${pid}, ${sid}, ${sa.first_season || null}, ${sa.last_season || null}, ${sa.duration || null})
@@ -145,7 +147,7 @@ exports.handler = async (event) => {
                 }
               }
             } catch (showErr) {
-              console.error("PUT: person_show update failed:", showErr);
+              console.error("PUT: person_show update failed specific:", showErr.message, showErr.detail);
             }
           }
         } else {

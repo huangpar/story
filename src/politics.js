@@ -119,15 +119,23 @@ function DetailView({
 }) {
     // Helper to find governor for a district
     const getGovernor = (districtName) => {
-        const gov = peopleList.find(p =>
-            p.role_name === 'Governor' &&
-            (p.Location === districtName || p.district === districtName)
-        );
+        if (!districtName) return "Vacant";
+        const normalizedTarget = districtName.toLowerCase().replace(/hights/g, 'heights').trim();
+
+        const gov = peopleList.find(p => {
+            if ((p.role_name || "").toLowerCase() !== 'governor') return false;
+            const loc = (p.Location || p.district || "").toLowerCase().replace(/hights/g, 'heights').trim();
+            return loc === normalizedTarget;
+        });
         return gov ? gov.name : "Vacant";
     };
 
     // Helper to get person by exact role name (returns array)
-    const getByRole = (roleName) => peopleList.filter(p => p.role_name === roleName);
+    const getByRole = (roleName) => {
+        if (!roleName) return [];
+        const target = roleName.toLowerCase();
+        return peopleList.filter(p => (p.role_name || "").toLowerCase() === target);
+    };
 
     const senators = getByRole("Senator");
     const justices = getByRole("Justice"); // Or whatever the role name is
@@ -192,8 +200,8 @@ function DetailView({
                     </div>
                     <div className="governorRow rowTop">
                         <div className="governorBox">
-                            <div className="districtName">Hyperion Hights</div>
-                            <div className="govName">{getGovernor("Hyperion Hights")}</div>
+                            <div className="districtName">Hyperion Heights</div>
+                            <div className="govName">{getGovernor("Hyperion Heights")}</div>
                         </div>
                         <div className="governorBox">
                             <div className="districtName">West Hyperion</div>
