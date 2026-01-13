@@ -307,8 +307,13 @@
 .senators {
   display: flex;
   gap: 10px;
-  margin-top: 90px;
-
+  margin-top: 50px;
+  position: relative;
+  height: 600px;
+  /* Give enough vertical room for the arc and boxes */
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* .governors {
@@ -327,9 +332,8 @@
   flex-direction: column;
   align-items: center;
   border-radius: 15px;
-  /* width: 100px; */
-  z-index: 0;
-  /* margin: 5px; */
+  z-index: 10;
+  pointer-events: auto;
 }
 
 /* .senatorAura {
@@ -348,11 +352,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 10px;
+  padding: 8px 15px;
   border: 2px solid #BFDBFE !important;
   border-radius: 15px;
   background: linear-gradient(125deg, white, #EFF6FF);
-  width: 100%;
+  width: auto;
+  min-width: 120px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.senatorName {
+  white-space: nowrap;
+  font-weight: 500;
+  color: #1E40AF;
 }
 
 .chancellorBox {
@@ -361,7 +373,7 @@
   align-items: center;
   /* padding: 0 15px; */
   border-radius: 15px;
-  /* width: 100px; */
+  width: 100px;
   margin: 5px;
 }
 

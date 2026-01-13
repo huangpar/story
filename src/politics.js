@@ -234,103 +234,91 @@ function DetailView({
                     </div>
                 </div>
                 <div className="senators">
-                    <div className="senatorBox seat-1" style={{ position: "absolute", top: "81%", left: "9.5%" }}>
-                        <div className="senatorAura" />
+                    {/* Re-align seats on a better arc to avoid overlap */}
+                    <div className="senatorBox seat-1" style={{ position: "absolute", top: "72%", left: "0%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(0)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-2" style={{ position: "absolute", top: "70%", left: "10.5%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-2" style={{ position: "absolute", top: "54%", left: "3%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(1)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-3" style={{ position: "absolute", top: "59%", left: "13%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-3" style={{ position: "absolute", top: "38%", left: "8%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(2)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-4" style={{ position: "absolute", top: "48%", left: "17%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-4" style={{ position: "absolute", top: "25%", left: "16%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(3)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-5" style={{ position: "absolute", top: "38%", left: "24%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-5" style={{ position: "absolute", top: "16%", left: "26%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(4)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-6" style={{ position: "absolute", top: "30%", left: "33%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-6" style={{ position: "absolute", top: "11%", left: "38%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(5)}</div>
                         </div>
                     </div>
-                    <div className="chancellorBox" style={{ position: "absolute", top: "27%", right: "50%", left: "50%", transform: "translateX(-50%)" }}>
-                        <div className="chancellorAura" />
+                    <div className="chancellorBox" style={{ position: "absolute", top: "5%", left: "50%", transform: "translateX(-50%)", width: "auto" }}>
                         <div className="chancellorContent">
-                            <div className="senatorName">{chancellor ? chancellor.name : "Chancellor"}</div>
+                            <div className="senatorName" style={{ fontWeight: 'bold' }}>{chancellor ? chancellor.name : "Chancellor"}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-7" style={{ position: "absolute", top: "30%", right: "33%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-7" style={{ position: "absolute", top: "11%", right: "38%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(6)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-8" style={{ position: "absolute", top: "38%", right: "24%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-8" style={{ position: "absolute", top: "16%", right: "26%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(7)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-9" style={{ position: "absolute", top: "48%", right: "17%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-9" style={{ position: "absolute", top: "25%", right: "16%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(8)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-10" style={{ position: "absolute", top: "59%", right: "13%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-10" style={{ position: "absolute", top: "38%", right: "8%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(9)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-11" style={{ position: "absolute", top: "70%", right: "10.5%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-11" style={{ position: "absolute", top: "54%", right: "3%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(10)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-12" style={{ position: "absolute", top: "81%", right: "9.5%" }}>
-                        <div className="senatorAura" />
+                    <div className="senatorBox seat-12" style={{ position: "absolute", top: "72%", right: "0%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(11)}</div>
                         </div>
                     </div>
-                </div>
-                <div className="d-flex justify-content-center my-5">
-                    <svg width="900" height="400" viewBox="0 5 220 120">
-                        <defs>
-                            <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stopColor="#3b82f6" />
-                                <stop offset="50%" stopColor="#8b5cf6" />
-                                <stop offset="100%" stopColor="#ec4899" />
-                            </linearGradient>
-                        </defs>
 
-                        <path
-                            d="M 0 120 A 90 90 1 1 1 220 120"
-                            fill="none"
-                            stroke="url(#arcGradient)"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                        />
-                    </svg>
+                    <div className="arc-container" style={{ position: "absolute", bottom: "0", left: "0", width: "100%", height: "100%", pointerEvents: "none" }}>
+                        <svg width="100%" height="100%" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+                            <defs>
+                                <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stopColor="#3b82f6" />
+                                    <stop offset="50%" stopColor="#8b5cf6" />
+                                    <stop offset="100%" stopColor="#ec4899" />
+                                </linearGradient>
+                            </defs>
+                            <path
+                                d="M 50 550 A 450 450 0 0 1 950 550"
+                                fill="none"
+                                stroke="url(#arcGradient)"
+                                strokeWidth="4"
+                                strokeLinecap="round"
+                            />
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>,

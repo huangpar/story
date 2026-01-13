@@ -32,6 +32,14 @@ exports.handler = async (event) => {
         await sql`ALTER TABLE entertainment ADD COLUMN IF NOT EXISTS company_id INTEGER`;
         await sql`ALTER TABLE entertainment ADD COLUMN IF NOT EXISTS position TEXT`;
         await sql`
+          CREATE TABLE IF NOT EXISTS person_company (
+            person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
+            company_id INTEGER NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+            position TEXT,
+            PRIMARY KEY (person_id, company_id)
+          )
+        `;
+        await sql`
           CREATE TABLE IF NOT EXISTS person_show (
             person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
             show_id INTEGER NOT NULL REFERENCES shows(id) ON DELETE CASCADE,
@@ -107,25 +115,41 @@ exports.handler = async (event) => {
       // Handle Entertainer Role
       try {
         if (is_entertainer) {
-          const { entertainer_company_id, entertainer_position, show_assignments } = body;
+          const {
+            entertainer_company_id,
+            entertainer_position,
+            studio_assignments,
+            show_assignments
+          } = body;
 
-          // Only update if entertainer info is actually provided in payload
-          // (This prevents wiping info when updating from Politicians page)
-          if (entertainer_company_id !== undefined || entertainer_position !== undefined) {
+          // Handle Multi-Studio assignments
+          if (studio_assignments !== undefined) {
+            console.log(`PUT: Updating studios for person ${id}`, studio_assignments);
+            try {
+              const pid = parseInt(id);
+              await sql`DELETE FROM person_company WHERE person_id = ${pid}`;
+              if (studio_assignments && studio_assignments.length > 0) {
+                for (const sa of studio_assignments) {
+                  const cid = parseInt(sa.company_id);
+                  if (!isNaN(cid)) {
+                    await sql`
+                      INSERT INTO person_company (person_id, company_id, position)
+                      VALUES (${pid}, ${cid}, ${sa.position || null})
+                      ON CONFLICT (person_id, company_id) DO UPDATE SET position = EXCLUDED.position
+                    `;
+                  }
+                }
+              }
+            } catch (studioErr) {
+              console.error("PUT: person_company update failed:", studioErr);
+            }
+          } else if (entertainer_company_id !== undefined) {
+            // Backward compatibility: If only single ID provided, update person_company accordingly
             await sql`
-                  INSERT INTO entertainment (person_id, is_entertainer, company_id, position) 
-                  VALUES (${id}, true, ${entertainer_company_id || null}, ${entertainer_position || null}) 
-                  ON CONFLICT (person_id) DO UPDATE SET 
-                    is_entertainer = true,
-                    company_id = EXCLUDED.company_id,
-                    position = EXCLUDED.position
-              `;
-          } else {
-            await sql`
-                  INSERT INTO entertainment (person_id, is_entertainer) 
-                  VALUES (${id}, true) 
-                  ON CONFLICT (person_id) DO UPDATE SET is_entertainer = true
-              `;
+                INSERT INTO person_company (person_id, company_id, position)
+                VALUES (${id}, ${entertainer_company_id}, ${entertainer_position || null})
+                ON CONFLICT (person_id, company_id) DO UPDATE SET position = EXCLUDED.position
+             `;
           }
 
           // Handle show assignments
@@ -227,6 +251,18 @@ exports.handler = async (event) => {
       `;
     }
 
+    // Fetch ALL many-to-many company assignments
+    let allCompanyAssignments = [];
+    try {
+      allCompanyAssignments = await sql`
+        SELECT pc.*, c.name as company_name 
+        FROM person_company pc
+        JOIN companies c ON pc.company_id = c.id
+      `;
+    } catch (cErr) {
+      console.error("person_company query failed:", cErr);
+    }
+
     // Fetch all show assignments to merge in JS
     let allShowAssignments = [];
     try {
@@ -278,6 +314,15 @@ exports.handler = async (event) => {
           is_entertainer: !!r.is_entertainer,
           role_id: r.role_id,
           role_name: r.role_name,
+          // Aggregate all studios
+          studios: allCompanyAssignments
+            .filter(pc => String(pc.person_id) === String(r.id))
+            .map(pc => ({
+              id: pc.company_id,
+              name: pc.company_name,
+              position: pc.position
+            })),
+          // Keep legacy single company/position if available for compatibility
           company: r.is_entertainer && r.ent_company_id ? {
             id: r.ent_company_id,
             name: r.ent_company_name,

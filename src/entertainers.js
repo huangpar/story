@@ -85,13 +85,15 @@ export function Entertainers() {
         // Prepare context for payload deriving from state
         const updatedPerson = { ...person, ...updates };
 
-        const companyId = updates.company !== undefined
-            ? (updates.company ? updates.company.id : null)
-            : (person.company ? person.company.id : null);
-
-        const position = updates.company !== undefined
-            ? (updates.company ? updates.company.position : null)
-            : (person.company ? person.company.position : null);
+        const studioAssignments = updates.studios !== undefined
+            ? updates.studios.map(s => ({
+                company_id: s.id,
+                position: s.position
+            }))
+            : (person.studios ? person.studios.map(s => ({
+                company_id: s.id,
+                position: s.position
+            })) : []);
 
         const showAssignments = updates.shows !== undefined
             ? updates.shows.map(s => ({
@@ -120,8 +122,7 @@ export function Entertainers() {
             is_politician: updatedPerson.is_politician,
             is_entertainer: true,
             role_id: updatedPerson.role_id,
-            entertainer_company_id: companyId,
-            entertainer_position: position,
+            studio_assignments: studioAssignments,
             show_assignments: showAssignments
         };
 
@@ -138,30 +139,49 @@ export function Entertainers() {
         }
     };
 
-    const handleCompanyChange = (person, companyId) => {
-        const comp = companies.find(c => String(c.id) === String(companyId));
-        handleUpdate(person, {
-            company: comp ? { id: comp.id, name: comp.name, position: person.company?.position || "" } : null
-        });
+    const addStudio = (person) => {
+        const currentStudios = person.studios || [];
+        // Default to the first available company not already assigned, if possible
+        const available = companies.find(c => !currentStudios.some(s => String(s.id) === String(c.id)));
+        const newStudios = [...currentStudios, { id: available?.id || "", name: available?.name || "", position: "" }];
+        handleUpdate(person, { studios: newStudios });
     };
 
-    const handlePositionChange = (person, newPos) => {
-        handleUpdate(person, {
-            company: person.company ? { ...person.company, position: newPos } : { id: null, name: "", position: newPos }
-        });
+    const removeStudio = (person, studioId) => {
+        const newStudios = (person.studios || []).filter(s => String(s.id) !== String(studioId));
+        handleUpdate(person, { studios: newStudios });
+    };
+
+    const handleStudioChange = (person, oldStudioId, newStudioId) => {
+        const comp = companies.find(c => String(c.id) === String(newStudioId));
+        const newStudios = (person.studios || []).map(s =>
+            String(s.id) === String(oldStudioId) ? { ...s, id: comp?.id, name: comp?.name } : s
+        );
+        handleUpdate(person, { studios: newStudios });
+    };
+
+    const handlePositionChange = (person, studioId, newPos) => {
+        const newStudios = (person.studios || []).map(s =>
+            String(s.id) === String(studioId) ? { ...s, position: newPos } : s
+        );
+        handleUpdate(person, { studios: newStudios });
     };
 
     const toggleShow = (person, showId) => {
         const currentShows = person.shows || [];
-        const exists = currentShows.find(s => s.id === showId);
+        const exists = currentShows.find(s => String(s.id) === String(showId));
         let newShows;
         if (exists) {
-            newShows = currentShows.filter(s => s.id !== showId);
+            newShows = currentShows.filter(s => String(s.id) !== String(showId));
         } else {
-            const showToAdd = shows.find(s => s.id === showId);
+            const showToAdd = shows.find(s => String(s.id) === String(showId));
             newShows = [...currentShows, { ...showToAdd }];
         }
         handleUpdate(person, { shows: newShows });
+    };
+
+    const clearShows = (person) => {
+        handleUpdate(person, { shows: [] });
     };
 
     if (loading) return <div className="p-10 text-white">Loading...</div>;
@@ -188,44 +208,52 @@ export function Entertainers() {
                         </div>
 
                         <div className="ent-controls">
-                            <div className="ent-section">
-                                <label>Studio & Position</label>
-                                <div className="ent-input-group">
-                                    <CustomDropdown
-                                        value={p.company?.id}
-                                        options={companies}
-                                        onChange={(val) => handleCompanyChange(p, val)}
-                                        placeholder="-- No Studio --"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="Position (e.g. Lead Actor)"
-                                        value={p.company?.position || ""}
-                                        onChange={(e) => handlePositionChange(p, e.target.value)}
-                                    />
-                                </div>
+                            <div className="ent-studios-list">
+                                {(p.studios || []).map((studio, idx) => (
+                                    <div key={idx} className="ent-input-group studio-row">
+                                        <CustomDropdown
+                                            value={studio.id}
+                                            options={companies}
+                                            onChange={(val) => handleStudioChange(p, studio.id, val)}
+                                            placeholder="-- Select Studio --"
+                                        />
+                                        <input
+                                            type="text"
+                                            placeholder="Position (e.g. Lead Actor)"
+                                            value={studio.position || ""}
+                                            onChange={(e) => handlePositionChange(p, studio.id, e.target.value)}
+                                        />
+                                        <button className="remove-studio" onClick={() => removeStudio(p, studio.id)} title="Remove Studio">×</button>
+                                    </div>
+                                ))}
+                                <button className="add-studio-btn" onClick={() => addStudio(p)}>+ Add Studio</button>
                             </div>
+                        </div>
 
-                            <div className="ent-section">
+                        <div className="ent-section">
+                            <div className="section-header">
                                 <label>Productions</label>
-                                <div className="shows-list">
-                                    {shows.map(s => {
-                                        const isCast = p.shows?.some(ps => String(ps.id) === String(s.id));
-                                        return (
-                                            <div key={s.id}
-                                                className={`show-chip ${isCast ? 'active' : ''}`}
-                                                onClick={() => toggleShow(p, s.id)}
-                                            >
-                                                {s.name}
-                                            </div>
-                                        )
-                                    })}
-                                </div>
+                                {(p.shows || []).length > 0 && (
+                                    <span className="clear-shows" onClick={() => clearShows(p)}>Clear All</span>
+                                )}
+                            </div>
+                            <div className="shows-list">
+                                {shows.map(s => {
+                                    const isCast = p.shows?.some(ps => String(ps.id) === String(s.id));
+                                    return (
+                                        <div key={s.id}
+                                            className={`show-chip ${isCast ? 'active' : ''}`}
+                                            onClick={() => toggleShow(p, s.id)}
+                                        >
+                                            {s.name}
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
         </div>
-    )
+    );
 }
