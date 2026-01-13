@@ -120,14 +120,15 @@ export function Entertainers() {
         };
 
         try {
-            await fetch("/.netlify/functions/people", {
+            const res = await fetch("/.netlify/functions/people", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(finalPayload)
             });
+            if (!res.ok) throw new Error("Backend failed to save");
         } catch (error) {
-            console.error(error);
-            alert("Failed to save");
+            console.error("Save error:", error);
+            alert("Failed to save changes. Please check your connection.");
         }
     };
 

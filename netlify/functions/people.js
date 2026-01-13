@@ -108,28 +108,45 @@ exports.handler = async (event) => {
       try {
         if (is_entertainer) {
           const { entertainer_company_id, entertainer_position, show_assignments } = body;
-          await sql`
+
+          // Only update if entertainer info is actually provided in payload
+          // (This prevents wiping info when updating from Politicians page)
+          if (entertainer_company_id !== undefined || entertainer_position !== undefined) {
+            await sql`
                   INSERT INTO entertainment (person_id, is_entertainer, company_id, position) 
                   VALUES (${id}, true, ${entertainer_company_id || null}, ${entertainer_position || null}) 
                   ON CONFLICT (person_id) DO UPDATE SET 
                     is_entertainer = true,
-                    company_id = ${entertainer_company_id || null},
-                    position = ${entertainer_position || null}
+                    company_id = EXCLUDED.company_id,
+                    position = EXCLUDED.position
               `;
+          } else {
+            await sql`
+                  INSERT INTO entertainment (person_id, is_entertainer) 
+                  VALUES (${id}, true) 
+                  ON CONFLICT (person_id) DO UPDATE SET is_entertainer = true
+              `;
+          }
 
           // Handle show assignments
-          try {
-            await sql`DELETE FROM person_show WHERE person_id = ${id}`;
-            if (show_assignments && show_assignments.length > 0) {
-              for (const sa of show_assignments) {
-                await sql`
-                            INSERT INTO person_show (person_id, show_id, first_season, last_season, duration)
-                            VALUES (${id}, ${sa.show_id}, ${sa.first_season || null}, ${sa.last_season || null}, ${sa.duration || null})
-                        `;
+          if (show_assignments !== undefined) {
+            try {
+              const pid = parseInt(id);
+              await sql`DELETE FROM person_show WHERE person_id = ${pid}`;
+              if (show_assignments && show_assignments.length > 0) {
+                for (const sa of show_assignments) {
+                  const sid = parseInt(sa.show_id);
+                  if (!isNaN(sid)) {
+                    await sql`
+                              INSERT INTO person_show (person_id, show_id, first_season, last_season, duration)
+                              VALUES (${pid}, ${sid}, ${sa.first_season || null}, ${sa.last_season || null}, ${sa.duration || null})
+                          `;
+                  }
+                }
               }
+            } catch (showErr) {
+              console.error("PUT: person_show update failed:", showErr);
             }
-          } catch (showErr) {
-            console.error("PUT: person_show update failed:", showErr);
           }
         } else {
           try {
@@ -152,24 +169,6 @@ exports.handler = async (event) => {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ message: "Person updated successfully" }),
       };
-    }
-
-    // Diagnostics
-    let diagnostics = {};
-    try {
-      const tableInfo = await sql`
-        SELECT table_name, column_name 
-        FROM information_schema.columns 
-        WHERE table_schema = 'public' 
-        AND table_name IN ('people', 'shows', 'entertainment', 'person_show')
-      `;
-      diagnostics.tables = tableInfo.reduce((acc, curr) => {
-        if (!acc[curr.table_name]) acc[curr.table_name] = [];
-        acc[curr.table_name].push(curr.column_name);
-        return acc;
-      }, {});
-    } catch (diagErr) {
-      diagnostics.error = String(diagErr);
     }
 
     let rows = [];
@@ -225,18 +224,22 @@ exports.handler = async (event) => {
       `;
     } catch (showErr) {
       console.error("person_show query failed:", showErr);
-      // Fallback: no show assignments
-      allShowAssignments = [];
+      // Fallback: try without join if shows table is the problem
+      try {
+        allShowAssignments = await sql`SELECT * FROM person_show`;
+      } catch (e) {
+        allShowAssignments = [];
+      }
     }
 
     const data = {};
     for (const r of rows) {
       if (!data[r.name]) {
         const personShows = allShowAssignments
-          .filter(ps => ps.person_id === r.id)
+          .filter(ps => String(ps.person_id) === String(r.id))
           .map(ps => ({
             id: ps.show_id,
-            name: ps.show_name,
+            name: ps.show_name || `Show ${ps.show_id}`,
             first_season: ps.first_season,
             last_season: ps.last_season,
             duration: ps.duration
@@ -272,7 +275,7 @@ exports.handler = async (event) => {
         "content-type": "application/json",
         "cache-control": "no-store",
       },
-      body: JSON.stringify({ ...data, _diagnostics: diagnostics }),
+      body: JSON.stringify(data),
     };
   } catch (err) {
     console.error("Global people function error:", err);
