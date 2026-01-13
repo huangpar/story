@@ -18,7 +18,8 @@ export function Entertainment() {
         ]).then(([compData, showData, peopleData]) => {
             setCompanies(Array.isArray(compData) ? compData : []);
             setShows(Array.isArray(showData) ? showData : []);
-            const peopleArr = Object.values(peopleData).map(p => ({ ...p, name: p.name || Object.keys(peopleData).find(key => peopleData[key] === p) }));
+            // peopleData is now keyed by ID and contains 'name' inside
+            const peopleArr = Object.values(peopleData);
             setPeople(peopleArr);
             setLoading(false);
         }).catch(err => {

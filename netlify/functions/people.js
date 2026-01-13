@@ -164,12 +164,21 @@ exports.handler = async (event) => {
         }
       } catch (entErr) {
         console.error("PUT: entertainment update failed:", entErr);
+        // We return 500 to make it clear to frontend that it failed
+        return {
+          statusCode: 500,
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ error: "Entertainment/Shows save failed", details: entErr.message }),
+        };
       }
 
       return {
         statusCode: 200,
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ message: "Person updated successfully" }),
+        body: JSON.stringify({
+          message: "Person updated successfully",
+          savedShowCount: (body.show_assignments || []).length
+        }),
       };
     }
 
@@ -236,7 +245,8 @@ exports.handler = async (event) => {
 
     const data = {};
     for (const r of rows) {
-      if (!data[r.name]) {
+      // Use ID as key to be unique, even if names collide
+      if (!data[r.id]) {
         const personShows = allShowAssignments
           .filter(ps => String(ps.person_id) === String(r.id))
           .map(ps => ({
@@ -247,8 +257,9 @@ exports.handler = async (event) => {
             duration: ps.duration
           }));
 
-        data[r.name] = {
+        data[r.id] = {
           id: r.id,
+          name: r.name, // Ensure name is inside the object
           fid: r.fid,
           mid: r.mid,
           sid: r.sid,

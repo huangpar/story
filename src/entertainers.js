@@ -58,7 +58,8 @@ export function Entertainers() {
             fetch("/.netlify/functions/companies").then(res => res.json()),
             fetch("/.netlify/functions/shows").then(res => res.json())
         ]).then(([peopleData, compData, showData]) => {
-            const peopleArr = Object.values(peopleData).map(p => ({ ...p, name: p.name || Object.keys(peopleData).find(key => peopleData[key] === p) }));
+            // peopleData is now keyed by ID and contains 'name' inside
+            const peopleArr = Object.values(peopleData);
             const ents = peopleArr.filter(p => p.is_entertainer);
             setEntertainers(ents);
             setCompanies(Array.isArray(compData) ? compData : []);

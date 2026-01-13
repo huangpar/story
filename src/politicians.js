@@ -57,8 +57,8 @@ export function Politicians() {
             fetch("/.netlify/functions/people").then(res => res.json()),
             fetch("/.netlify/functions/roles").then(res => res.json())
         ]).then(([peopleData, rolesData]) => {
-            // peopleData is keyed by name, convert to array
-            const peopleArr = Object.values(peopleData).map(p => ({ ...p, name: p.name || Object.keys(peopleData).find(key => peopleData[key] === p) }));
+            // peopleData is now keyed by ID and contains 'name' inside
+            const peopleArr = Object.values(peopleData);
             const pols = peopleArr.filter(p => p.is_politician);
 
             setPoliticians(pols);

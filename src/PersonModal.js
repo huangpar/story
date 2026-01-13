@@ -17,7 +17,8 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
     // Helpers for Name <-> ID resolution
     const getId = (name) => {
         const cleanName = name.trim().toLowerCase();
-        const p = peopleList.find(p => p.name.toLowerCase() === cleanName);
+        // peopleList already contains the 'name' property
+        const p = peopleList.find(p => (p.name || "").toLowerCase() === cleanName);
         return p ? p.id : null;
     };
 

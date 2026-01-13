@@ -16,7 +16,8 @@ export function Politics() {
         fetch("/.netlify/functions/people")
             .then(res => res.json())
             .then(data => {
-                const arr = Object.values(data).map(p => ({ ...p, name: p.name || Object.keys(data).find(key => data[key] === p) }));
+                // data is now keyed by ID and contains 'name' inside
+                const arr = Object.values(data);
                 setPeopleList(arr);
             })
             .catch(err => console.error(err));
@@ -50,8 +51,8 @@ export function Politics() {
 }
 
 function DefaultView({ onSelect, peopleList = [] }) {
-    const president = peopleList.find(p => p.role_name === "President");
-    const vicePresident = peopleList.find(p => p.role_name === "Vice President");
+    const president = peopleList.find(p => (p.role_name || "").toLowerCase() === "president");
+    const vicePresident = peopleList.find(p => (p.role_name || "").toLowerCase() === "vice president");
 
     return (
         <div className="politicsinfo">
