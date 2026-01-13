@@ -213,6 +213,8 @@ exports.handler = async (event) => {
           e.is_educator,
           pol.is_politician,
           ent.is_entertainer,
+          ent.company_id as ent_company_id,
+          ent.position as ent_position,
           r.id as role_id,
           r.name as role_name
         FROM people p
@@ -238,10 +240,14 @@ exports.handler = async (event) => {
       // Fallback: try without join if shows table is the problem
       try {
         allShowAssignments = await sql`SELECT * FROM person_show`;
+        console.log(`Fallback person_show loaded: ${allShowAssignments.length} records`);
       } catch (e) {
+        console.error("Absolute fallback for person_show failed:", e);
         allShowAssignments = [];
       }
     }
+
+    console.log(`Merging ${allShowAssignments.length} assignments into ${rows.length} rows`);
 
     const data = {};
     for (const r of rows) {
@@ -288,7 +294,14 @@ exports.handler = async (event) => {
         "content-type": "application/json",
         "cache-control": "no-store",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        ...data,
+        _debug: {
+          assignment_count: allShowAssignments.length,
+          people_count: rows.length,
+          sample_assignment: allShowAssignments[0] || null
+        }
+      }),
     };
   } catch (err) {
     console.error("Global people function error:", err);

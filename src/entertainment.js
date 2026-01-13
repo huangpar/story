@@ -20,6 +20,11 @@ export function Entertainment() {
             setShows(Array.isArray(showData) ? showData : []);
             // peopleData is now keyed by ID and contains 'name' inside
             const peopleArr = Object.values(peopleData);
+            console.log("Entertainment Page Debug:", {
+                peopleCount: peopleArr.length,
+                showsCount: showData.length,
+                debug: peopleData._debug
+            });
             setPeople(peopleArr);
             setLoading(false);
         }).catch(err => {
@@ -139,7 +144,7 @@ function DetailView({ view, onBack, companies, shows, people }) {
                         <div className="studio-content">
                             <div className="shows-list">
                                 {studioShows.length > 0 ? studioShows.map(show => {
-                                    const cast = people.filter(p => p.shows && p.shows.some(ps => ps.id === show.id));
+                                    const cast = people.filter(p => p.shows && p.shows.some(ps => String(ps.id) === String(show.id)));
                                     return (
                                         <div key={show.id} className="show-card">
                                             <div className="show-title">

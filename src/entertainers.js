@@ -60,6 +60,11 @@ export function Entertainers() {
         ]).then(([peopleData, compData, showData]) => {
             // peopleData is now keyed by ID and contains 'name' inside
             const peopleArr = Object.values(peopleData);
+            console.log("Entertainers Page Debug:", {
+                peopleSample: peopleArr[0],
+                showsSample: showData[0],
+                debug: peopleData._debug
+            });
             const ents = peopleArr.filter(p => p.is_entertainer);
             setEntertainers(ents);
             setCompanies(Array.isArray(compData) ? compData : []);
@@ -205,7 +210,7 @@ export function Entertainers() {
                                 <label>Productions</label>
                                 <div className="shows-list">
                                     {shows.map(s => {
-                                        const isCast = p.shows?.some(ps => ps.id === s.id);
+                                        const isCast = p.shows?.some(ps => String(ps.id) === String(s.id));
                                         return (
                                             <div key={s.id}
                                                 className={`show-chip ${isCast ? 'active' : ''}`}
