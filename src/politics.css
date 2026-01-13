@@ -334,6 +334,8 @@
   border-radius: 15px;
   z-index: 10;
   pointer-events: auto;
+  transform: translate(-50%, -50%);
+  /* Center the box on its absolute coordinates */
 }
 
 /* .senatorAura {
