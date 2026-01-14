@@ -195,7 +195,7 @@ function DetailView({ view, onBack, companies, shows, people }) {
                                             castAssignments.push({
                                                 personId: p.id,
                                                 personName: p.name,
-                                                role: ps.role || "Actor",
+                                                role: ps.role || "",
                                                 firstSeason: ps.first_season || 1,
                                                 lastSeason: ps.last_season || 1
                                             });
@@ -242,8 +242,8 @@ function ShowTimeline({ assignments = [] }) {
 
     if (!assignments || assignments.length === 0) return <div className="cast-list"><span className="empty">Cast TBA</span></div>;
 
-    // Group by role
-    const roles = Array.from(new Set(assignments.map(a => a.role))).sort();
+    // Group by role (normalize empty/null to "Cast")
+    const roles = Array.from(new Set(assignments.map(a => a.role || "Cast"))).sort();
     const maxSeason = Math.max(...assignments.map(a => a.lastSeason), 1);
     const minSeason = Math.min(...assignments.map(a => a.firstSeason), 1);
     const totalSeasons = Math.max(maxSeason - minSeason + 1, 1);
@@ -288,13 +288,13 @@ function ShowTimeline({ assignments = [] }) {
                 </div>
 
                 {roles.map(role => {
-                    const roleAsgns = assignments.filter(a => a.role === role);
+                    const roleAsgns = assignments.filter(a => (a.role || "Cast") === role);
                     const laneCount = getLanesForRole(roleAsgns);
                     const rowHeight = Math.max(laneCount * 25 + 5, 30);
 
                     return (
                         <div key={role} className="timeline-row" style={{ height: `${rowHeight}px` }}>
-                            <div className="role-label" title={role}>{role || "Cast"}</div>
+                            <div className="role-label" title={role}>{role}</div>
                             <div className="bar-area">
                                 {roleAsgns.map((asgn, idx) => (
                                     <div
