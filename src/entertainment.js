@@ -32,8 +32,6 @@ export function Entertainment() {
         });
     }, []);
 
-    if (loading) return <div className="p-10 text-white">Loading...</div>;
-
     return (
         <div className="entertainment">
             <h1 className="header">
@@ -48,7 +46,7 @@ export function Entertainment() {
             </h1>
 
             {view === "default" ? (
-                <DefaultView onSelect={setView} />
+                <DefaultView onSelect={setView} loading={loading} />
             ) : (
                 <DetailView
                     view={view}
@@ -62,7 +60,7 @@ export function Entertainment() {
     )
 }
 
-function DefaultView({ onSelect }) {
+function DefaultView({ onSelect, loading }) {
     const studios = ["Levon", "Flickr", "Once"];
 
     return (
@@ -89,6 +87,12 @@ function DefaultView({ onSelect }) {
                     ))}
                 </div>
             </div>
+            {loading && (
+                <div className="fetch-indicator">
+                    <div className="spinner"></div>
+                    <span>Fetching latest data...</span>
+                </div>
+            )}
         </div>
     )
 }
@@ -133,7 +137,7 @@ function DetailView({ view, onBack, companies, shows, people }) {
         return members;
     }, [people, company]);
 
-    const staffKeywords = ["producer", "executive", "ep", "director", "manager", "ceo", "president", "owner", "staff", "admin"];
+    const staffKeywords = ["producer", "executive", "ep", "director", "manager", "ceo", "president", "owner", "staff", "admin", "cfo", "cco", "head"];
 
     const staffMembers = allStudioMembers.filter(m =>
         staffKeywords.some(kw => (m.position || "").toLowerCase().includes(kw))
