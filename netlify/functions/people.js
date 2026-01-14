@@ -25,7 +25,11 @@ exports.handler = async (event) => {
 
     if (event.httpMethod === 'PUT') {
       const body = JSON.parse(event.body);
-      const { id, region, district, fid, mid, sid, is_educator, is_politician, is_entertainer, role_id } = body;
+      const {
+        id, region, district, fid, mid, sid,
+        is_educator, academy_id, major_id, edu_role,
+        is_politician, is_entertainer, role_id
+      } = body;
 
       // Auto-migration: Ensure entertainment schema is correct
       try {
@@ -78,9 +82,13 @@ exports.handler = async (event) => {
       // Handle Educator Role
       if (is_educator) {
         await sql`
-                INSERT INTO education (person_id, is_educator) 
-                VALUES (${id}, true) 
-                ON CONFLICT (person_id) DO UPDATE SET is_educator = true
+                INSERT INTO education (person_id, is_educator, academy_id, major_id, role) 
+                VALUES (${id}, true, ${academy_id || null}, ${major_id || null}, ${edu_role || null}) 
+                ON CONFLICT (person_id) DO UPDATE SET 
+                  is_educator = true,
+                  academy_id = EXCLUDED.academy_id,
+                  major_id = EXCLUDED.major_id,
+                  role = EXCLUDED.role
             `;
       } else {
         await sql`DELETE FROM education WHERE person_id = ${id}`;
@@ -231,7 +239,9 @@ exports.handler = async (event) => {
       rows = await sql`
         SELECT 
           p.id, p.name, p.region, p.district, p.party, p.fid, p.mid, p.sid, p.gender,
-          e.is_educator,
+          e.is_educator, e.academy_id, e.major_id, e.role as edu_role,
+          acad.name as academy_name,
+          maj.name as major_name,
           pol.is_politician,
           ent.is_entertainer,
           ent.position as ent_position,
@@ -241,6 +251,8 @@ exports.handler = async (event) => {
           r.name as role_name
         FROM people p
         LEFT JOIN education e ON p.id = e.person_id
+        LEFT JOIN academies acad ON e.academy_id = acad.id
+        LEFT JOIN majors maj ON e.major_id = maj.id
         LEFT JOIN politics pol ON p.id = pol.person_id
         LEFT JOIN entertainment ent ON p.id = ent.person_id
         LEFT JOIN companies c ON ent.company_id = c.id
@@ -331,6 +343,11 @@ exports.handler = async (event) => {
           Location: r.district,
           Party: r.party,
           is_educator: !!r.is_educator,
+          academy_id: r.academy_id,
+          academy_name: r.academy_name,
+          major_id: r.major_id,
+          major_name: r.major_name,
+          edu_role: r.edu_role,
           is_politician: !!r.is_politician,
           is_entertainer: !!r.is_entertainer,
           role_id: r.role_id,

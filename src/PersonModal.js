@@ -12,8 +12,14 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
         is_politician: false,
         is_entertainer: false,
         ent_position: "",
+        academy_id: "",
+        major_id: "",
+        edu_role: "",
     });
     const [saving, setSaving] = useState(false);
+    const [academies, setAcademies] = useState([]);
+    const [allMajors, setAllMajors] = useState([]);
+    const [availableMajors, setAvailableMajors] = useState([]);
 
     // Helpers for Name <-> ID resolution
     const getId = (name) => {
@@ -22,6 +28,11 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
         const p = peopleList.find(p => (p.name || "").toLowerCase() === cleanName);
         return p ? p.id : null;
     };
+
+    useEffect(() => {
+        fetch("/.netlify/functions/academies").then(res => res.json()).then(data => setAcademies(data));
+        fetch("/.netlify/functions/majors").then(res => res.json()).then(data => setAllMajors(data));
+    }, []);
 
     useEffect(() => {
         if (person) {
@@ -49,9 +60,20 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 is_politician: person.is_politician || false,
                 is_entertainer: person.is_entertainer || false,
                 ent_position: person.company?.position || "",
+                academy_id: person.academy_id || "",
+                major_id: person.major_id || "",
+                edu_role: person.edu_role || "",
             });
         }
     }, [person, peopleList]);
+
+    useEffect(() => {
+        if (formData.academy_id) {
+            setAvailableMajors(allMajors.filter(m => String(m.academy_id) === String(formData.academy_id)));
+        } else {
+            setAvailableMajors([]);
+        }
+    }, [formData.academy_id, allMajors]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -86,6 +108,9 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 mid: mid,
                 sid: sid,
                 is_educator: formData.is_educator,
+                academy_id: formData.academy_id || null,
+                major_id: formData.major_id || null,
+                edu_role: formData.edu_role || null,
                 is_politician: formData.is_politician,
                 is_entertainer: formData.is_entertainer,
                 entertainer_position: formData.ent_position,
@@ -146,6 +171,28 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                         <input type="checkbox" name="is_educator" checked={formData.is_educator} onChange={handleChange} />
                         Educator
                     </label>
+                    {formData.is_educator && (
+                        <div className="form-group sub-input" style={{ marginLeft: '20px', marginTop: '5px' }}>
+                            <div className="form-group">
+                                <label>Academy</label>
+                                <select name="academy_id" value={formData.academy_id} onChange={handleChange}>
+                                    <option value="">Select Academy</option>
+                                    {academies.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Major/House</label>
+                                <select name="major_id" value={formData.major_id} onChange={handleChange}>
+                                    <option value="">Select Major</option>
+                                    {availableMajors.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Education Role</label>
+                                <input name="edu_role" value={formData.edu_role} onChange={handleChange} placeholder="e.g. Student, Professor" />
+                            </div>
+                        </div>
+                    )}
                     <label>
                         <input type="checkbox" name="is_politician" checked={formData.is_politician} onChange={handleChange} />
                         Politician
