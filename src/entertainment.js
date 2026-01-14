@@ -98,8 +98,50 @@ function DetailView({ view, onBack, companies, shows, people }) {
 
     const studioName = view === "storia" ? "Storia" : view.charAt(0).toUpperCase() + view.slice(1);
     const company = companies.find(c => c.name === studioName);
-    const staff = people.filter(p => p.company && p.company.name === studioName);
     const studioShows = shows.filter(s => company && s.company_id === company.id);
+
+    // Consolidate all studio assignments
+    const allStudioMembers = useMemo(() => {
+        const members = [];
+        if (!company) return members;
+
+        people.forEach(p => {
+            // Check secondary/multi-studio assignments
+            const studioAssignments = p.studios || [];
+            studioAssignments.forEach(sa => {
+                if (String(sa.id) === String(company.id)) {
+                    members.push({
+                        id: `${p.id}-studio-${sa.id}`,
+                        personName: p.name,
+                        position: sa.position || "Staff"
+                    });
+                }
+            });
+
+            // Check primary/legacy assignment
+            if (p.company && String(p.company.id) === String(company.id)) {
+                // Avoid duplication if already added from multi-studio
+                if (!members.find(m => m.id === `${p.id}-studio-${company.id}`)) {
+                    members.push({
+                        id: `${p.id}-primary`,
+                        personName: p.name,
+                        position: p.company.position || "Staff"
+                    });
+                }
+            }
+        });
+        return members;
+    }, [people, company]);
+
+    const staffKeywords = ["producer", "executive", "ep", "director", "manager", "ceo", "president", "owner", "staff", "admin"];
+
+    const staffMembers = allStudioMembers.filter(m =>
+        staffKeywords.some(kw => (m.position || "").toLowerCase().includes(kw))
+    );
+
+    const talentMembers = allStudioMembers.filter(m =>
+        !staffKeywords.some(kw => (m.position || "").toLowerCase().includes(kw))
+    );
 
     useEffect(() => {
         // Only set default if not already set or invalid
@@ -153,33 +195,29 @@ function DetailView({ view, onBack, companies, shows, people }) {
                             </div>
                             <div className="studio-content">
                                 <div className="staff-list">
-                                    {staff.length > 0 ? staff.map(member => (
+                                    {staffMembers.length > 0 ? staffMembers.map(member => (
                                         <div key={member.id} className="staff-member">
-                                            <span className="member-name">{member.name}</span>
-                                            <span className="member-role">{member.company.position || "Staff"}</span>
+                                            <span className="member-name">{member.personName}</span>
+                                            <span className="member-role">{member.position}</span>
                                         </div>
-                                    )) : <p className="empty">No staff assigned</p>}
+                                    )) : <p className="empty">No staff listed</p>}
                                 </div>
                             </div>
                         </div>
 
                         <div className="studio-card detail">
-                            <div className="studio-header">
+                            <div className="studio-header talent">
                                 <Users size={24} className="studio-icon" />
                                 <h2>Studio Talent</h2>
                             </div>
                             <div className="studio-content">
                                 <div className="staff-list">
-                                    {people.filter(p => p.studios && p.studios.some(s => String(s.id) === String(company.id))).map(person => {
-                                        const studioInfo = person.studios.find(s => String(s.id) === String(company.id));
-                                        return (
-                                            <div key={person.id} className="staff-member">
-                                                <span className="member-name">{person.name}</span>
-                                                <span className="member-role">{studioInfo.position || "Talent"}</span>
-                                            </div>
-                                        );
-                                    })}
-                                    {people.filter(p => p.studios && p.studios.some(s => String(s.id) === String(company.id))).length === 0 && <p className="empty">No talent assigned</p>}
+                                    {talentMembers.length > 0 ? talentMembers.map(member => (
+                                        <div key={member.id} className="staff-member">
+                                            <span className="member-name">{member.personName}</span>
+                                            <span className="member-role">{member.position}</span>
+                                        </div>
+                                    )) : <p className="empty">No talent listed</p>}
                                 </div>
                             </div>
                         </div>
