@@ -269,10 +269,14 @@
 /* Glow Elements */
 .glow-bg.edu {
   background: linear-gradient(90deg, #F59E0B, #EAB308);
+  filter: blur(24px);
+  opacity: 0.3;
+  z-index: 0;
 }
 
 .glow-pill.edu {
   background: linear-gradient(90deg, #F59E0B, #EAB308);
+  z-index: 1;
 }
 
 /* Loading indicator */

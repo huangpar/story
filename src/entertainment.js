@@ -74,7 +74,7 @@ function DefaultView({ onSelect, loading }) {
                         <div key={studio} className="col-md-6 col-lg-4 p-3 card-wrapper-centerleft">
                             <div className="card rotate-centerleft">
                                 <div className="card-body" onClick={() => onSelect(studio.toLowerCase())}>
-                                    <div className="circle"><Sparkles className="sparkle" /></div>
+                                    <div className="circle"><Clapperboard className="sparkle" /></div>
                                     <h5 className="card-title">{studio}</h5>
                                     <div className="divider">
                                         <div className="dash"></div>

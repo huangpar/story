@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
 // forcing rebuild
 import './politics.css';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Gavel } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -69,7 +69,7 @@ function DefaultView({ onSelect, peopleList = [] }) {
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-left">
                         <div className="card rotate-left">
                             <div className="card-body" onClick={() => onSelect("governors")}>
-                                <div className="circle"><Sparkles className="sparkle" /></div>
+                                <div className="circle"><Gavel className="sparkle" /></div>
                                 <h5 className="card-title">Governors</h5>
                                 <div className="divider">
                                     <div className="dash"></div>
@@ -82,7 +82,7 @@ function DefaultView({ onSelect, peopleList = [] }) {
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-left">
                         <div className="card rotate-left">
                             <div className="card-body" onClick={() => onSelect("senate")}>
-                                <div className="circle"><Sparkles className="sparkle" /></div>
+                                <div className="circle"><Gavel className="sparkle" /></div>
                                 <h5 className="card-title">Senate</h5>
                                 <div className="divider">
                                     <div className="dash"></div>
@@ -95,7 +95,7 @@ function DefaultView({ onSelect, peopleList = [] }) {
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-left">
                         <div className="card rotate-left">
                             <div className="card-body" onClick={() => onSelect("highCourt")}>
-                                <div className="circle"><Sparkles className="sparkle" /></div>
+                                <div className="circle"><Gavel className="sparkle" /></div>
                                 <h5 className="card-title">High Court</h5>
                                 <div className="divider">
                                     <div className="dash"></div>

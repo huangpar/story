@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import FamilyTreeWrapper from './FamilyTreeWrapper';
 import { useEffect, useState } from "react";
-import { Sparkles } from 'lucide-react';
+import { Sparkles, BookUser } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import CamelotLayout from "./camelot";
@@ -188,7 +188,7 @@ function DefaultView({ onSelect }) {
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-centerright">
                         <div className="card rotate-centerright">
                             <div className="card-body" onClick={() => onSelect("republic")}>
-                                <div className="circle"><Sparkles className="sparkle" /></div>
+                                <div className="circle"><BookUser className="sparkle" /></div>
                                 <h5 className="card-title">The Republic</h5>
                                 <div className="divider">
                                     <div className="dash"></div>
@@ -201,7 +201,7 @@ function DefaultView({ onSelect }) {
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-centerright">
                         <div className="card rotate-centerright">
                             <div className="card-body" onClick={() => onSelect("storia")}>
-                                <div className="circle"><Sparkles className="sparkle" /></div>
+                                <div className="circle"><BookUser className="sparkle" /></div>
                                 <h5 className="card-title">Storia</h5>
                                 <div className="divider">
                                     <div className="dash"></div>
@@ -214,7 +214,7 @@ function DefaultView({ onSelect }) {
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-centerright">
                         <div className="card rotate-centerright">
                             <div className="card-body" onClick={() => onSelect("familyTree")}>
-                                <div className="circle"><Sparkles className="sparkle" /></div>
+                                <div className="circle"><BookUser className="sparkle" /></div>
                                 <h5 className="card-title">Family Tree</h5>
                                 <div className="divider">
                                     <div className="dash"></div>
