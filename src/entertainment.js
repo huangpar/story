@@ -201,13 +201,13 @@ function DetailView({ view, onBack, companies, shows, people }) {
     );
 }
 
-function ShowTimeline({ assignments = [] }) {
-    const COLORS = [
-        "#ef4444", "#fbbf24", "#10b981", "#f97316", "#06b6d4",
-        "#6366f1", "#f43f5e", "#f59e0b", "#34d399", "#fb923c",
-        "#22d3ee", "#818cf8"
-    ];
+const COLORS = [
+    "#ef4444", "#fbbf24", "#10b981", "#f97316", "#06b6d4",
+    "#6366f1", "#f43f5e", "#f59e0b", "#34d399", "#fb923c",
+    "#22d3ee", "#818cf8"
+];
 
+function ShowTimeline({ assignments = [] }) {
     const personColors = useMemo(() => {
         if (!assignments || assignments.length === 0) return {};
         const colors = {};
