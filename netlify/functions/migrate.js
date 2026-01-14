@@ -41,45 +41,52 @@ exports.handler = async (event) => {
         } catch (pkErr) {
             console.log("PK update skipped (might already be correct or table empty):", pkErr.message);
         }
-        // 3. Education Tables
+        // 3. Education Tables (Aligned with user schema)
         await sql`
-            CREATE TABLE IF NOT EXISTS academies (
-                id SERIAL PRIMARY KEY,
-                name TEXT NOT NULL,
-                location TEXT,
-                description TEXT
+            CREATE TABLE IF NOT EXISTS education (
+                person_id int primary key references people(id) on delete cascade,
+                is_educator boolean not null default false
             )
         `;
         await sql`
-            CREATE TABLE IF NOT EXISTS majors (
-                id SERIAL PRIMARY KEY,
-                academy_id INTEGER REFERENCES academies(id) ON DELETE CASCADE,
-                name TEXT NOT NULL
+            CREATE TABLE IF NOT EXISTS schools (
+                id bigserial primary key,
+                name text not null,
+                city text,
+                region text
             )
         `;
         await sql`
-            CREATE TABLE IF NOT EXISTS person_academy (
-                person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
-                academy_id INTEGER NOT NULL REFERENCES academies(id) ON DELETE CASCADE,
-                position TEXT,
-                PRIMARY KEY (person_id, academy_id)
+            CREATE TABLE IF NOT EXISTS educator_schools (
+                person_id int references people(id) on delete cascade,
+                school_id bigint references schools(id) on delete cascade,
+                position text,
+                grade_levels text[],
+                primary key (person_id, school_id)
             )
         `;
         await sql`
-            ALTER TABLE education 
-            ADD COLUMN IF NOT EXISTS academy_id INTEGER REFERENCES academies(id) ON DELETE SET NULL,
-            ADD COLUMN IF NOT EXISTS major_id INTEGER REFERENCES majors(id) ON DELETE SET NULL,
-            ADD COLUMN IF NOT EXISTS role TEXT
+            CREATE TABLE IF NOT EXISTS subjects (
+                id bigserial primary key,
+                name text not null unique
+            )
         `;
-        // 4. Sample Data
-        const academies = await sql`SELECT id FROM academies LIMIT 1`;
-        if (academies.length === 0) {
-            const hogwarts = await sql`INSERT INTO academies (name, location, description) VALUES ('Hogwarts', 'Scotland', 'School of Witchcraft and Wizardry') RETURNING id`;
-            const brakebills = await sql`INSERT INTO academies (name, location, description) VALUES ('Brakebills', 'New York', 'University for Magical Pedagogy') RETURNING id`;
-            const ilvermorny = await sql`INSERT INTO academies (name, location, description) VALUES ('Ilvermorny', 'Massachusetts', 'North American School of Magic') RETURNING id`;
+        await sql`
+            CREATE TABLE IF NOT EXISTS teaching_assignments (
+                person_id int not null,
+                school_id bigint not null,
+                subject_id bigint not null,
+                primary key (person_id, school_id, subject_id),
+                foreign key (person_id, school_id) references educator_schools(person_id, school_id) on delete cascade,
+                foreign key (subject_id) references subjects(id) on delete cascade
+            )
+        `;
 
-            await sql`INSERT INTO majors (academy_id, name) VALUES (${hogwarts[0].id}, 'Gryffindor'), (${hogwarts[0].id}, 'Slytherin'), (${hogwarts[0].id}, 'Ravenclaw'), (${hogwarts[0].id}, 'Hufflepuff')`;
-            await sql`INSERT INTO majors (academy_id, name) VALUES (${brakebills[0].id}, 'Physical Kids'), (${brakebills[0].id}, 'Psychics'), (${brakebills[0].id}, 'Travelers')`;
+        // 4. Sample Data
+        const schCount = await sql`SELECT count(*) FROM schools`;
+        if (schCount[0].count === '0') {
+            await sql`INSERT INTO schools (name, city, region) VALUES ('Hogwarts', 'Highlands', 'Scotland'), ('Ilvermorny', 'Mount Greylock', 'Massachusetts'), ('Brakebills', 'New York City', 'New York')`;
+            await sql`INSERT INTO subjects (name) VALUES ('Potions'), ('Charms'), ('Transfiguration'), ('Defense Against the Dark Arts'), ('Physical Magic'), ('Traveling')`;
         }
         console.log("Sample data added.");
 

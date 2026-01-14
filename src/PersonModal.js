@@ -12,14 +12,13 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
         is_politician: false,
         is_entertainer: false,
         ent_position: "",
-        academy_id: "",
-        major_id: "",
-        edu_role: "",
+        school_id: "",
+        edu_position: "",
+        edu_subjects: [],
     });
     const [saving, setSaving] = useState(false);
-    const [academies, setAcademies] = useState([]);
-    const [allMajors, setAllMajors] = useState([]);
-    const [availableMajors, setAvailableMajors] = useState([]);
+    const [schools, setSchools] = useState([]);
+    const [subjects, setSubjects] = useState([]);
 
     // Helpers for Name <-> ID resolution
     const getId = (name) => {
@@ -30,8 +29,8 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
     };
 
     useEffect(() => {
-        fetch("/.netlify/functions/academies").then(res => res.json()).then(data => setAcademies(data));
-        fetch("/.netlify/functions/majors").then(res => res.json()).then(data => setAllMajors(data));
+        fetch("/.netlify/functions/schools").then(res => res.json()).then(data => setSchools(data));
+        fetch("/.netlify/functions/subjects").then(res => res.json()).then(data => setSubjects(data));
     }, []);
 
     useEffect(() => {
@@ -60,9 +59,9 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 is_politician: person.is_politician || false,
                 is_entertainer: person.is_entertainer || false,
                 ent_position: person.company?.position || "",
-                academy_id: person.academy_id || "",
-                major_id: person.major_id || "",
-                edu_role: person.edu_role || "",
+                school_id: person.schools?.[0]?.id || "",
+                edu_position: person.schools?.[0]?.position || "",
+                edu_subjects: person.schools?.[0]?.subjects?.map(s => s.id) || [],
             });
         }
     }, [person, peopleList]);
@@ -108,9 +107,9 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 mid: mid,
                 sid: sid,
                 is_educator: formData.is_educator,
-                academy_id: formData.academy_id || null,
-                major_id: formData.major_id || null,
-                edu_role: formData.edu_role || null,
+                school_id: formData.school_id || null,
+                edu_position: formData.edu_position || null,
+                edu_subjects: formData.edu_subjects,
                 is_politician: formData.is_politician,
                 is_entertainer: formData.is_entertainer,
                 entertainer_position: formData.ent_position,
@@ -174,22 +173,30 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                     {formData.is_educator && (
                         <div className="form-group sub-input" style={{ marginLeft: '20px', marginTop: '5px' }}>
                             <div className="form-group">
-                                <label>Academy</label>
-                                <select name="academy_id" value={formData.academy_id} onChange={handleChange}>
-                                    <option value="">Select Academy</option>
-                                    {academies.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
+                                <label>School</label>
+                                <select name="school_id" value={formData.school_id} onChange={handleChange}>
+                                    <option value="">Select School</option>
+                                    {schools.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                                 </select>
                             </div>
                             <div className="form-group">
-                                <label>Major/House</label>
-                                <select name="major_id" value={formData.major_id} onChange={handleChange}>
-                                    <option value="">Select Major</option>
-                                    {availableMajors.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
-                                </select>
+                                <label>Position</label>
+                                <input name="edu_position" value={formData.edu_position} onChange={handleChange} placeholder="e.g. Professor, Dean" />
                             </div>
                             <div className="form-group">
-                                <label>Education Role</label>
-                                <input name="edu_role" value={formData.edu_role} onChange={handleChange} placeholder="e.g. Student, Professor" />
+                                <label>Subjects (Hold Ctrl to select multiple)</label>
+                                <select
+                                    multiple
+                                    name="edu_subjects"
+                                    value={formData.edu_subjects}
+                                    onChange={(e) => {
+                                        const values = Array.from(e.target.selectedOptions, option => option.value);
+                                        setFormData(prev => ({ ...prev, edu_subjects: values }));
+                                    }}
+                                    style={{ height: '100px' }}
+                                >
+                                    {subjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                                </select>
                             </div>
                         </div>
                     )}
