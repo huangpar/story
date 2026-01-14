@@ -66,13 +66,6 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
         }
     }, [person, peopleList]);
 
-    useEffect(() => {
-        if (formData.academy_id) {
-            setAvailableMajors(allMajors.filter(m => String(m.academy_id) === String(formData.academy_id)));
-        } else {
-            setAvailableMajors([]);
-        }
-    }, [formData.academy_id, allMajors]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
