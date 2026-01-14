@@ -386,6 +386,11 @@
     transition: color 0.2s;
 }
 
-.remove-range:hover {
-    color: #ef4444;
+.input-with-label.role-input {
+    flex: 1;
+    min-width: 120px;
+}
+
+.input-with-label.role-input input {
+    width: 100%;
 }

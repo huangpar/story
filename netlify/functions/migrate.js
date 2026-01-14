@@ -22,10 +22,17 @@ exports.handler = async (event) => {
                 first_season INTEGER,
                 last_season INTEGER,
                 duration TEXT,
+                role TEXT,
                 PRIMARY KEY (person_id, show_id, first_season)
             )
         `;
 
+        // If the table already exists, we might need to update the columns
+        try {
+            await sql`ALTER TABLE person_show ADD COLUMN IF NOT EXISTS role TEXT`;
+        } catch (colErr) {
+            console.log("Column update skipped:", colErr.message);
+        }
         // If the table already exists, we might need to update the PK
         try {
             await sql`ALTER TABLE person_show DROP CONSTRAINT person_show_pkey`;

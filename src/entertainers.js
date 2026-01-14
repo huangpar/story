@@ -100,13 +100,15 @@ export function Entertainers() {
                 show_id: s.id,
                 first_season: s.first_season,
                 last_season: s.last_season,
-                duration: s.duration
+                duration: s.duration,
+                role: s.role
             }))
             : (person.shows ? person.shows.map(s => ({
                 show_id: s.id,
                 first_season: s.first_season,
                 last_season: s.last_season,
-                duration: s.duration
+                duration: s.duration,
+                role: s.role
             })) : []);
 
         const finalPayload = {
@@ -179,7 +181,7 @@ export function Entertainers() {
         } else {
             // Add a fresh assignment for this show
             const showToAdd = shows.find(s => String(s.id) === String(showId));
-            newShows = [...currentShows, { ...showToAdd, first_season: 1, last_season: 1 }];
+            newShows = [...currentShows, { ...showToAdd, first_season: 1, last_season: 1, role: "" }];
         }
         handleUpdate(person, { shows: newShows });
     };
@@ -187,7 +189,7 @@ export function Entertainers() {
     const addShowRange = (person, showId) => {
         const currentShows = person.shows || [];
         const showToAdd = shows.find(s => String(s.id) === String(showId));
-        const newShows = [...currentShows, { ...showToAdd, first_season: null, last_season: null }];
+        const newShows = [...currentShows, { ...showToAdd, first_season: null, last_season: null, role: "" }];
         handleUpdate(person, { shows: newShows });
     };
 
@@ -202,7 +204,11 @@ export function Entertainers() {
         const currentShows = person.shows || [];
         const newShows = currentShows.map(s => {
             if (String(s.id) === String(showId) && s.first_season === oldFirstSeason) {
-                return { ...s, [field]: val === "" ? null : parseInt(val) };
+                // Parse numbers for season fields, keep string for role
+                const finalVal = (field === 'first_season' || field === 'last_season')
+                    ? (val === "" ? null : parseInt(val))
+                    : val;
+                return { ...s, [field]: finalVal };
             }
             return s;
         });
@@ -311,6 +317,15 @@ export function Entertainers() {
                                                                     placeholder="End"
                                                                     value={asgn.last_season || ""}
                                                                     onChange={(e) => handleShowRangeChange(p, showId, asgn.first_season, 'last_season', e.target.value)}
+                                                                />
+                                                            </div>
+                                                            <div className="input-with-label role-input">
+                                                                <span>Role</span>
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder="e.g. Host"
+                                                                    value={asgn.role || ""}
+                                                                    onChange={(e) => handleShowRangeChange(p, showId, asgn.first_season, 'role', e.target.value)}
                                                                 />
                                                             </div>
                                                         </div>

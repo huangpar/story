@@ -28,7 +28,7 @@
   min-width: 1200px;
   margin: 0 auto auto auto;
   padding: 30px 50px;
-  border-radius:25px;
+  border-radius: 25px;
   position: relative;
   box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
 }
@@ -46,18 +46,20 @@
   /* padding-left: 0; */
 }
 
-.entertainmentinfo .container > .row {
+.entertainmentinfo .container>.row {
   width: 100%;
   max-width: 1100px;
-  margin: 0; /* override Bootstrap negative margins */
-  --bs-gutter-x: 1rem; /* keep some horizontal spacing between cols */
+  margin: 0;
+  /* override Bootstrap negative margins */
+  --bs-gutter-x: 1rem;
+  /* keep some horizontal spacing between cols */
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 0;
 }
 
-.entertainmentinfo .container > .row > [class*="col-"] {
+.entertainmentinfo .container>.row>[class*="col-"] {
   display: flex;
   justify-content: center;
   margin-top: 0;
@@ -331,4 +333,116 @@
 
 .entertainment .addPerson:hover {
   transform: scale(1.05);
+}
+
+/* Timeline Components */
+.timeline-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.timeline-grid {
+  position: relative;
+  border-left: 2px solid #E5E7EB;
+  border-bottom: 2px solid #E5E7EB;
+  padding: 20px 0 10px 0;
+  margin-bottom: 5px;
+}
+
+.timeline-axis-x {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+.axis-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #F3F4F6;
+  display: flex;
+  align-items: flex-start;
+}
+
+.axis-tick span {
+  position: absolute;
+  top: -20px;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.timeline-row {
+  display: flex;
+  align-items: center;
+  height: 35px;
+  position: relative;
+  z-index: 1;
+}
+
+.role-label {
+  width: 80px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  padding-right: 10px;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar-area {
+  flex: 1;
+  height: 20px;
+  position: relative;
+  background: rgba(243, 244, 246, 0.5);
+  border-radius: 4px;
+}
+
+.timeline-bar {
+  position: absolute;
+  height: 100%;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  cursor: help;
+}
+
+.timeline-bar:hover {
+  transform: scaleY(1.1);
+  z-index: 10;
+}
+
+.timeline-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #F3E8FF;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legend-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #4b5563;
 }

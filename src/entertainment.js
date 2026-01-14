@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import './entertainment.css';
 import { Sparkles, Users, Clapperboard, Star, ArrowLeft } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 export function Entertainment() {
     const [companies, setCompanies] = useState([]);
@@ -144,20 +144,30 @@ function DetailView({ view, onBack, companies, shows, people }) {
                         <div className="studio-content">
                             <div className="shows-list">
                                 {studioShows.length > 0 ? studioShows.map(show => {
-                                    // Match by checking the many-to-many shows array
-                                    const cast = people.filter(p => p.shows && p.shows.some(ps => String(ps.id) === String(show.id)));
+                                    const castAssignments = [];
+                                    people.forEach(p => {
+                                        if (p.shows) {
+                                            p.shows.forEach(ps => {
+                                                if (String(ps.id) === String(show.id)) {
+                                                    castAssignments.push({
+                                                        personId: p.id,
+                                                        personName: p.name,
+                                                        role: ps.role || "Actor",
+                                                        firstSeason: ps.first_season || 1,
+                                                        lastSeason: ps.last_season || 1
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+
                                     return (
                                         <div key={show.id} className="show-card">
                                             <div className="show-title">
                                                 <Star size={16} fill="#ec4899" color="#ec4899" />
                                                 {show.name}
                                             </div>
-                                            <div className="cast-list">
-                                                {cast.map(c => (
-                                                    <span key={c.id} className="cast-name">{c.name}</span>
-                                                ))}
-                                                {cast.length === 0 && <span className="empty">Cast TBA</span>}
-                                            </div>
+                                            <ShowTimeline assignments={castAssignments} />
                                         </div>
                                     )
                                 }) : <p className="empty">No active shows</p>}
@@ -186,6 +196,82 @@ function DetailView({ view, onBack, companies, shows, people }) {
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    );
+}
+
+function ShowTimeline({ assignments }) {
+    if (!assignments || assignments.length === 0) return <div className="cast-list"><span className="empty">Cast TBA</span></div>;
+
+    const COLORS = [
+        "#ef4444", "#fbbf24", "#10b981", "#f97316", "#06b6d4",
+        "#6366f1", "#f43f5e", "#f59e0b", "#34d399", "#fb923c",
+        "#22d3ee", "#818cf8"
+    ];
+
+    const personColors = useMemo(() => {
+        const colors = {};
+        const uniquePeople = Array.from(new Set(assignments.map(a => a.personId)));
+        uniquePeople.forEach((pid, idx) => {
+            colors[pid] = COLORS[idx % COLORS.length];
+        });
+        return colors;
+    }, [assignments]);
+
+    // Group by role
+    const roles = Array.from(new Set(assignments.map(a => a.role))).sort();
+    const maxSeason = Math.max(...assignments.map(a => a.lastSeason), 1);
+    const minSeason = Math.min(...assignments.map(a => a.firstSeason), 1);
+    const totalSeasons = Math.max(maxSeason - minSeason + 1, 1);
+
+    // Helper to get relative position
+    const getPos = (season) => ((season - minSeason) / totalSeasons) * 100;
+    const getWidth = (start, end) => ((end - start + 1) / totalSeasons) * 100;
+
+    return (
+        <div className="timeline-container">
+            <div className="timeline-grid">
+                <div className="timeline-axis-x">
+                    {Array.from({ length: totalSeasons }).map((_, i) => (
+                        <div key={i} className="axis-tick" style={{ left: `${(i / totalSeasons) * 100}%` }}>
+                            <span>{minSeason + i}</span>
+                        </div>
+                    ))}
+                    <div className="axis-tick" style={{ left: '100%' }}><span>{maxSeason + 1}</span></div>
+                </div>
+
+                {roles.map(role => (
+                    <div key={role} className="timeline-row">
+                        <div className="role-label" title={role}>{role}</div>
+                        <div className="bar-area">
+                            {assignments.filter(a => a.role === role).map((asgn, idx) => (
+                                <div
+                                    key={`${asgn.personId}-${idx}`}
+                                    className="timeline-bar"
+                                    style={{
+                                        left: `${getPos(asgn.firstSeason)}%`,
+                                        width: `${getWidth(asgn.firstSeason, asgn.lastSeason)}%`,
+                                        backgroundColor: personColors[asgn.personId]
+                                    }}
+                                    title={`${asgn.personName}: Season ${asgn.firstSeason} - ${asgn.lastSeason}`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className="timeline-legend">
+                {Object.keys(personColors).map(pid => {
+                    const personName = assignments.find(a => String(a.personId) === String(pid))?.personName;
+                    return (
+                        <div key={pid} className="legend-item">
+                            <span className="legend-dot" style={{ backgroundColor: personColors[pid] }}></span>
+                            <span className="legend-name">{personName}</span>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

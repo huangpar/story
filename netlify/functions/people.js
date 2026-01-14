@@ -46,11 +46,13 @@ exports.handler = async (event) => {
             first_season INTEGER,
             last_season INTEGER,
             duration TEXT,
+            role TEXT,
             PRIMARY KEY (person_id, show_id, first_season)
           )
         `;
-        // Handle migration of existing table if it doesn't have the new PK
+        // Handle migration of existing table
         try {
+          await sql`ALTER TABLE person_show ADD COLUMN IF NOT EXISTS role TEXT`;
           await sql`ALTER TABLE person_show DROP CONSTRAINT IF EXISTS person_show_pkey`;
           await sql`ALTER TABLE person_show ADD PRIMARY KEY (person_id, show_id, first_season)`;
         } catch (e) {
@@ -171,8 +173,8 @@ exports.handler = async (event) => {
                   if (!isNaN(sid)) {
                     console.log(`PUT: Inserting show ${sid} for person ${pid}`);
                     await sql`
-                              INSERT INTO person_show (person_id, show_id, first_season, last_season, duration)
-                              VALUES (${pid}, ${sid}, ${sa.first_season || null}, ${sa.last_season || null}, ${sa.duration || null})
+                              INSERT INTO person_show (person_id, show_id, first_season, last_season, duration, role)
+                              VALUES (${pid}, ${sid}, ${sa.first_season || null}, ${sa.last_season || null}, ${sa.duration || null}, ${sa.role || null})
                           `;
                   }
                 }
@@ -303,7 +305,8 @@ exports.handler = async (event) => {
             name: ps.show_name || `Show ${ps.show_id}`,
             first_season: ps.first_season,
             last_season: ps.last_season,
-            duration: ps.duration
+            duration: ps.duration,
+            role: ps.role
           }));
 
         data[r.id] = {
