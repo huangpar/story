@@ -43,12 +43,19 @@ exports.handler = async (event) => {
           CREATE TABLE IF NOT EXISTS person_show (
             person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
             show_id INTEGER NOT NULL REFERENCES shows(id) ON DELETE CASCADE,
-            PRIMARY KEY (person_id, show_id)
+            first_season INTEGER,
+            last_season INTEGER,
+            duration TEXT,
+            PRIMARY KEY (person_id, show_id, first_season)
           )
         `;
-        await sql`ALTER TABLE person_show ADD COLUMN IF NOT EXISTS first_season INTEGER`;
-        await sql`ALTER TABLE person_show ADD COLUMN IF NOT EXISTS last_season INTEGER`;
-        await sql`ALTER TABLE person_show ADD COLUMN IF NOT EXISTS duration TEXT`;
+        // Handle migration of existing table if it doesn't have the new PK
+        try {
+          await sql`ALTER TABLE person_show DROP CONSTRAINT IF EXISTS person_show_pkey`;
+          await sql`ALTER TABLE person_show ADD PRIMARY KEY (person_id, show_id, first_season)`;
+        } catch (e) {
+          // Ignore if it fails (likely already correct)
+        }
       } catch (migErr) {
         console.error("Auto-migration during PUT failed:", migErr);
         // Continue anyway, individual queries below have their own try/catches

@@ -169,14 +169,43 @@ export function Entertainers() {
 
     const toggleShow = (person, showId) => {
         const currentShows = person.shows || [];
-        const exists = currentShows.find(s => String(s.id) === String(showId));
+        const sameShowAssignments = currentShows.filter(s => String(s.id) === String(showId));
+
         let newShows;
-        if (exists) {
+        if (sameShowAssignments.length > 0) {
+            // If it exists, we remove ALL ranges for this show when clicking the chip
+            // This is consistent with previous "toggle" behavior
             newShows = currentShows.filter(s => String(s.id) !== String(showId));
         } else {
+            // Add a fresh assignment for this show
             const showToAdd = shows.find(s => String(s.id) === String(showId));
-            newShows = [...currentShows, { ...showToAdd }];
+            newShows = [...currentShows, { ...showToAdd, first_season: 1, last_season: 1 }];
         }
+        handleUpdate(person, { shows: newShows });
+    };
+
+    const addShowRange = (person, showId) => {
+        const currentShows = person.shows || [];
+        const showToAdd = shows.find(s => String(s.id) === String(showId));
+        const newShows = [...currentShows, { ...showToAdd, first_season: null, last_season: null }];
+        handleUpdate(person, { shows: newShows });
+    };
+
+    const removeShowRange = (person, showId, firstSeason) => {
+        const currentShows = person.shows || [];
+        // Find the specific assignment and remove it
+        const newShows = currentShows.filter(s => !(String(s.id) === String(showId) && s.first_season === firstSeason));
+        handleUpdate(person, { shows: newShows });
+    };
+
+    const handleShowRangeChange = (person, showId, oldFirstSeason, field, val) => {
+        const currentShows = person.shows || [];
+        const newShows = currentShows.map(s => {
+            if (String(s.id) === String(showId) && s.first_season === oldFirstSeason) {
+                return { ...s, [field]: val === "" ? null : parseInt(val) };
+            }
+            return s;
+        });
         handleUpdate(person, { shows: newShows });
     };
 
@@ -250,6 +279,49 @@ export function Entertainers() {
                                     )
                                 })}
                             </div>
+
+                            {(p.shows || []).length > 0 && (
+                                <div className="show-ranges-editor">
+                                    {/* Group by show to make it cleaner */}
+                                    {Array.from(new Set(p.shows.map(s => s.id))).map(showId => {
+                                        const show = shows.find(s => String(s.id) === String(showId));
+                                        const assignments = p.shows.filter(ps => String(ps.id) === String(showId));
+                                        return (
+                                            <div key={showId} className="show-range-group">
+                                                <div className="show-range-header">
+                                                    <h4>{show?.name}</h4>
+                                                    <button className="add-range-btn" onClick={() => addShowRange(p, showId)}>+ Add Range</button>
+                                                </div>
+                                                {assignments.map((asgn, idx) => (
+                                                    <div key={idx} className="range-row">
+                                                        <div className="range-inputs">
+                                                            <div className="input-with-label">
+                                                                <span>S</span>
+                                                                <input
+                                                                    type="number"
+                                                                    placeholder="Start"
+                                                                    value={asgn.first_season || ""}
+                                                                    onChange={(e) => handleShowRangeChange(p, showId, asgn.first_season, 'first_season', e.target.value)}
+                                                                />
+                                                            </div>
+                                                            <div className="input-with-label">
+                                                                <span>E</span>
+                                                                <input
+                                                                    type="number"
+                                                                    placeholder="End"
+                                                                    value={asgn.last_season || ""}
+                                                                    onChange={(e) => handleShowRangeChange(p, showId, asgn.first_season, 'last_season', e.target.value)}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <button className="remove-range" onClick={() => removeShowRange(p, showId, asgn.first_season)}>×</button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
                     </div>
                 ))}

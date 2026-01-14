@@ -22,10 +22,18 @@ exports.handler = async (event) => {
                 first_season INTEGER,
                 last_season INTEGER,
                 duration TEXT,
-                PRIMARY KEY (person_id, show_id)
+                PRIMARY KEY (person_id, show_id, first_season)
             )
         `;
-        console.log("person_show table created.");
+
+        // If the table already exists, we might need to update the PK
+        try {
+            await sql`ALTER TABLE person_show DROP CONSTRAINT person_show_pkey`;
+            await sql`ALTER TABLE person_show ADD PRIMARY KEY (person_id, show_id, first_season)`;
+        } catch (pkErr) {
+            console.log("PK update skipped (might already be correct or table empty):", pkErr.message);
+        }
+        console.log("person_show table created/updated.");
 
         return {
             statusCode: 200,
