@@ -131,6 +131,16 @@ exports.handler = async (event) => {
             show_assignments
           } = body;
 
+          // Ensure basic entertainer flag is set
+          await sql`
+            INSERT INTO entertainment (person_id, is_entertainer, company_id, position)
+            VALUES (${id}, true, ${entertainer_company_id || null}, ${entertainer_position || null})
+            ON CONFLICT (person_id) DO UPDATE SET 
+              is_entertainer = true, 
+              company_id = EXCLUDED.company_id,
+              position = EXCLUDED.position
+          `;
+
           // Handle Multi-Studio assignments
           if (studio_assignments !== undefined) {
             console.log(`PUT: Updating studios for person ${id}`, studio_assignments);
