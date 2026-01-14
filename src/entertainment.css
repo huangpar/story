@@ -446,3 +446,50 @@
   font-weight: 500;
   color: #4b5563;
 }
+
+/* Show Tabs Styles */
+.entertainment-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  max-width: 900px;
+  margin: 0 auto 40px;
+  padding: 5px;
+  background: #FDF2F8;
+  border-radius: 25px;
+  border: 1px solid #FBCFE8;
+}
+
+.ent-tab {
+  text-align: center;
+  color: #9D174D;
+  padding: 8px 25px;
+  margin: 0 5px;
+  border-radius: 20px;
+  flex: 1;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.ent-tab.active {
+  background: linear-gradient(125deg, #DB2777, #C026D3) !important;
+  color: white;
+  box-shadow: 0 4px 12px rgba(219, 39, 119, 0.2);
+}
+
+.ent-tab:hover:not(.active) {
+  background: #FCE7F3;
+}
+
+.studio-overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.show-focus {
+  max-width: 1000px;
+  margin: 0 auto;
+}

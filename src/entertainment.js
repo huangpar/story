@@ -94,11 +94,20 @@ function DefaultView({ onSelect }) {
 }
 
 function DetailView({ view, onBack, companies, shows, people }) {
-    // view is "levon", "flickr", or "once"
-    const studioName = view.charAt(0).toUpperCase() + view.slice(1);
+    const [activeTab, setActiveTab] = useState("overview");
+
+    const studioName = view === "storia" ? "Storia" : view.charAt(0).toUpperCase() + view.slice(1);
     const company = companies.find(c => c.name === studioName);
     const staff = people.filter(p => p.company && p.company.name === studioName);
     const studioShows = shows.filter(s => company && s.company_id === company.id);
+
+    useEffect(() => {
+        // Only set default if not already set or invalid
+        if (activeTab === "overview") return;
+        if (activeTab !== "overview" && !studioShows.find(s => String(s.id) === String(activeTab))) {
+            setActiveTab("overview");
+        }
+    }, [studioShows, activeTab]);
 
     return (
         <div className="entertainmentinfo">
@@ -108,7 +117,7 @@ function DetailView({ view, onBack, companies, shows, people }) {
             </div>
 
             <div className="studio-detail-wrap">
-                <div className="d-flex justify-content-center mb-5">
+                <div className="d-flex justify-content-center mb-4">
                     <div className="position-relative">
                         <div className="glow-bg position-absolute top-0 start-0 w-100 h-100 rounded-pill"></div>
                         <div className="glow-pill position-relative px-5 py-3 rounded-pill shadow-lg">
@@ -117,84 +126,98 @@ function DetailView({ view, onBack, companies, shows, people }) {
                     </div>
                 </div>
 
-                <div className="studio-grid-detail">
-                    <div className="studio-card detail">
-                        <div className="studio-header">
-                            <Clapperboard size={24} className="studio-icon" />
-                            <h2>Staff & Executives</h2>
+                <div className="entertainment-bar">
+                    <div
+                        className={`ent-tab ${activeTab === "overview" ? "active" : ""}`}
+                        onClick={() => setActiveTab("overview")}
+                    >
+                        Overview
+                    </div>
+                    {studioShows.map(show => (
+                        <div
+                            key={show.id}
+                            className={`ent-tab ${String(activeTab) === String(show.id) ? "active" : ""}`}
+                            onClick={() => setActiveTab(show.id)}
+                        >
+                            {show.name}
                         </div>
-                        <div className="studio-content">
-                            <div className="staff-list">
-                                {staff.length > 0 ? staff.map(member => (
-                                    <div key={member.id} className="staff-member">
-                                        <span className="member-name">{member.name}</span>
-                                        <span className="member-role">{member.company.position || "Staff"}</span>
-                                    </div>
-                                )) : <p className="empty">No staff assigned</p>}
+                    ))}
+                </div>
+
+                {activeTab === "overview" ? (
+                    <div className="studio-overview-grid">
+                        <div className="studio-card detail">
+                            <div className="studio-header">
+                                <Clapperboard size={24} className="studio-icon" />
+                                <h2>Staff & Executives</h2>
+                            </div>
+                            <div className="studio-content">
+                                <div className="staff-list">
+                                    {staff.length > 0 ? staff.map(member => (
+                                        <div key={member.id} className="staff-member">
+                                            <span className="member-name">{member.name}</span>
+                                            <span className="member-role">{member.company.position || "Staff"}</span>
+                                        </div>
+                                    )) : <p className="empty">No staff assigned</p>}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="studio-card detail">
+                            <div className="studio-header">
+                                <Users size={24} className="studio-icon" />
+                                <h2>Studio Talent</h2>
+                            </div>
+                            <div className="studio-content">
+                                <div className="staff-list">
+                                    {people.filter(p => p.studios && p.studios.some(s => String(s.id) === String(company.id))).map(person => {
+                                        const studioInfo = person.studios.find(s => String(s.id) === String(company.id));
+                                        return (
+                                            <div key={person.id} className="staff-member">
+                                                <span className="member-name">{person.name}</span>
+                                                <span className="member-role">{studioInfo.position || "Talent"}</span>
+                                            </div>
+                                        );
+                                    })}
+                                    {people.filter(p => p.studios && p.studios.some(s => String(s.id) === String(company.id))).length === 0 && <p className="empty">No talent assigned</p>}
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div className="studio-card detail">
-                        <div className="studio-header">
-                            <Star size={24} className="studio-icon" />
-                            <h2>Current Productions</h2>
-                        </div>
-                        <div className="studio-content">
-                            <div className="shows-list">
-                                {studioShows.length > 0 ? studioShows.map(show => {
-                                    const castAssignments = [];
-                                    people.forEach(p => {
-                                        if (p.shows) {
-                                            p.shows.forEach(ps => {
-                                                if (String(ps.id) === String(show.id)) {
-                                                    castAssignments.push({
-                                                        personId: p.id,
-                                                        personName: p.name,
-                                                        role: ps.role || "Actor",
-                                                        firstSeason: ps.first_season || 1,
-                                                        lastSeason: ps.last_season || 1
-                                                    });
-                                                }
+                ) : (
+                    <div className="show-detail-view">
+                        {studioShows.filter(s => String(s.id) === String(activeTab)).map(show => {
+                            const castAssignments = [];
+                            people.forEach(p => {
+                                if (p.shows) {
+                                    p.shows.forEach(ps => {
+                                        if (String(ps.id) === String(show.id)) {
+                                            castAssignments.push({
+                                                personId: p.id,
+                                                personName: p.name,
+                                                role: ps.role || "Actor",
+                                                firstSeason: ps.first_season || 1,
+                                                lastSeason: ps.last_season || 1
                                             });
                                         }
                                     });
+                                }
+                            });
 
-                                    return (
-                                        <div key={show.id} className="show-card">
-                                            <div className="show-title">
-                                                <Star size={16} fill="#ec4899" color="#ec4899" />
-                                                {show.name}
-                                            </div>
-                                            <ShowTimeline assignments={castAssignments} />
-                                        </div>
-                                    )
-                                }) : <p className="empty">No active shows</p>}
-                            </div>
-                        </div>
+                            return (
+                                <div key={show.id} className="studio-card show-focus">
+                                    <div className="studio-header">
+                                        <Star size={24} className="studio-icon" />
+                                        <h2>{show.name} Production</h2>
+                                    </div>
+                                    <div className="studio-content">
+                                        <ShowTimeline assignments={castAssignments} />
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
-
-                    <div className="studio-card detail">
-                        <div className="studio-header">
-                            <Users size={24} className="studio-icon" />
-                            <h2>Studio Talent</h2>
-                        </div>
-                        <div className="studio-content">
-                            <div className="staff-list">
-                                {people.filter(p => p.studios && p.studios.some(s => String(s.id) === String(company.id))).map(person => {
-                                    const studioInfo = person.studios.find(s => String(s.id) === String(company.id));
-                                    return (
-                                        <div key={person.id} className="staff-member">
-                                            <span className="member-name">{person.name}</span>
-                                            <span className="member-role">{studioInfo.position || "Talent"}</span>
-                                        </div>
-                                    );
-                                })}
-                                {people.filter(p => p.studios && p.studios.some(s => String(s.id) === String(company.id))).length === 0 && <p className="empty">No talent assigned</p>}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                )}
             </div>
         </div>
     );
