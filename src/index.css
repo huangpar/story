@@ -535,14 +535,16 @@ main.home .card {
 main.home .card:hover,
 .people .card:hover,
 .politics .card:hover,
-.entertainment .card:hover {
+.entertainment .card:hover,
+.education .card:hover {
   transform: rotate(0deg) scale(1.05) translateY(-4px);
 }
 
 main.home .card:hover .circle,
 .people .card:hover .circle,
 .politics .card:hover .circle,
-.entertainment .card:hover .circle {
+.entertainment .card:hover .circle,
+.education .card:hover .circle {
   animation-name: spin;
   animation-duration: 1000ms;
   animation-iteration-count: infinite;
@@ -571,7 +573,8 @@ main.home .card a:hover {
 main.home .card-title,
 .people .card-title,
 .politics .card-title,
-.entertainment .card-title {
+.entertainment .card-title,
+.education .card-title {
   text-decoration: none;
   text-align: center;
   white-space: nowrap;
@@ -589,7 +592,8 @@ main.home .card-title,
 main.home .card-body,
 .people .card-body,
 .politics .card-body,
-.entertainment .card-body {
+.entertainment .card-body,
+.education .card-body {
   text-align: center;
   display: flex;
   align-items: center;
