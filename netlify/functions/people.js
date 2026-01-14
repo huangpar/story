@@ -349,14 +349,7 @@ exports.handler = async (event) => {
         "content-type": "application/json",
         "cache-control": "no-store",
       },
-      body: JSON.stringify({
-        ...data,
-        _debug: {
-          assignment_count: allShowAssignments.length,
-          people_count: rows.length,
-          sample_assignment: allShowAssignments[0] || null
-        }
-      }),
+      body: JSON.stringify(Object.values(data)),
     };
   } catch (err) {
     console.error("Global people function error:", err);

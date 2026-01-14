@@ -58,7 +58,6 @@ export function Entertainers() {
             fetch("/.netlify/functions/companies").then(res => res.json()),
             fetch("/.netlify/functions/shows").then(res => res.json())
         ]).then(([peopleData, compData, showData]) => {
-            // peopleData is now keyed by ID and contains 'name' inside
             const peopleArr = Object.values(peopleData);
             console.log("Entertainers Page Debug:", {
                 peopleSample: peopleArr[0],

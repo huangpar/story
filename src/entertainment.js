@@ -18,7 +18,6 @@ export function Entertainment() {
         ]).then(([compData, showData, peopleData]) => {
             setCompanies(Array.isArray(compData) ? compData : []);
             setShows(Array.isArray(showData) ? showData : []);
-            // peopleData is now keyed by ID and contains 'name' inside
             const peopleArr = Object.values(peopleData);
             console.log("Entertainment Page Debug:", {
                 peopleCount: peopleArr.length,
