@@ -201,9 +201,7 @@ function DetailView({ view, onBack, companies, shows, people }) {
     );
 }
 
-function ShowTimeline({ assignments }) {
-    if (!assignments || assignments.length === 0) return <div className="cast-list"><span className="empty">Cast TBA</span></div>;
-
+function ShowTimeline({ assignments = [] }) {
     const COLORS = [
         "#ef4444", "#fbbf24", "#10b981", "#f97316", "#06b6d4",
         "#6366f1", "#f43f5e", "#f59e0b", "#34d399", "#fb923c",
@@ -211,6 +209,7 @@ function ShowTimeline({ assignments }) {
     ];
 
     const personColors = useMemo(() => {
+        if (!assignments || assignments.length === 0) return {};
         const colors = {};
         const uniquePeople = Array.from(new Set(assignments.map(a => a.personId)));
         uniquePeople.forEach((pid, idx) => {
@@ -218,6 +217,8 @@ function ShowTimeline({ assignments }) {
         });
         return colors;
     }, [assignments]);
+
+    if (!assignments || assignments.length === 0) return <div className="cast-list"><span className="empty">Cast TBA</span></div>;
 
     // Group by role
     const roles = Array.from(new Set(assignments.map(a => a.role))).sort();
