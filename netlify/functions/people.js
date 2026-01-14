@@ -31,6 +31,7 @@ exports.handler = async (event) => {
       try {
         await sql`ALTER TABLE entertainment ADD COLUMN IF NOT EXISTS company_id INTEGER`;
         await sql`ALTER TABLE entertainment ADD COLUMN IF NOT EXISTS position TEXT`;
+        await sql`ALTER TABLE entertainment ADD COLUMN IF NOT EXISTS is_entertainer BOOLEAN DEFAULT true`;
         await sql`
           CREATE TABLE IF NOT EXISTS person_company (
             person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,

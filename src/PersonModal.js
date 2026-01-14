@@ -11,6 +11,7 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
         is_educator: false,
         is_politician: false,
         is_entertainer: false,
+        ent_position: "",
     });
     const [saving, setSaving] = useState(false);
 
@@ -47,6 +48,7 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 is_educator: person.is_educator || false,
                 is_politician: person.is_politician || false,
                 is_entertainer: person.is_entertainer || false,
+                ent_position: person.company?.position || "",
             });
         }
     }, [person, peopleList]);
@@ -86,6 +88,7 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 is_educator: formData.is_educator,
                 is_politician: formData.is_politician,
                 is_entertainer: formData.is_entertainer,
+                entertainer_position: formData.ent_position,
             };
 
             const res = await fetch("/.netlify/functions/people", {
@@ -151,6 +154,12 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                         <input type="checkbox" name="is_entertainer" checked={formData.is_entertainer} onChange={handleChange} />
                         Entertainer
                     </label>
+                    {formData.is_entertainer && (
+                        <div className="form-group sub-input" style={{ marginLeft: '20px', marginTop: '5px' }}>
+                            <label>Role</label>
+                            <input name="ent_position" value={formData.ent_position} onChange={handleChange} placeholder="e.g. Actor, Host" />
+                        </div>
+                    )}
                 </div>
 
                 <div className="actions">

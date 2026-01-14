@@ -10,7 +10,8 @@ exports.handler = async (event) => {
         await sql`
             ALTER TABLE entertainment 
             ADD COLUMN IF NOT EXISTS company_id INTEGER,
-            ADD COLUMN IF NOT EXISTS position TEXT
+            ADD COLUMN IF NOT EXISTS position TEXT,
+            ADD COLUMN IF NOT EXISTS is_entertainer BOOLEAN DEFAULT true
         `;
         console.log("Entertainment table updated.");
 
