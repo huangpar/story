@@ -290,11 +290,11 @@ function ShowTimeline({ assignments = [] }) {
                 {roles.map(role => {
                     const roleAsgns = assignments.filter(a => a.role === role);
                     const laneCount = getLanesForRole(roleAsgns);
-                    const rowHeight = laneCount * 25 + 10; // 20px per bar + 5px gap + padding
+                    const rowHeight = Math.max(laneCount * 25 + 5, 30);
 
                     return (
                         <div key={role} className="timeline-row" style={{ height: `${rowHeight}px` }}>
-                            <div className="role-label" title={role}>{role}</div>
+                            <div className="role-label" title={role}>{role || "Cast"}</div>
                             <div className="bar-area">
                                 {roleAsgns.map((asgn, idx) => (
                                     <div
@@ -308,7 +308,9 @@ function ShowTimeline({ assignments = [] }) {
                                             height: '20px'
                                         }}
                                         title={`${asgn.personName}: Season ${asgn.firstSeason} - ${asgn.lastSeason}`}
-                                    />
+                                    >
+                                        <span className="bar-label">{asgn.personName}</span>
+                                    </div>
                                 ))}
                             </div>
                         </div>

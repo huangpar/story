@@ -347,14 +347,16 @@
   position: relative;
   border-left: 2px solid #E5E7EB;
   border-bottom: 2px solid #E5E7EB;
-  padding: 20px 0 10px 0;
+  padding: 35px 0 10px 0;
+  /* Increased top padding for axis */
   margin-bottom: 5px;
 }
 
 .timeline-axis-x {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 80px;
+  /* Match role-label width */
   right: 0;
   height: 100%;
   pointer-events: none;
@@ -365,46 +367,51 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: #F3F4F6;
+  background: rgba(243, 244, 246, 0.8);
   display: flex;
   align-items: flex-start;
+  z-index: 0;
 }
 
 .axis-tick span {
   position: absolute;
-  top: -20px;
+  top: 8px;
+  /* Move labels down slightly */
   transform: translateX(-50%);
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: #94a3b8;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748b;
 }
 
 .timeline-row {
   display: flex;
-  align-items: center;
-  height: 35px;
+  align-items: flex-start;
+  /* Align top for lane logic */
   position: relative;
   z-index: 1;
+  margin-bottom: 10px;
 }
 
 .role-label {
   width: 80px;
   font-size: 0.75rem;
-  font-weight: 600;
-  color: #64748b;
+  font-weight: 700;
+  color: #475569;
   padding-right: 10px;
   text-align: right;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-top: 2px;
+  /* Center with first bar */
 }
 
 .bar-area {
   flex: 1;
-  height: 20px;
   position: relative;
-  background: rgba(243, 244, 246, 0.5);
+  background: rgba(248, 250, 252, 0.5);
   border-radius: 4px;
+  min-height: 25px;
 }
 
 .timeline-bar {
@@ -445,6 +452,19 @@
   font-size: 0.75rem;
   font-weight: 500;
   color: #4b5563;
+}
+
+.bar-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  color: white;
+  padding: 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 20px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Show Tabs Styles */
