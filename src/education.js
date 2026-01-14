@@ -64,7 +64,7 @@ function DefaultView({ onSelect, schools, loading }) {
                 <div className="row row-cols-1 row-cols-md-3 g-5">
                     {schools.map(school => (
                         <div key={school.id} className="col-md-6 col-lg-4 p-3 card-wrapper-centerleft">
-                            <div className="card rotate-centerleft">
+                            <div className="card rotate-right">
                                 <div className="card-body" onClick={() => onSelect(school.id)}>
                                     <div className="circle"><GraduationCap className="sparkle" /></div>
                                     <h5 className="card-title">{school.name}</h5>

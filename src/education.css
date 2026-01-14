@@ -85,7 +85,7 @@
   color: #F97316;
 }
 
-.entertainment .card {
+.education .card {
   min-height: 300px;
   width: 100%;
   max-width: 80%;
@@ -101,7 +101,7 @@
   transition: all 300ms ease;
 }
 
-.entertainment .card:hover {
+.education .card:hover {
   min-height: 300px;
   width: 100%;
   max-width: 80%;
