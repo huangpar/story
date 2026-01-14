@@ -124,15 +124,35 @@
   position: relative;
   background: white !important;
   z-index: 1;
-  overflow: visible;
-  border: none !important;
-  /* box-shadow: none !important; */
-  min-height: 0px;
-  width: 0%;
 }
 
 .rotate-right:hover {
   transform: translateY(-10px) rotate(-2deg);
+}
+
+.educationinfo .container {
+  display: flex;
+  justify-content: center;
+  /* padding-left: 0; */
+}
+
+.educationinfo .container>.row {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0;
+  /* override Bootstrap negative margins */
+  --bs-gutter-x: 1rem;
+  /* keep some horizontal spacing between cols */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 0;
+}
+
+.educationinfo .container>.row>[class*="col-"] {
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
 }
 
 /* Tab Bar */
@@ -183,9 +203,10 @@
 }
 
 .edu-card.detail {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(251, 191, 36, 0.2);
-  border-radius: 24px;
+  background: white;
+  border: 2px solid #E5E7EB;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
   overflow: hidden;
   backdrop-filter: blur(10px);
 }
@@ -247,7 +268,7 @@
 
 /* Glow Elements */
 .glow-bg.edu {
-  background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
+  background: linear-gradient(90deg, #F59E0B, #EAB308);
 }
 
 .glow-pill.edu {
