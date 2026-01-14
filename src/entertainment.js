@@ -252,6 +252,29 @@ function ShowTimeline({ assignments = [] }) {
     const getPos = (season) => ((season - minSeason) / totalSeasons) * 100;
     const getWidth = (start, end) => ((end - start + 1) / totalSeasons) * 100;
 
+    // Lane logic per role
+    const getLanesForRole = (roleAsgns) => {
+        const sorted = [...roleAsgns].sort((a, b) => a.firstSeason - b.firstSeason);
+        const lanes = [];
+        sorted.forEach(asgn => {
+            let placed = false;
+            for (let i = 0; i < lanes.length; i++) {
+                const lastInLane = lanes[i][lanes[i].length - 1];
+                if (asgn.firstSeason > lastInLane.lastSeason) {
+                    lanes[i].push(asgn);
+                    asgn.lane = i;
+                    placed = true;
+                    break;
+                }
+            }
+            if (!placed) {
+                asgn.lane = lanes.length;
+                lanes.push([asgn]);
+            }
+        });
+        return lanes.length;
+    };
+
     return (
         <div className="timeline-container">
             <div className="timeline-grid">
@@ -264,25 +287,33 @@ function ShowTimeline({ assignments = [] }) {
                     <div className="axis-tick" style={{ left: '100%' }}><span>{maxSeason + 1}</span></div>
                 </div>
 
-                {roles.map(role => (
-                    <div key={role} className="timeline-row">
-                        <div className="role-label" title={role}>{role}</div>
-                        <div className="bar-area">
-                            {assignments.filter(a => a.role === role).map((asgn, idx) => (
-                                <div
-                                    key={`${asgn.personId}-${idx}`}
-                                    className="timeline-bar"
-                                    style={{
-                                        left: `${getPos(asgn.firstSeason)}%`,
-                                        width: `${getWidth(asgn.firstSeason, asgn.lastSeason)}%`,
-                                        backgroundColor: personColors[asgn.personId]
-                                    }}
-                                    title={`${asgn.personName}: Season ${asgn.firstSeason} - ${asgn.lastSeason}`}
-                                />
-                            ))}
+                {roles.map(role => {
+                    const roleAsgns = assignments.filter(a => a.role === role);
+                    const laneCount = getLanesForRole(roleAsgns);
+                    const rowHeight = laneCount * 25 + 10; // 20px per bar + 5px gap + padding
+
+                    return (
+                        <div key={role} className="timeline-row" style={{ height: `${rowHeight}px` }}>
+                            <div className="role-label" title={role}>{role}</div>
+                            <div className="bar-area">
+                                {roleAsgns.map((asgn, idx) => (
+                                    <div
+                                        key={`${asgn.personId}-${idx}`}
+                                        className="timeline-bar"
+                                        style={{
+                                            left: `${getPos(asgn.firstSeason)}%`,
+                                            width: `${getWidth(asgn.firstSeason, asgn.lastSeason)}%`,
+                                            backgroundColor: personColors[asgn.personId],
+                                            top: `${(asgn.lane || 0) * 25}px`,
+                                            height: '20px'
+                                        }}
+                                        title={`${asgn.personName}: Season ${asgn.firstSeason} - ${asgn.lastSeason}`}
+                                    />
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             <div className="timeline-legend">
