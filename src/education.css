@@ -240,6 +240,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  border-top: 1px solid #F3F4F6;
 }
 
 .staff-member {
@@ -251,15 +252,19 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.member-name {
+.education .member-name {
   font-weight: 600;
+  background: linear-gradient(to right, #F59E0B, #EAB308);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.member-role {
+/* .member-role {
   color: #fbbf24;
   font-size: 0.9rem;
   font-style: italic;
-}
+} */
 
 .empty {
   text-align: center;
@@ -441,8 +446,20 @@
   color: #6B7280;
 }
 
-.text-orange {
+/* .text-orange {
   color: #F97316;
+} */
+
+.chair-badge {
+  background: linear-gradient(to right, #F59E0B, #F97316);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
 }
 
 .small-label {
@@ -467,4 +484,8 @@
 
 .mt-4 {
   margin-top: 1.5rem;
+}
+
+.ms-2 {
+  margin-left: 0.5rem;
 }

@@ -101,11 +101,13 @@ export function Educators() {
                 school_id: s.id,
                 position: s.position,
                 grade_levels: Array.isArray(s.grade_levels) ? s.grade_levels : (s.grade_levels ? s.grade_levels.split(',').map(g => g.trim()) : []),
-                subjects: (s.subjects || []).map(sub => sub.id)
+                subjects: (s.subjects || []).map(sub => sub?.id || sub),
+                schedules: s.schedules || []
             })),
             board_assignments: (updatedPerson.board_memberships || []).map(bm => ({
                 school_id: bm.school_id,
-                ownership_percentage: bm.ownership_percentage
+                ownership_percentage: bm.ownership_percentage,
+                is_chairperson: !!bm.is_chairperson
             }))
         };
 
@@ -304,6 +306,15 @@ export function Educators() {
                                                     className="ed-input ownership-input"
                                                 />
                                                 <span className="unit-label">% Ownership</span>
+                                            </div>
+                                            <div className="chair-checkbox-wrap">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={!!bm.is_chairperson}
+                                                    onChange={(e) => handleBoardFieldChange(p, bm.school_id, 'is_chairperson', e.target.checked)}
+                                                    id={`chair-${p.id}-${bm.school_id}`}
+                                                />
+                                                <label htmlFor={`chair-${p.id}-${bm.school_id}`}>Chair</label>
                                             </div>
                                             <button className="remove-btn" onClick={() => removeBoardMembership(p, bm.school_id)}>
                                                 <Trash2 size={18} />

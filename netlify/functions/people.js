@@ -76,9 +76,13 @@ exports.handler = async (event) => {
               person_id int REFERENCES people(id) ON DELETE CASCADE,
               school_id bigint REFERENCES schools(id) ON DELETE CASCADE,
               ownership_percentage NUMERIC DEFAULT 0,
+              is_chairperson BOOLEAN DEFAULT false,
               PRIMARY KEY (person_id, school_id)
             )
           `;
+          try {
+            await sql`ALTER TABLE school_board ADD COLUMN IF NOT EXISTS is_chairperson BOOLEAN DEFAULT false`;
+          } catch (e) { }
         } catch (e) {
           // Ignore if it fails (likely already correct)
         }
@@ -138,10 +142,11 @@ exports.handler = async (event) => {
 
               // Handle Schedules
               if (Array.isArray(asgn.schedules)) {
+                console.log(`PUT: Saving ${asgn.schedules.length} schedules for person ${pid}, school ${sid}`);
                 // Delete existing schedules for this person-school combo
                 await sql`DELETE FROM class_schedules WHERE person_id = ${pid} AND school_id = ${sid}`;
                 for (const sched of asgn.schedules) {
-                  const sbid = sched.subject_id ? parseInt(sched.subject_id) : null;
+                  const sbid = (sched.subject_id && sched.subject_id !== "") ? parseInt(sched.subject_id) : null;
                   const period = parseInt(sched.period);
                   if (!isNaN(period)) {
                     await sql`
@@ -150,6 +155,8 @@ exports.handler = async (event) => {
                     `;
                   }
                 }
+              } else {
+                console.log(`PUT: No schedules array provided for person ${pid}, school ${sid}`);
               }
             }
           }
@@ -166,10 +173,11 @@ exports.handler = async (event) => {
         for (const ba of board_assignments) {
           const sid = parseInt(ba.school_id);
           const percentage = parseFloat(ba.ownership_percentage) || 0;
+          const isChair = !!ba.is_chairperson;
           if (!isNaN(sid)) {
             await sql`
-                INSERT INTO school_board (person_id, school_id, ownership_percentage)
-                VALUES (${id}, ${sid}, ${percentage})
+                INSERT INTO school_board (person_id, school_id, ownership_percentage, is_chairperson)
+                VALUES (${id}, ${sid}, ${percentage}, ${isChair})
               `;
           }
         }
@@ -301,6 +309,8 @@ exports.handler = async (event) => {
       `;
     }
 
+    console.log(`GET: Found ${rows.length} base people rows`);
+
     // Fetch ALL many-to-many company assignments
     let allCompanyAssignments = [];
     try {
@@ -321,16 +331,18 @@ exports.handler = async (event) => {
             FROM educator_schools es
             JOIN schools s ON es.school_id = s.id
         `;
+      console.log(`GET: Loaded ${allEduAssignments.length} edu assignments`);
     } catch (eduErr) { console.error("educator_schools query failed:", eduErr); }
 
     let allTeachingAssignments = [];
     try {
       allTeachingAssignments = await sql`
-            SELECT ta.*, subj.name as subject_name
+            SELECT ta.*, sb.name as subject_name
             FROM teaching_assignments ta
-            JOIN subjects subj ON ta.subject_id = subj.id
+            JOIN subjects sb ON ta.subject_id = sb.id
         `;
-    } catch (subjErr) { console.error("teaching_assignments query failed:", subjErr); }
+      console.log(`GET: Loaded ${allTeachingAssignments.length} teaching assignments`);
+    } catch (taErr) { console.error("teaching_assignments query failed:", taErr); }
 
     // Fetch all show assignments to merge in JS
     let allShowAssignments = [];
@@ -365,6 +377,8 @@ exports.handler = async (event) => {
         JOIN schools s ON sb.school_id = s.id
       `;
     } catch (boardErr) { console.error("school_board query failed:", boardErr); }
+
+    console.log(`GET: Loaded ${allSchedules.length} schedules and ${allBoardAssignments.length} board assignments`);
 
     console.log(`Merging ${allShowAssignments.length} assignments into ${rows.length} rows`);
 
@@ -418,7 +432,8 @@ exports.handler = async (event) => {
             .map(ba => ({
               school_id: ba.school_id,
               school_name: ba.school_name,
-              ownership_percentage: ba.ownership_percentage
+              ownership_percentage: ba.ownership_percentage,
+              is_chairperson: !!ba.is_chairperson
             })),
           is_politician: !!r.is_politician,
           is_entertainer: !!r.is_entertainer,

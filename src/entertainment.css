@@ -259,7 +259,7 @@
   border-radius: 10px;
 }
 
-.member-name {
+.education .member-name {
   font-weight: 600;
   background: linear-gradient(to right, #C026D3, #DB2777);
   -webkit-background-clip: text;

@@ -188,7 +188,6 @@ function DetailView({ view, onBack, schools, subjects, people }) {
                                 <h2>Info & Ownership</h2>
                             </div>
                             <div className="edu-content">
-                                <p className="text-muted">{school.city}, {school.region}</p>
 
                                 <div className="board-info mt-4">
                                     <h3 className="small-label">School Board</h3>
@@ -199,7 +198,10 @@ function DetailView({ view, onBack, schools, subjects, people }) {
                                             const mb = member.board_memberships.find(bm => String(bm.school_id) === String(school.id));
                                             return (
                                                 <div key={member.id} className="staff-member">
-                                                    <span className="member-name">{member.name}</span>
+                                                    <span className="member-name">
+                                                        {member.name}
+                                                        {mb.is_chairperson && <span className="chair-badge ms-2">Chair</span>}
+                                                    </span>
                                                     <span className="member-role text-orange">{mb.ownership_percentage}% Ownership</span>
                                                 </div>
                                             );
@@ -315,8 +317,13 @@ function ScheduleTable({ school, staff, subjects }) {
                     school_id: s.id,
                     position: s.position,
                     grade_levels: Array.isArray(s.grade_levels) ? s.grade_levels : (s.grade_levels ? s.grade_levels.split(',').map(g => g.trim()) : []),
-                    subjects: (s.subjects || []).map(sub => sub.id),
+                    subjects: (s.subjects || []).map(sub => sub?.id || sub),
                     schedules: s.schedules || []
+                })),
+                board_assignments: (teacher.board_memberships || []).map(bm => ({
+                    school_id: bm.school_id,
+                    ownership_percentage: bm.ownership_percentage,
+                    is_chairperson: !!bm.is_chairperson
                 }))
             };
 

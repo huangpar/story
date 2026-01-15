@@ -99,6 +99,7 @@ exports.handler = async (event) => {
                 person_id int REFERENCES people(id) ON DELETE CASCADE,
                 school_id bigint REFERENCES schools(id) ON DELETE CASCADE,
                 ownership_percentage NUMERIC DEFAULT 0,
+                is_chairperson BOOLEAN DEFAULT false,
                 PRIMARY KEY (person_id, school_id)
             )
         `;
