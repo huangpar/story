@@ -409,7 +409,6 @@ function ScheduleTable({ school, staff, subjects, onRefresh }) {
                                     <td className="teacher-name-cell">{teacher.name}</td>
                                     {periods.map(p => {
                                         const assignment = (schInfo.schedules || []).find(s => String(s.period) === String(p) && s.day_type === dayType);
-                                        const subjectName = subjects.find(sub => String(sub.id) === String(assignment?.subject_id))?.name || "--";
 
                                         return (
                                             <td key={p}>
