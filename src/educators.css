@@ -47,7 +47,7 @@
     text-decoration: none;
 }
 
-.dropdown-header.has-value span:first-child {
+.educator-card.dropdown-header.has-value span:first-child {
     background: linear-gradient(to right, #F59E0B, #F97316, #EAB308);
     -webkit-background-clip: text;
     background-clip: text;
@@ -116,9 +116,9 @@
 }
 
 .ed-input {
-    background: rgba(30, 41, 59, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #94a3b8;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    color: #374151;
     padding: 8px 12px;
     border-radius: 8px;
     font-size: 0.9rem;
@@ -227,19 +227,23 @@
     color: #f8fafc;
 }
 
-.dropdown-list {
+.educator-card .dropdown-header:hover {
+    border-color: #FCD34D;
+} 
+
+.educator-card .dropdown-list {
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    background: #1e293b;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: white;
+    border: 2px solid #FCD34D;
     border-radius: 8px;
     margin-top: 4px;
     z-index: 100;
     max-height: 200px;
     overflow-y: auto;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-item {
@@ -252,7 +256,11 @@
     background: rgba(234, 179, 8, 0.1);
 }
 
-.gradient-text-item {
+.educator-card .gradient-text-item {
+    background: linear-gradient(to right, #F59E0B, #F97316, #EAB308);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-size: 0.9rem;
 }
 

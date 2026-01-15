@@ -248,7 +248,7 @@
     border-color: #F0ABFC;
 }
 
-.dropdown-header.has-value span:first-child {
+.entertainer-card .dropdown-header.has-value span:first-child {
     background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
     -webkit-background-clip: text;
     background-clip: text;
@@ -265,7 +265,7 @@
     transform: rotate(180deg);
 }
 
-.dropdown-list {
+.entertainer-card .dropdown-list {
     position: absolute;
     top: 115%;
     left: 0;
@@ -291,7 +291,7 @@
     background: #FDF2F8;
 }
 
-.gradient-text-item {
+.entertainer-card .gradient-text-item {
     background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
     -webkit-background-clip: text;
     background-clip: text;
