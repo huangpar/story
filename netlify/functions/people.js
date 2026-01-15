@@ -60,7 +60,6 @@ exports.handler = async (event) => {
       };
 
       console.log(`PUT: Updating people ${id} with:`, JSON.stringify(updatePayload));
-      throw new Error(`DEBUG PAYLOAD: ${JSON.stringify(updatePayload)}`); // FORCE DEBUG
 
       await sql`
             UPDATE people 
