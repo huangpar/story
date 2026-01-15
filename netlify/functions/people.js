@@ -79,11 +79,13 @@ exports.handler = async (event) => {
               }
               if (Array.isArray(gl) && gl.length === 0) gl = null;
 
-              const pgArray = gl ? `{${gl.map(g => `"${String(g).replace(/"/g, '\\"')}"`).join(',')}}` : null;
+              if (Array.isArray(gl) && gl.length === 0) gl = null;
+
+              console.log(`PUT: Inserting grade_levels for ${schId}:`, gl, typeof gl, Array.isArray(gl));
 
               await sql`
                 INSERT INTO educator_schools (person_id, school_id, position, grade_levels)
-                VALUES (${id}, ${schId}, ${asgn.position || null}, ${pgArray})
+                VALUES (${id}, ${schId}, ${asgn.position || null}, ${gl})
               `;
 
               if (Array.isArray(asgn.subjects)) {
