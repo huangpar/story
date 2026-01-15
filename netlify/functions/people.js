@@ -73,9 +73,17 @@ exports.handler = async (event) => {
           for (const asgn of education_assignments) {
             const schId = parseInt(asgn.school_id);
             if (!isNaN(schId)) {
+              let gl = asgn.grade_levels;
+              if (gl && !Array.isArray(gl)) {
+                gl = String(gl).split(',').map(s => s.trim());
+              }
+              if (Array.isArray(gl) && gl.length === 0) gl = null;
+
+              const pgArray = gl ? `{${gl.map(g => `"${String(g).replace(/"/g, '\\"')}"`).join(',')}}` : null;
+
               await sql`
                 INSERT INTO educator_schools (person_id, school_id, position, grade_levels)
-                VALUES (${id}, ${schId}, ${asgn.position || null}, ${asgn.grade_levels || null})
+                VALUES (${id}, ${schId}, ${asgn.position || null}, ${pgArray})
               `;
 
               if (Array.isArray(asgn.subjects)) {
