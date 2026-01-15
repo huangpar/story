@@ -1,39 +1,65 @@
 .educators-page {
     min-height: 100vh;
-    background-color: #0f172a;
+    background-image: linear-gradient(to bottom right, #FEF3C7, #FEFCE8, #FFEDD5);
     color: white;
     padding-bottom: 50px;
 }
 
+.educators-page .header {
+  margin-top: 0%;
+  padding: 50px;
+  justify-content: space-between;
+}
+
+.educators-page .header-center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.educators-page .gradient-text {
+  font-size: 2rem;
+}
+
 .educators-container {
     max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
+    margin: 0 auto auto auto;
+    padding: 30px 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: linear-gradient(to right, #F8F7FC, #FAF7FB);
+    box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
+    border-radius: 25px;
 }
 
 .educators-container .head {
     margin-bottom: 30px;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .educationTitle {
-    font-size: 2.5rem;
-    font-weight: bold;
-    background: linear-gradient(135deg, #EAB308, #EC4899);
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: linear-gradient(to right, #F59E0B, #F97316, #EAB308);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
 }
 
 .educator-card {
-    background: rgba(30, 41, 59, 0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 24px;
+    background: white;
+    /* backdrop-filter: blur(10px); */
+    border: 2px solid #E5E7EB !important;
+    border-radius: 10px;
+    padding: 20px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: transform 0.2s;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+    /* transition: transform 0.2s; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .educator-card:hover {
@@ -42,15 +68,18 @@
 }
 
 .ed-info h3 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #f8fafc;
+    margin: 0 0 5px 0;
+    font-size: 1.4rem;
+    background: linear-gradient(to right, #F59E0B, #F97316, #EAB308);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .ed-info p {
-    margin: 4px 0 20px 0;
-    color: #94a3b8;
-    font-size: 0.9rem;
+    margin: 0;
+    color: #6B7280;
+    font-size: 0.95rem;
 }
 
 .section-label {
