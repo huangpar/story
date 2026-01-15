@@ -26,70 +26,28 @@ exports.handler = async (event) => {
     if (event.httpMethod === 'PUT') {
       const body = JSON.parse(event.body);
       const {
-        id, region, district, fid, mid, sid,
-        is_educator, school_id, edu_position, edu_subjects, // edu_subjects is expected as array of IDs
+        region, district, fid, mid, sid,
+        is_educator,
         is_politician, is_entertainer, role_id
       } = body;
+      const id = parseInt(body.id);
 
-      // Auto-migration: Ensure entertainment schema is correct
+      if (isNaN(id)) {
+        return { statusCode: 400, body: JSON.stringify({ error: "Invalid person ID" }) };
+      }
+
+      // Auto-migration
       try {
         await sql`ALTER TABLE entertainment ADD COLUMN IF NOT EXISTS company_id INTEGER`;
         await sql`ALTER TABLE entertainment ADD COLUMN IF NOT EXISTS position TEXT`;
         await sql`ALTER TABLE entertainment ADD COLUMN IF NOT EXISTS is_entertainer BOOLEAN DEFAULT true`;
-        await sql`
-          CREATE TABLE IF NOT EXISTS person_company (
-            person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
-            company_id INTEGER NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
-            position TEXT,
-            PRIMARY KEY (person_id, company_id)
-          )
-        `;
-        await sql`
-          CREATE TABLE IF NOT EXISTS person_show (
-            person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
-            show_id INTEGER NOT NULL REFERENCES shows(id) ON DELETE CASCADE,
-            first_season INTEGER,
-            last_season INTEGER,
-            duration TEXT,
-            role TEXT,
-            PRIMARY KEY (person_id, show_id, first_season)
-          )
-        `;
-        // Handle migration of existing table
-        try {
-          await sql`ALTER TABLE person_show ADD COLUMN IF NOT EXISTS role TEXT`;
-          await sql`ALTER TABLE person_show DROP CONSTRAINT IF EXISTS person_show_pkey`;
-          await sql`ALTER TABLE person_show ADD PRIMARY KEY (person_id, show_id, first_season)`;
-          await sql`
-            CREATE TABLE IF NOT EXISTS class_schedules (
-              person_id int NOT NULL,
-              school_id bigint NOT NULL,
-              subject_id bigint REFERENCES subjects(id) ON DELETE SET NULL,
-              period int NOT NULL,
-              day_type text NOT NULL,
-              PRIMARY KEY (person_id, school_id, period, day_type),
-              FOREIGN KEY (person_id, school_id) REFERENCES educator_schools(person_id, school_id) ON DELETE CASCADE
-            )
-          `;
-          await sql`
-            CREATE TABLE IF NOT EXISTS school_board (
-              person_id int REFERENCES people(id) ON DELETE CASCADE,
-              school_id bigint REFERENCES schools(id) ON DELETE CASCADE,
-              ownership_percentage NUMERIC DEFAULT 0,
-              is_chairperson BOOLEAN DEFAULT false,
-              PRIMARY KEY (person_id, school_id)
-            )
-          `;
-          try {
-            await sql`ALTER TABLE school_board ADD COLUMN IF NOT EXISTS is_chairperson BOOLEAN DEFAULT false`;
-          } catch (e) { }
-        } catch (e) {
-          // Ignore if it fails (likely already correct)
-        }
-      } catch (migErr) {
-        console.error("Auto-migration during PUT failed:", migErr);
-        // Continue anyway, individual queries below have their own try/catches
-      }
+        await sql`CREATE TABLE IF NOT EXISTS person_company (person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE, company_id INTEGER NOT NULL REFERENCES companies(id) ON DELETE CASCADE, position TEXT, PRIMARY KEY (person_id, company_id))`;
+        await sql`CREATE TABLE IF NOT EXISTS person_show (person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE, show_id INTEGER NOT NULL REFERENCES shows(id) ON DELETE CASCADE, first_season INTEGER, last_season INTEGER, duration TEXT, role TEXT, PRIMARY KEY (person_id, show_id, first_season))`;
+        await sql`ALTER TABLE person_show ADD COLUMN IF NOT EXISTS role TEXT`;
+        await sql`CREATE TABLE IF NOT EXISTS class_schedules (person_id int NOT NULL, school_id bigint NOT NULL, subject_id bigint REFERENCES subjects(id) ON DELETE SET NULL, period int NOT NULL, day_type text NOT NULL, PRIMARY KEY (person_id, school_id, period, day_type), FOREIGN KEY (person_id, school_id) REFERENCES educator_schools(person_id, school_id) ON DELETE CASCADE)`;
+        await sql`CREATE TABLE IF NOT EXISTS school_board (person_id int REFERENCES people(id) ON DELETE CASCADE, school_id bigint REFERENCES schools(id) ON DELETE CASCADE, ownership_percentage NUMERIC DEFAULT 0, is_chairperson BOOLEAN DEFAULT false, PRIMARY KEY (person_id, school_id))`;
+        try { await sql`ALTER TABLE school_board ADD COLUMN IF NOT EXISTS is_chairperson BOOLEAN DEFAULT false`; } catch (e) { }
+      } catch (migErr) { console.error("Auto-migration during PUT failed:", migErr); }
 
       // Update main people table
       await sql`
@@ -97,170 +55,115 @@ exports.handler = async (event) => {
             SET region = ${region}, 
                 district = ${district}, 
                 fid = ${fid || null}, 
-                mid = ${mid ? mid : null}, 
-                sid = ${sid ? sid : null}
+                mid = ${mid ? parseInt(mid) : null}, 
+                sid = ${sid ? parseInt(sid) : null}
             WHERE id = ${id}
         `;
 
       // Handle Educator Role
       if (is_educator) {
         const { education_assignments } = body;
-
-        await sql`
-            INSERT INTO education (person_id, is_educator) 
-            VALUES (${id}, true) 
-            ON CONFLICT (person_id) DO UPDATE SET is_educator = true
-        `;
+        await sql`INSERT INTO education (person_id, is_educator) VALUES (${id}, true) ON CONFLICT (person_id) DO UPDATE SET is_educator = true`;
 
         if (Array.isArray(education_assignments)) {
-          const pid = parseInt(id);
-          // Delete old assignments to replace with new ones
-          // We need to be careful with cascading deletes. 
-          // teaching_assignments references educator_schools(person_id, school_id)
-          // educator_schools is deleted here.
-          await sql`DELETE FROM educator_schools WHERE person_id = ${pid}`;
+          // IMPORTANT: Delete old ones first (this cascade deletes schedules)
+          await sql`DELETE FROM educator_schools WHERE person_id = ${id}`;
 
           for (const asgn of education_assignments) {
-            const sid = parseInt(asgn.school_id);
-            if (!isNaN(sid)) {
+            const schId = parseInt(asgn.school_id);
+            if (!isNaN(schId)) {
               await sql`
                 INSERT INTO educator_schools (person_id, school_id, position, grade_levels)
-                VALUES (${pid}, ${sid}, ${asgn.position || null}, ${asgn.grade_levels || null})
+                VALUES (${id}, ${schId}, ${asgn.position || null}, ${asgn.grade_levels || null})
               `;
 
-              if (Array.isArray(asgn.subjects) && asgn.subjects.length > 0) {
+              if (Array.isArray(asgn.subjects)) {
                 for (const subjId of asgn.subjects) {
                   const sbid = parseInt(subjId);
                   if (!isNaN(sbid)) {
-                    await sql`
-                      INSERT INTO teaching_assignments (person_id, school_id, subject_id)
-                      VALUES (${pid}, ${sid}, ${sbid})
-                    `;
+                    await sql`INSERT INTO teaching_assignments (person_id, school_id, subject_id) VALUES (${id}, ${schId}, ${sbid}) ON CONFLICT DO NOTHING`;
                   }
                 }
               }
 
-              // Handle Schedules
               if (Array.isArray(asgn.schedules)) {
-                console.log(`PUT: Saving ${asgn.schedules.length} schedules for person ${pid}, school ${sid}`);
-                // Delete existing schedules for this person-school combo
-                await sql`DELETE FROM class_schedules WHERE person_id = ${pid} AND school_id = ${sid}`;
                 for (const sched of asgn.schedules) {
-                  const sbid = (sched.subject_id && sched.subject_id !== "") ? parseInt(sched.subject_id) : null;
+                  const sbid = (sched.subject_id && !isNaN(parseInt(sched.subject_id))) ? parseInt(sched.subject_id) : null;
                   const period = parseInt(sched.period);
                   if (!isNaN(period)) {
                     await sql`
                       INSERT INTO class_schedules (person_id, school_id, subject_id, period, day_type)
-                      VALUES (${pid}, ${sid}, ${sbid}, ${period}, ${sched.day_type || 'regular'})
+                      VALUES (${id}, ${schId}, ${sbid}, ${period}, ${sched.day_type || 'regular'})
+                      ON CONFLICT (person_id, school_id, period, day_type) DO UPDATE SET subject_id = EXCLUDED.subject_id
                     `;
                   }
                 }
-              } else {
-                console.log(`PUT: No schedules array provided for person ${pid}, school ${sid}`);
               }
             }
           }
         }
       } else {
         await sql`DELETE FROM education WHERE person_id = ${id}`;
-        await sql`DELETE FROM educator_schools WHERE person_id = ${id}`;
       }
 
-      // Handle School Board assignments
+      // Handle School Board
       const { board_assignments } = body;
       if (Array.isArray(board_assignments)) {
         await sql`DELETE FROM school_board WHERE person_id = ${id}`;
         for (const ba of board_assignments) {
-          const sid = parseInt(ba.school_id);
-          const percentage = parseFloat(ba.ownership_percentage) || 0;
-          const isChair = !!ba.is_chairperson;
-          if (!isNaN(sid)) {
-            await sql`
-                INSERT INTO school_board (person_id, school_id, ownership_percentage, is_chairperson)
-                VALUES (${id}, ${sid}, ${percentage}, ${isChair})
-              `;
+          const schId = parseInt(ba.school_id);
+          if (!isNaN(schId)) {
+            await sql`INSERT INTO school_board (person_id, school_id, ownership_percentage, is_chairperson) VALUES (${id}, ${schId}, ${parseFloat(ba.ownership_percentage) || 0}, ${!!ba.is_chairperson})`;
           }
         }
       }
 
-      // Handle Politician Role
+      // Handle Politicians
       if (is_politician) {
-        await sql`
-                  INSERT INTO politics (person_id, is_politician) 
-                  VALUES (${id}, true) 
-                  ON CONFLICT (person_id) DO UPDATE SET is_politician = true
-              `;
-
+        await sql`INSERT INTO politics (person_id, is_politician) VALUES (${id}, true) ON CONFLICT (person_id) DO UPDATE SET is_politician = true`;
         if (role_id) {
           await sql`DELETE FROM politician_role WHERE person_id = ${id} AND role_id != ${role_id}`;
-          await sql`
-                  INSERT INTO politician_role (person_id, role_id)
-                  VALUES (${id}, ${role_id})
-                  ON CONFLICT (person_id, role_id) DO NOTHING
-              `;
+          await sql`INSERT INTO politician_role (person_id, role_id) VALUES (${id}, ${role_id}) ON CONFLICT DO NOTHING`;
         }
       } else {
         await sql`DELETE FROM politics WHERE person_id = ${id}`;
         await sql`DELETE FROM politician_role WHERE person_id = ${id}`;
       }
 
-      // Handle Entertainer Role
+      // Handle Entertainer
       try {
         if (is_entertainer) {
           const { entertainer_company_id, entertainer_position, studio_assignments, show_assignments } = body;
-          await sql`
-              INSERT INTO entertainment (person_id, is_entertainer, company_id, position)
-              VALUES (${id}, true, ${entertainer_company_id || null}, ${entertainer_position || null})
-              ON CONFLICT (person_id) DO UPDATE SET 
-                is_entertainer = true, 
-                company_id = EXCLUDED.company_id,
-                position = EXCLUDED.position
-            `;
+          await sql`INSERT INTO entertainment (person_id, is_entertainer, company_id, position) VALUES (${id}, true, ${entertainer_company_id || null}, ${entertainer_position || null}) ON CONFLICT (person_id) DO UPDATE SET is_entertainer = true, company_id = EXCLUDED.company_id, position = EXCLUDED.position`;
 
           if (studio_assignments !== undefined) {
-            const pid = parseInt(id);
-            await sql`DELETE FROM person_company WHERE person_id = ${pid}`;
-            if (studio_assignments && studio_assignments.length > 0) {
+            await sql`DELETE FROM person_company WHERE person_id = ${id}`;
+            if (Array.isArray(studio_assignments)) {
               for (const sa of studio_assignments) {
                 const cid = parseInt(sa.company_id);
-                if (!isNaN(cid)) {
-                  await sql`
-                        INSERT INTO person_company (person_id, company_id, position)
-                        VALUES (${pid}, ${cid}, ${sa.position || null})
-                        ON CONFLICT (person_id, company_id) DO UPDATE SET position = EXCLUDED.position
-                      `;
-                }
+                if (!isNaN(cid)) await sql`INSERT INTO person_company (person_id, company_id, position) VALUES (${id}, ${cid}, ${sa.position || null}) ON CONFLICT DO NOTHING`;
               }
             }
           }
 
           if (show_assignments !== undefined) {
-            const pid = parseInt(id);
-            await sql`DELETE FROM person_show WHERE person_id = ${pid}`;
-            if (show_assignments && show_assignments.length > 0) {
+            await sql`DELETE FROM person_show WHERE person_id = ${id}`;
+            if (Array.isArray(show_assignments)) {
               for (const sa of show_assignments) {
-                const sid = parseInt(sa.show_id);
-                if (!isNaN(sid)) {
-                  await sql`
-                                INSERT INTO person_show (person_id, show_id, first_season, last_season, duration, role)
-                                VALUES (${pid}, ${sid}, ${sa.first_season || null}, ${sa.last_season || null}, ${sa.duration || null}, ${sa.role || null})
-                            `;
-                }
+                const sid_show = parseInt(sa.show_id);
+                if (!isNaN(sid_show)) await sql`INSERT INTO person_show (person_id, show_id, first_season, last_season, duration, role) VALUES (${id}, ${sid_show}, ${sa.first_season || null}, ${sa.last_season || null}, ${sa.duration || null}, ${sa.role || null})`;
               }
             }
           }
         } else {
           await sql`DELETE FROM entertainment WHERE person_id = ${id}`;
-          await sql`DELETE FROM person_show WHERE person_id = ${id}`;
         }
-      } catch (entErr) {
-        console.error("PUT: entertainment update failed:", entErr);
-      }
+      } catch (entErr) { console.error("PUT: entertainment failed:", entErr); }
 
       return {
         statusCode: 200,
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ message: "Person updated successfully" }),
+        body: JSON.stringify({ message: "Updated" }),
       };
     }
 
@@ -408,7 +311,7 @@ exports.handler = async (event) => {
           Party: r.party,
           is_educator: !!r.is_educator,
           schools: allEduAssignments
-            .filter(es => String(es.person_id) === String(r.id))
+            .filter(es => Number(es.person_id) === Number(r.id))
             .map(es => ({
               id: es.school_id,
               name: es.school_name,
@@ -417,10 +320,10 @@ exports.handler = async (event) => {
               city: es.city,
               region: es.region,
               subjects: allTeachingAssignments
-                .filter(ta => String(ta.person_id) === String(r.id) && String(ta.school_id) === String(es.school_id))
+                .filter(ta => Number(ta.person_id) === Number(r.id) && Number(ta.school_id) === Number(es.school_id))
                 .map(ta => ({ id: ta.subject_id, name: ta.subject_name })),
               schedules: allSchedules
-                .filter(s => String(s.person_id) === String(r.id) && String(s.school_id) === String(es.school_id))
+                .filter(s => Number(s.person_id) === Number(r.id) && Number(s.school_id) === Number(es.school_id))
                 .map(s => ({
                   subject_id: s.subject_id,
                   period: s.period,
@@ -428,7 +331,7 @@ exports.handler = async (event) => {
                 }))
             })),
           board_memberships: allBoardAssignments
-            .filter(ba => String(ba.person_id) === String(r.id))
+            .filter(ba => Number(ba.person_id) === Number(r.id))
             .map(ba => ({
               school_id: ba.school_id,
               school_name: ba.school_name,
@@ -440,7 +343,7 @@ exports.handler = async (event) => {
           role_id: r.role_id,
           role_name: r.role_name,
           studios: allCompanyAssignments
-            .filter(pc => String(pc.person_id) === String(r.id))
+            .filter(pc => Number(pc.person_id) === Number(r.id))
             .map(pc => ({
               id: pc.company_id,
               name: pc.company_name,

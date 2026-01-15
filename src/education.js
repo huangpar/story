@@ -10,7 +10,8 @@ export function Education() {
     const [loading, setLoading] = useState(true);
     const [view, setView] = useState("default");
 
-    useEffect(() => {
+    const fetchData = () => {
+        setLoading(true);
         Promise.all([
             fetch("/.netlify/functions/schools").then(res => res.json()),
             fetch("/.netlify/functions/subjects").then(res => res.json()),
@@ -24,6 +25,10 @@ export function Education() {
             console.error(err);
             setLoading(false);
         });
+    };
+
+    useEffect(() => {
+        fetchData();
     }, []);
 
     return (
@@ -48,6 +53,7 @@ export function Education() {
                     schools={schools}
                     subjects={subjects}
                     people={people}
+                    onRefresh={fetchData}
                 />
             )}
         </div>
@@ -95,21 +101,21 @@ function DefaultView({ onSelect, schools, loading }) {
     )
 }
 
-function DetailView({ view, onBack, schools, subjects, people }) {
+export function DetailView({ view, onBack, schools, subjects, people, onRefresh }) {
     const [activeTab, setActiveTab] = useState("overview");
-    const school = schools.find(s => String(s.id) === String(view));
+    const school = useMemo(() => schools.find(s => String(s.id) === String(view)), [schools, view]);
 
     // People assigned to THIS school
     const schoolMembers = useMemo(() => {
         if (!school) return [];
-        return people.filter(p => p.schools?.some(s => String(s.id) === String(school.id)));
+        return people.filter(p => p.schools?.some(s => Number(s.id) === Number(school.id)));
     }, [people, school]);
 
     // Subjects taught at THIS school (implied by assignments)
     const schoolSubjects = useMemo(() => {
         const subIds = new Set();
         schoolMembers.forEach(p => {
-            const sch = p.schools.find(s => String(s.id) === String(school.id));
+            const sch = p.schools.find(s => Number(s.id) === Number(school.id));
             sch.subjects?.forEach(sub => subIds.add(String(sub.id)));
         });
         return subjects.filter(s => subIds.has(String(s.id)));
@@ -193,9 +199,9 @@ function DetailView({ view, onBack, schools, subjects, people }) {
                                     <h3 className="small-label">School Board</h3>
                                     <div className="staff-list">
                                         {people.filter(p =>
-                                            p.board_memberships?.some(bm => String(bm.school_id) === String(school.id))
+                                            p.board_memberships?.some(bm => Number(bm.school_id) === Number(school.id))
                                         ).map(member => {
-                                            const mb = member.board_memberships.find(bm => String(bm.school_id) === String(school.id));
+                                            const mb = member.board_memberships.find(bm => Number(bm.school_id) === Number(school.id));
                                             return (
                                                 <div key={member.id} className="staff-member">
                                                     <span className="member-name">
@@ -221,7 +227,7 @@ function DetailView({ view, onBack, schools, subjects, people }) {
                         </div>
                     </div>
                 ) : activeTab === "schedule" ? (
-                    <ScheduleTable school={school} staff={staffMembers} subjects={subjects} />
+                    <ScheduleTable school={school} staff={staffMembers} subjects={subjects} onRefresh={onRefresh} />
                 ) : (
                     <div className="major-detail-view">
                         <div className="edu-card detail">
@@ -254,7 +260,7 @@ function DetailView({ view, onBack, schools, subjects, people }) {
     );
 }
 
-function ScheduleTable({ school, staff, subjects }) {
+function ScheduleTable({ school, staff, subjects, onRefresh }) {
     const [dayType, setDayType] = useState("regular");
     const [localStaff, setLocalStaff] = useState(staff);
     const [isEditing, setIsEditing] = useState(false);
@@ -265,7 +271,7 @@ function ScheduleTable({ school, staff, subjects }) {
     }, [staff]);
 
     const handlePeriodChange = (teacher, period, subjectId) => {
-        const schInfo = teacher.schools.find(s => String(s.id) === String(school.id));
+        const schInfo = teacher.schools.find(s => Number(s.id) === Number(school.id));
         const currentSchedules = schInfo.schedules || [];
 
         let newSchedules;
@@ -275,17 +281,17 @@ function ScheduleTable({ school, staff, subjects }) {
             const exists = currentSchedules.find(s => String(s.period) === String(period) && s.day_type === dayType);
             if (exists) {
                 newSchedules = currentSchedules.map(s =>
-                    (String(s.period) === String(period) && s.day_type === dayType) ? { ...s, subject_id: subjectId } : s
+                    (String(s.period) === String(period) && s.day_type === dayType) ? { ...s, subject_id: String(subjectId) } : s
                 );
             } else {
-                newSchedules = [...currentSchedules, { period: parseInt(period), subject_id: parseInt(subjectId), day_type: dayType }];
+                newSchedules = [...currentSchedules, { period: parseInt(period), subject_id: String(subjectId), day_type: dayType }];
             }
         }
 
         const updatedStaff = localStaff.map(p => {
             if (p.id === teacher.id) {
                 const newSchools = p.schools.map(s =>
-                    String(s.id) === String(school.id)
+                    Number(s.id) === Number(school.id)
                         ? { ...s, schedules: newSchedules }
                         : s
                 );
@@ -298,6 +304,9 @@ function ScheduleTable({ school, staff, subjects }) {
 
     const handleSave = async () => {
         setIsEditing(false);
+        let successCount = 0;
+        let failCount = 0;
+
         // Save all changes made during editing
         for (const teacher of localStaff) {
             const payload = {
@@ -313,7 +322,7 @@ function ScheduleTable({ school, staff, subjects }) {
                 is_politician: teacher.is_politician,
                 is_entertainer: teacher.is_entertainer,
                 role_id: teacher.role_id,
-                education_assignments: teacher.schools.map(s => ({
+                education_assignments: (teacher.schools || []).map(s => ({
                     school_id: s.id,
                     position: s.position,
                     grade_levels: Array.isArray(s.grade_levels) ? s.grade_levels : (s.grade_levels ? s.grade_levels.split(',').map(g => g.trim()) : []),
@@ -333,10 +342,24 @@ function ScheduleTable({ school, staff, subjects }) {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
                 });
-                if (!res.ok) console.error(`Failed to save for ${teacher.name}`);
+                if (res.ok) {
+                    successCount++;
+                } else {
+                    failCount++;
+                    console.error(`Failed to save for ${teacher.name}`);
+                }
             } catch (err) {
+                failCount++;
                 console.error(`Error saving for ${teacher.name}:`, err);
             }
+        }
+
+        if (failCount > 0) {
+            alert(`Saved ${successCount} teachers, but ${failCount} failed.`);
+        } else {
+            console.log("All saves successful, triggering refresh");
+            if (onRefresh) onRefresh();
+            alert(`Schedules saved successfully.`);
         }
     };
 
@@ -379,7 +402,7 @@ function ScheduleTable({ school, staff, subjects }) {
                     </thead>
                     <tbody>
                         {localStaff.map(teacher => {
-                            const schInfo = teacher.schools.find(s => String(s.id) === String(school.id));
+                            const schInfo = teacher.schools.find(s => Number(s.id) === Number(school.id));
                             const teacherSubjects = schInfo.subjects || [];
                             return (
                                 <tr key={teacher.id}>
@@ -402,7 +425,9 @@ function ScheduleTable({ school, staff, subjects }) {
                                                         ))}
                                                     </select>
                                                 ) : (
-                                                    <span className={`schedule-text ${assignment ? 'active' : ''}`}>{subjectName}</span>
+                                                    <span className={`schedule-text ${assignment ? 'active' : ''}`}>
+                                                        {subjects.find(sub => String(sub.id) === String(assignment?.subject_id))?.name || "--"}
+                                                    </span>
                                                 )}
                                             </td>
                                         );
