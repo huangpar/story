@@ -413,6 +413,9 @@ function ScheduleTable({ school, staff, subjects, onRefresh }) {
                                     <td className="teacher-name-cell">{teacher.name}</td>
                                     {periods.map(p => {
                                         const assignment = (schInfo.schedules || []).find(s => String(s.period) === String(p) && s.day_type === dayType);
+                                        const subject = subjects.find(sub => String(sub.id) === String(assignment?.subject_id));
+                                        const subjectName = subject?.name || "--";
+                                        const gradeClass = subject?.grade_level ? `grade-${subject.grade_level}` : '';
 
                                         return (
                                             <td key={p}>
@@ -428,8 +431,8 @@ function ScheduleTable({ school, staff, subjects, onRefresh }) {
                                                         ))}
                                                     </select>
                                                 ) : (
-                                                    <span className={`schedule-text ${assignment ? 'active' : ''}`}>
-                                                        {subjects.find(sub => String(sub.id) === String(assignment?.subject_id))?.name || "--"}
+                                                    <span className={`schedule-text ${assignment ? 'active' : ''} ${gradeClass}`}>
+                                                        {subjectName}
                                                     </span>
                                                 )}
                                             </td>

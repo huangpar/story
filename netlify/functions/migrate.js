@@ -71,6 +71,11 @@ exports.handler = async (event) => {
                 name text not null unique
             )
         `;
+        try {
+            await sql`ALTER TABLE subjects ADD COLUMN IF NOT EXISTS grade_level INTEGER`;
+        } catch (subErr) {
+            console.log("Subject column update skipped:", subErr.message);
+        }
         await sql`
             CREATE TABLE IF NOT EXISTS teaching_assignments (
                 person_id int not null,

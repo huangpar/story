@@ -488,3 +488,19 @@
 .ms-2 {
   margin-left: 0.5rem;
 }
+
+.grade-9 {
+  color: #10B981 !important;
+}
+
+.grade-10 {
+  color: #3B82F6 !important;
+}
+
+.grade-11 {
+  color: #8B5CF6 !important;
+}
+
+.grade-12 {
+  color: #EC4899 !important;
+}
