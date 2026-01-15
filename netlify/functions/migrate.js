@@ -82,6 +82,18 @@ exports.handler = async (event) => {
             )
         `;
 
+        await sql`
+            CREATE TABLE IF NOT EXISTS class_schedules (
+                person_id int NOT NULL,
+                school_id bigint NOT NULL,
+                subject_id bigint REFERENCES subjects(id) ON DELETE SET NULL,
+                period int NOT NULL,
+                day_type text NOT NULL,
+                PRIMARY KEY (person_id, school_id, period, day_type),
+                FOREIGN KEY (person_id, school_id) REFERENCES educator_schools(person_id, school_id) ON DELETE CASCADE
+            )
+        `;
+
         // 4. Sample Data
         const schCount = await sql`SELECT count(*) FROM schools`;
         if (schCount[0].count === '0') {

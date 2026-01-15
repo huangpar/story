@@ -116,6 +116,22 @@ exports.handler = async (event) => {
                   }
                 }
               }
+
+              // Handle Schedules
+              if (Array.isArray(asgn.schedules)) {
+                // Delete existing schedules for this person-school combo
+                await sql`DELETE FROM class_schedules WHERE person_id = ${pid} AND school_id = ${sid}`;
+                for (const sched of asgn.schedules) {
+                  const sbid = sched.subject_id ? parseInt(sched.subject_id) : null;
+                  const period = parseInt(sched.period);
+                  if (!isNaN(period)) {
+                    await sql`
+                      INSERT INTO class_schedules (person_id, school_id, subject_id, period, day_type)
+                      VALUES (${pid}, ${sid}, ${sbid}, ${period}, ${sched.day_type || 'regular'})
+                    `;
+                  }
+                }
+              }
             }
           }
         }
@@ -360,6 +376,11 @@ exports.handler = async (event) => {
       }
     }
 
+    let allSchedules = [];
+    try {
+      allSchedules = await sql`SELECT * FROM class_schedules`;
+    } catch (schedErr) { console.error("class_schedules query failed:", schedErr); }
+
     console.log(`Merging ${allShowAssignments.length} assignments into ${rows.length} rows`);
 
     const data = {};
@@ -399,7 +420,14 @@ exports.handler = async (event) => {
               region: es.region,
               subjects: allTeachingAssignments
                 .filter(ta => String(ta.person_id) === String(r.id) && String(ta.school_id) === String(es.school_id))
-                .map(ta => ({ id: ta.subject_id, name: ta.subject_name }))
+                .map(ta => ({ id: ta.subject_id, name: ta.subject_name })),
+              schedules: allSchedules
+                .filter(s => String(s.person_id) === String(r.id) && String(s.school_id) === String(es.school_id))
+                .map(s => ({
+                  subject_id: s.subject_id,
+                  period: s.period,
+                  day_type: s.day_type
+                }))
             })),
           is_politician: !!r.is_politician,
           is_entertainer: !!r.is_entertainer,

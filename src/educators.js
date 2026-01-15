@@ -101,7 +101,8 @@ export function Educators() {
                 school_id: s.id,
                 position: s.position,
                 grade_levels: Array.isArray(s.grade_levels) ? s.grade_levels : (s.grade_levels ? s.grade_levels.split(',').map(g => g.trim()) : []),
-                subjects: (s.subjects || []).map(sub => sub.id)
+                subjects: (s.subjects || []).map(sub => sub.id),
+                schedules: s.schedules || []
             }))
         };
 

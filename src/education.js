@@ -143,6 +143,12 @@ function DetailView({ view, onBack, schools, subjects, people }) {
                     >
                         Overview
                     </div>
+                    <div
+                        className={`edu-tab ${activeTab === "schedule" ? "active" : ""}`}
+                        onClick={() => setActiveTab("schedule")}
+                    >
+                        Schedule
+                    </div>
                     {schoolSubjects.map(subject => (
                         <div
                             key={subject.id}
@@ -188,6 +194,8 @@ function DetailView({ view, onBack, schools, subjects, people }) {
                             </div>
                         </div>
                     </div>
+                ) : activeTab === "schedule" ? (
+                    <ScheduleTable school={school} staff={staffMembers} subjects={subjects} />
                 ) : (
                     <div className="major-detail-view">
                         <div className="edu-card detail">
@@ -215,6 +223,146 @@ function DetailView({ view, onBack, schools, subjects, people }) {
                         </div>
                     </div>
                 )}
+            </div>
+        </div>
+    );
+}
+
+function ScheduleTable({ school, staff, subjects }) {
+    const [dayType, setDayType] = useState("regular");
+    const [localStaff, setLocalStaff] = useState(staff);
+    const periods = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    useEffect(() => {
+        setLocalStaff(staff);
+    }, [staff]);
+
+    const handlePeriodChange = async (teacher, period, subjectId) => {
+        const schInfo = teacher.schools.find(s => String(s.id) === String(school.id));
+        const currentSchedules = schInfo.schedules || [];
+
+        let newSchedules;
+        if (!subjectId) {
+            newSchedules = currentSchedules.filter(s => !(s.period === period && s.day_type === dayType));
+        } else {
+            const exists = currentSchedules.find(s => s.period === period && s.day_type === dayType);
+            if (exists) {
+                newSchedules = currentSchedules.map(s =>
+                    (s.period === period && s.day_type === dayType) ? { ...s, subject_id: subjectId } : s
+                );
+            } else {
+                newSchedules = [...currentSchedules, { period, subject_id: subjectId, day_type: dayType }];
+            }
+        }
+
+        // Optimistic Update
+        const updatedStaff = localStaff.map(p => {
+            if (p.id === teacher.id) {
+                const newSchools = p.schools.map(s =>
+                    String(s.id) === String(school.id)
+                        ? { ...s, schedules: newSchedules }
+                        : s
+                );
+                return { ...p, schools: newSchools };
+            }
+            return p;
+        });
+        setLocalStaff(updatedStaff);
+
+        // API Call
+        const updatedTeacher = updatedStaff.find(p => p.id === teacher.id);
+        const payload = {
+            id: updatedTeacher.id,
+            name: updatedTeacher.name,
+            region: updatedTeacher.Region,
+            district: updatedTeacher.Location,
+            party: updatedTeacher.Party,
+            fid: updatedTeacher.fid,
+            mid: updatedTeacher.mid,
+            sid: updatedTeacher.sid,
+            is_educator: true,
+            is_politician: updatedTeacher.is_politician,
+            is_entertainer: updatedTeacher.is_entertainer,
+            role_id: updatedTeacher.role_id,
+            education_assignments: updatedTeacher.schools.map(s => ({
+                school_id: s.id,
+                position: s.position,
+                grade_levels: Array.isArray(s.grade_levels) ? s.grade_levels : (s.grade_levels ? s.grade_levels.split(',').map(g => g.trim()) : []),
+                subjects: (s.subjects || []).map(sub => sub.id),
+                schedules: s.schedules || []
+            }))
+        };
+
+        try {
+            await fetch("/.netlify/functions/people", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+        } catch (err) {
+            console.error("Failed to save schedule:", err);
+        }
+    };
+
+    return (
+        <div className="edu-card detail schedule-container">
+            <div className="edu-header schedule-header">
+                <div className="d-flex align-items-center gap-3">
+                    <BookOpen size={24} className="edu-icon" />
+                    <h2>Class Schedule</h2>
+                </div>
+                <div className="day-type-toggle">
+                    <button
+                        className={`toggle-btn ${dayType === "regular" ? "active" : ""}`}
+                        onClick={() => setDayType("regular")}
+                    >
+                        Regular
+                    </button>
+                    <button
+                        className={`toggle-btn ${dayType === "friday" ? "active" : ""}`}
+                        onClick={() => setDayType("friday")}
+                    >
+                        Friday
+                    </button>
+                </div>
+            </div>
+            <div className="edu-content schedule-table-wrapper">
+                <table className="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Teacher</th>
+                            {periods.map(p => <th key={p}>P{p}</th>)}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {localStaff.map(teacher => {
+                            const schInfo = teacher.schools.find(s => String(s.id) === String(school.id));
+                            const teacherSubjects = schInfo.subjects || [];
+                            return (
+                                <tr key={teacher.id}>
+                                    <td className="teacher-name-cell">{teacher.name}</td>
+                                    {periods.map(p => {
+                                        const assignment = (schInfo.schedules || []).find(s => s.period === p && s.day_type === dayType);
+                                        return (
+                                            <td key={p}>
+                                                <select
+                                                    className="period-select"
+                                                    value={assignment?.subject_id || ""}
+                                                    onChange={(e) => handlePeriodChange(teacher, p, e.target.value)}
+                                                >
+                                                    <option value="">--</option>
+                                                    {teacherSubjects.map(sub => (
+                                                        <option key={sub.id} value={sub.id}>{sub.name}</option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                        );
+                                    })}
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
             </div>
         </div>
     );

@@ -87,6 +87,7 @@
 .education .card-title {
   font-size: 1.25rem;
   font-weight: 600;
+  white-space: normal;
 }
 
 .education .card {
@@ -312,4 +313,90 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Schedule Table Styles */
+.schedule-container {
+  margin-top: 20px;
+  background: white !important;
+  border: 2px solid #E5E7EB !important;
+}
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.day-type-toggle {
+  display: flex;
+  background: #F3F4F6;
+  padding: 4px;
+  border-radius: 8px;
+  gap: 4px;
+}
+
+.toggle-btn {
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: #4B5563;
+}
+
+.toggle-btn.active {
+  background: white;
+  color: #F97316;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-table-wrapper {
+  overflow-x: auto;
+  margin-top: 15px;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #374151;
+}
+
+.schedule-table th {
+  text-align: left;
+  padding: 12px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #6B7280;
+  border-bottom: 2px solid #F3F4F6;
+}
+
+.schedule-table td {
+  padding: 8px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.teacher-name-cell {
+  font-weight: 600;
+  color: #1F2937;
+  min-width: 150px;
+}
+
+.period-select {
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+  background: #F9FAF9;
+  font-size: 0.85rem;
+  color: #374151;
+  cursor: pointer;
+}
+
+.period-select:focus {
+  outline: none;
+  border-color: #FCD34D;
 }
