@@ -346,11 +346,15 @@ function ScheduleTable({ school, staff, subjects, onRefresh }) {
                     successCount++;
                 } else {
                     failCount++;
-                    console.error(`Failed to save for ${teacher.name}`);
+                    const errData = await res.json().catch(() => ({}));
+                    const errMsg = errData.error || `Server returned ${res.status}`;
+                    console.error(`Failed to save for ${teacher.name}:`, errMsg);
+                    alert(`Error saving for ${teacher.name}: ${errMsg}`);
                 }
             } catch (err) {
                 failCount++;
                 console.error(`Error saving for ${teacher.name}:`, err);
+                alert(`Network error saving for ${teacher.name}`);
             }
         }
 

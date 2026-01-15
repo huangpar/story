@@ -52,8 +52,9 @@ exports.handler = async (event) => {
       // Update main people table
       await sql`
             UPDATE people 
-            SET region = ${region}, 
-                district = ${district}, 
+            SET region = ${body.region || body.Region || null}, 
+                district = ${body.district || body.Location || null}, 
+                party = ${body.party || body.Party || null},
                 fid = ${fid || null}, 
                 mid = ${mid ? parseInt(mid) : null}, 
                 sid = ${sid ? parseInt(sid) : null}
@@ -81,7 +82,7 @@ exports.handler = async (event) => {
                 for (const subjId of asgn.subjects) {
                   const sbid = parseInt(subjId);
                   if (!isNaN(sbid)) {
-                    await sql`INSERT INTO teaching_assignments (person_id, school_id, subject_id) VALUES (${id}, ${schId}, ${sbid}) ON CONFLICT DO NOTHING`;
+                    await sql`INSERT INTO teaching_assignments (person_id, school_id, subject_id) VALUES (${id}, ${schId}, ${sbid})`;
                   }
                 }
               }
@@ -94,7 +95,6 @@ exports.handler = async (event) => {
                     await sql`
                       INSERT INTO class_schedules (person_id, school_id, subject_id, period, day_type)
                       VALUES (${id}, ${schId}, ${sbid}, ${period}, ${sched.day_type || 'regular'})
-                      ON CONFLICT (person_id, school_id, period, day_type) DO UPDATE SET subject_id = EXCLUDED.subject_id
                     `;
                   }
                 }
