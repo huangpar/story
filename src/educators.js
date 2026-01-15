@@ -101,8 +101,11 @@ export function Educators() {
                 school_id: s.id,
                 position: s.position,
                 grade_levels: Array.isArray(s.grade_levels) ? s.grade_levels : (s.grade_levels ? s.grade_levels.split(',').map(g => g.trim()) : []),
-                subjects: (s.subjects || []).map(sub => sub.id),
-                schedules: s.schedules || []
+                subjects: (s.subjects || []).map(sub => sub.id)
+            })),
+            board_assignments: (updatedPerson.board_memberships || []).map(bm => ({
+                school_id: bm.school_id,
+                ownership_percentage: bm.ownership_percentage
             }))
         };
 
@@ -169,6 +172,37 @@ export function Educators() {
             return s;
         });
         handleUpdate(person, { schools: newSchools });
+    };
+
+    const addBoardMembership = (person) => {
+        const currentBoard = person.board_memberships || [];
+        const available = schools.find(s => !currentBoard.some(cb => String(cb.school_id) === String(s.id)));
+        const newBoard = [...currentBoard, {
+            school_id: available?.id || "",
+            school_name: available?.name || "",
+            ownership_percentage: 0
+        }];
+        handleUpdate(person, { board_memberships: newBoard });
+    };
+
+    const removeBoardMembership = (person, schoolId) => {
+        const newBoard = (person.board_memberships || []).filter(bm => String(bm.school_id) !== String(schoolId));
+        handleUpdate(person, { board_memberships: newBoard });
+    };
+
+    const handleBoardChange = (person, oldSchoolId, newSchoolId) => {
+        const schoolName = schools.find(s => String(s.id) === String(newSchoolId))?.name || "";
+        const newBoard = (person.board_memberships || []).map(bm =>
+            String(bm.school_id) === String(oldSchoolId) ? { ...bm, school_id: newSchoolId, school_name: schoolName } : bm
+        );
+        handleUpdate(person, { board_memberships: newBoard });
+    };
+
+    const handleBoardFieldChange = (person, schoolId, field, value) => {
+        const newBoard = (person.board_memberships || []).map(bm =>
+            String(bm.school_id) === String(schoolId) ? { ...bm, [field]: value } : bm
+        );
+        handleUpdate(person, { board_memberships: newBoard });
     };
 
     if (loading) return <div className="p-10 text-white">Loading...</div>;
@@ -248,6 +282,37 @@ export function Educators() {
                                 ))}
                                 <button className="add-btn" onClick={() => addSchool(p)}>
                                     <Plus size={18} /> Add School
+                                </button>
+                            </div>
+
+                            <div className="ed-schools board-section">
+                                <label className="section-label">Board & Ownership</label>
+                                {(p.board_memberships || []).map((bm, idx) => (
+                                    <div key={idx} className="school-assignment-row">
+                                        <div className="school-main-inputs">
+                                            <CustomDropdown
+                                                value={bm.school_id}
+                                                options={schools}
+                                                onChange={(val) => handleBoardChange(p, bm.school_id, val)}
+                                            />
+                                            <div className="ownership-input-wrap">
+                                                <input
+                                                    type="number"
+                                                    placeholder="%"
+                                                    value={bm.ownership_percentage || 0}
+                                                    onChange={(e) => handleBoardFieldChange(p, bm.school_id, 'ownership_percentage', e.target.value)}
+                                                    className="ed-input ownership-input"
+                                                />
+                                                <span className="unit-label">% Ownership</span>
+                                            </div>
+                                            <button className="remove-btn" onClick={() => removeBoardMembership(p, bm.school_id)}>
+                                                <Trash2 size={18} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                                <button className="add-btn" onClick={() => addBoardMembership(p)}>
+                                    <Plus size={18} /> Add Board Membership
                                 </button>
                             </div>
                         </div>

@@ -185,12 +185,36 @@ function DetailView({ view, onBack, schools, subjects, people }) {
                         <div className="edu-card detail">
                             <div className="edu-header">
                                 <Users size={24} className="edu-icon" />
-                                <h2>Info</h2>
+                                <h2>Info & Ownership</h2>
                             </div>
                             <div className="edu-content">
-                                <p className="text-white-50">{school.city}, {school.region}</p>
-                                <p className="small text-white-50 mt-3">Total Faculty: {staffMembers.length}</p>
-                                <p className="small text-white-50">Subjects Taught: {schoolSubjects.length}</p>
+                                <p className="text-muted">{school.city}, {school.region}</p>
+
+                                <div className="board-info mt-4">
+                                    <h3 className="small-label">School Board</h3>
+                                    <div className="staff-list">
+                                        {people.filter(p =>
+                                            p.board_memberships?.some(bm => String(bm.school_id) === String(school.id))
+                                        ).map(member => {
+                                            const mb = member.board_memberships.find(bm => String(bm.school_id) === String(school.id));
+                                            return (
+                                                <div key={member.id} className="staff-member">
+                                                    <span className="member-name">{member.name}</span>
+                                                    <span className="member-role text-orange">{mb.ownership_percentage}% Ownership</span>
+                                                </div>
+                                            );
+                                        })}
+                                        {people.filter(p => p.board_memberships?.some(bm => String(bm.school_id) === String(school.id))).length === 0 && (
+                                            <p className="empty">No board members listed</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <h3 className="small-label mt-4">Key Statistics</h3>
+                                <div className="stats mt-2">
+                                    <p className="small text-muted">Total Faculty: {staffMembers.length}</p>
+                                    <p className="small text-muted">Subjects Taught: {schoolSubjects.length}</p>
+                                </div>
                             </div>
                         </div>
                     </div>

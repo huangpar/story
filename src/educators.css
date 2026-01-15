@@ -6,19 +6,19 @@
 }
 
 .educators-page .header {
-  margin-top: 0%;
-  padding: 50px;
-  justify-content: space-between;
+    margin-top: 0%;
+    padding: 50px;
+    justify-content: space-between;
 }
 
 .educators-page .header-center {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .educators-page .gradient-text {
-  font-size: 2rem;
+    font-size: 2rem;
 }
 
 .educators-container {
@@ -63,7 +63,7 @@
     padding: 20px;
     margin-bottom: 24px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+        0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
     /* transition: transform 0.2s; */
     display: flex;
     flex-direction: column;
@@ -230,7 +230,7 @@
 
 .educator-card .dropdown-header:hover {
     border-color: #FCD34D;
-} 
+}
 
 .educator-card .dropdown-list {
     position: absolute;
@@ -278,4 +278,27 @@
     text-align: center;
     padding: 40px;
     color: #94a3b8;
+}
+
+.board-section {
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ownership-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ownership-input {
+    width: 100px !important;
+    text-align: center;
+}
+
+.unit-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    white-space: nowrap;
 }
