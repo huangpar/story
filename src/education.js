@@ -231,31 +231,31 @@ function DetailView({ view, onBack, schools, subjects, people }) {
 function ScheduleTable({ school, staff, subjects }) {
     const [dayType, setDayType] = useState("regular");
     const [localStaff, setLocalStaff] = useState(staff);
+    const [isEditing, setIsEditing] = useState(false);
     const periods = [1, 2, 3, 4, 5, 6, 7, 8];
 
     useEffect(() => {
         setLocalStaff(staff);
     }, [staff]);
 
-    const handlePeriodChange = async (teacher, period, subjectId) => {
+    const handlePeriodChange = (teacher, period, subjectId) => {
         const schInfo = teacher.schools.find(s => String(s.id) === String(school.id));
         const currentSchedules = schInfo.schedules || [];
 
         let newSchedules;
         if (!subjectId) {
-            newSchedules = currentSchedules.filter(s => !(s.period === period && s.day_type === dayType));
+            newSchedules = currentSchedules.filter(s => !(String(s.period) === String(period) && s.day_type === dayType));
         } else {
-            const exists = currentSchedules.find(s => s.period === period && s.day_type === dayType);
+            const exists = currentSchedules.find(s => String(s.period) === String(period) && s.day_type === dayType);
             if (exists) {
                 newSchedules = currentSchedules.map(s =>
-                    (s.period === period && s.day_type === dayType) ? { ...s, subject_id: subjectId } : s
+                    (String(s.period) === String(period) && s.day_type === dayType) ? { ...s, subject_id: subjectId } : s
                 );
             } else {
-                newSchedules = [...currentSchedules, { period, subject_id: subjectId, day_type: dayType }];
+                newSchedules = [...currentSchedules, { period: parseInt(period), subject_id: parseInt(subjectId), day_type: dayType }];
             }
         }
 
-        // Optimistic Update
         const updatedStaff = localStaff.map(p => {
             if (p.id === teacher.id) {
                 const newSchools = p.schools.map(s =>
@@ -268,39 +268,44 @@ function ScheduleTable({ school, staff, subjects }) {
             return p;
         });
         setLocalStaff(updatedStaff);
+    };
 
-        // API Call
-        const updatedTeacher = updatedStaff.find(p => p.id === teacher.id);
-        const payload = {
-            id: updatedTeacher.id,
-            name: updatedTeacher.name,
-            region: updatedTeacher.Region,
-            district: updatedTeacher.Location,
-            party: updatedTeacher.Party,
-            fid: updatedTeacher.fid,
-            mid: updatedTeacher.mid,
-            sid: updatedTeacher.sid,
-            is_educator: true,
-            is_politician: updatedTeacher.is_politician,
-            is_entertainer: updatedTeacher.is_entertainer,
-            role_id: updatedTeacher.role_id,
-            education_assignments: updatedTeacher.schools.map(s => ({
-                school_id: s.id,
-                position: s.position,
-                grade_levels: Array.isArray(s.grade_levels) ? s.grade_levels : (s.grade_levels ? s.grade_levels.split(',').map(g => g.trim()) : []),
-                subjects: (s.subjects || []).map(sub => sub.id),
-                schedules: s.schedules || []
-            }))
-        };
+    const handleSave = async () => {
+        setIsEditing(false);
+        // Save all changes made during editing
+        for (const teacher of localStaff) {
+            const payload = {
+                id: teacher.id,
+                name: teacher.name,
+                region: teacher.Region,
+                district: teacher.Location,
+                party: teacher.Party,
+                fid: teacher.fid,
+                mid: teacher.mid,
+                sid: teacher.sid,
+                is_educator: true,
+                is_politician: teacher.is_politician,
+                is_entertainer: teacher.is_entertainer,
+                role_id: teacher.role_id,
+                education_assignments: teacher.schools.map(s => ({
+                    school_id: s.id,
+                    position: s.position,
+                    grade_levels: Array.isArray(s.grade_levels) ? s.grade_levels : (s.grade_levels ? s.grade_levels.split(',').map(g => g.trim()) : []),
+                    subjects: (s.subjects || []).map(sub => sub.id),
+                    schedules: s.schedules || []
+                }))
+            };
 
-        try {
-            await fetch("/.netlify/functions/people", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-        } catch (err) {
-            console.error("Failed to save schedule:", err);
+            try {
+                const res = await fetch("/.netlify/functions/people", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) console.error(`Failed to save for ${teacher.name}`);
+            } catch (err) {
+                console.error(`Error saving for ${teacher.name}:`, err);
+            }
         }
     };
 
@@ -311,19 +316,26 @@ function ScheduleTable({ school, staff, subjects }) {
                     <BookOpen size={24} className="edu-icon" />
                     <h2>Class Schedule</h2>
                 </div>
-                <div className="day-type-toggle">
-                    <button
-                        className={`toggle-btn ${dayType === "regular" ? "active" : ""}`}
-                        onClick={() => setDayType("regular")}
-                    >
-                        Regular
-                    </button>
-                    <button
-                        className={`toggle-btn ${dayType === "friday" ? "active" : ""}`}
-                        onClick={() => setDayType("friday")}
-                    >
-                        Friday
-                    </button>
+                <div className="d-flex align-items-center gap-3">
+                    <div className="day-type-toggle">
+                        <button
+                            className={`toggle-btn ${dayType === "regular" ? "active" : ""}`}
+                            onClick={() => setDayType("regular")}
+                        >
+                            Regular
+                        </button>
+                        <button
+                            className={`toggle-btn ${dayType === "friday" ? "active" : ""}`}
+                            onClick={() => setDayType("friday")}
+                        >
+                            Friday
+                        </button>
+                    </div>
+                    {isEditing ? (
+                        <button className="edit-btn save" onClick={handleSave}>Save</button>
+                    ) : (
+                        <button className="edit-btn" onClick={() => setIsEditing(true)}>Edit Schedule</button>
+                    )}
                 </div>
             </div>
             <div className="edu-content schedule-table-wrapper">
@@ -342,19 +354,25 @@ function ScheduleTable({ school, staff, subjects }) {
                                 <tr key={teacher.id}>
                                     <td className="teacher-name-cell">{teacher.name}</td>
                                     {periods.map(p => {
-                                        const assignment = (schInfo.schedules || []).find(s => s.period === p && s.day_type === dayType);
+                                        const assignment = (schInfo.schedules || []).find(s => String(s.period) === String(p) && s.day_type === dayType);
+                                        const subjectName = subjects.find(sub => String(sub.id) === String(assignment?.subject_id))?.name || "--";
+
                                         return (
                                             <td key={p}>
-                                                <select
-                                                    className="period-select"
-                                                    value={assignment?.subject_id || ""}
-                                                    onChange={(e) => handlePeriodChange(teacher, p, e.target.value)}
-                                                >
-                                                    <option value="">--</option>
-                                                    {teacherSubjects.map(sub => (
-                                                        <option key={sub.id} value={sub.id}>{sub.name}</option>
-                                                    ))}
-                                                </select>
+                                                {isEditing ? (
+                                                    <select
+                                                        className="period-select"
+                                                        value={assignment?.subject_id || ""}
+                                                        onChange={(e) => handlePeriodChange(teacher, p, e.target.value)}
+                                                    >
+                                                        <option value="">--</option>
+                                                        {teacherSubjects.map(sub => (
+                                                            <option key={sub.id} value={sub.id}>{sub.name}</option>
+                                                        ))}
+                                                    </select>
+                                                ) : (
+                                                    <span className={`schedule-text ${assignment ? 'active' : ''}`}>{subjectName}</span>
+                                                )}
                                             </td>
                                         );
                                     })}

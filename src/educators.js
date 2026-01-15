@@ -112,10 +112,14 @@ export function Educators() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
-            if (!res.ok) throw new Error("Failed to save educator info");
+            if (!res.ok) {
+                const errorData = await res.json();
+                console.error("Save error:", errorData);
+                alert("Failed to save changes: " + (errorData.error || "Unknown error"));
+            }
         } catch (error) {
-            console.error("Save error:", error);
-            alert("Failed to save changes.");
+            console.error("Connection error:", error);
+            alert("Failed to connect to server.");
         }
     };
 
