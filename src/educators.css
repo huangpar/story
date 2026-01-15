@@ -47,7 +47,7 @@
     text-decoration: none;
 }
 
-.educator-card.dropdown-header.has-value span:first-child {
+.educator-card .dropdown-header.has-value span:first-child {
     background: linear-gradient(to right, #F59E0B, #F97316, #EAB308);
     -webkit-background-clip: text;
     background-clip: text;
@@ -187,22 +187,23 @@
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.8rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
     cursor: pointer;
     transition: all 0.2s;
-    color: #94a3b8;
+    color: #374151;
 }
 
 .subject-chip:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #f8fafc;
+    background: #FEFCE8;
+    color: #FEF08A;
 }
 
 .subject-chip.active {
-    background: rgba(236, 72, 153, 0.2);
-    border-color: #EC4899;
-    color: #EC4899;
+    background: linear-gradient(to right, #FEF08A, #FFEDD5);
+    border-color: #FCD34D;
+    color: #78350F;
+    box-shadow: 0 2px 4px rgba(252, 211, 77, 0.2);
 }
 
 /* Custom Dropdown Styling (reusing pattern from other pages) */
