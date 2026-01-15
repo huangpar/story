@@ -127,8 +127,8 @@
 
 .ed-input:focus {
     outline: none;
-    border-color: #EC4899;
-    box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+    border-color: #FCD34D;
+    background: white;
 }
 
 .remove-btn {
@@ -138,12 +138,12 @@
     cursor: pointer;
     padding: 8px;
     border-radius: 8px;
-    transition: all 0.2s;
+    transition: color 0.2s, transform 0.2s;
 }
 
 .remove-btn:hover {
     color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.2);
 }
 
 .add-btn {
@@ -196,7 +196,7 @@
 
 .subject-chip:hover {
     background: #FEFCE8;
-    color: #FEF08A;
+    border-color: #FEF08A;
 }
 
 .subject-chip.active {
