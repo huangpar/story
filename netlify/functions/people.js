@@ -50,14 +50,25 @@ exports.handler = async (event) => {
       } catch (migErr) { console.error("Auto-migration during PUT failed:", migErr); }
 
       // Update main people table
+      const updatePayload = {
+        region: String(body.region || body.Region || ""),
+        district: String(body.district || body.Location || ""),
+        party: String(body.party || body.Party || ""),
+        fid: fid ? parseInt(fid) : null,
+        mid: mid ? parseInt(mid) : null,
+        sid: sid ? parseInt(sid) : null
+      };
+
+      console.log(`PUT: Updating people ${id} with:`, JSON.stringify(updatePayload));
+
       await sql`
             UPDATE people 
-            SET region = ${body.region || body.Region || null}, 
-                district = ${body.district || body.Location || null}, 
-                party = ${body.party || body.Party || null},
-                fid = ${fid || null}, 
-                mid = ${mid ? parseInt(mid) : null}, 
-                sid = ${sid ? parseInt(sid) : null}
+            SET region = ${updatePayload.region || null}, 
+                district = ${updatePayload.district || null}, 
+                party = ${updatePayload.party || null},
+                fid = ${updatePayload.fid}, 
+                mid = ${updatePayload.mid}, 
+                sid = ${updatePayload.sid}
             WHERE id = ${id}
         `;
 
