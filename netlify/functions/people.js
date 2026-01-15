@@ -81,35 +81,47 @@ exports.handler = async (event) => {
 
       // Handle Educator Role
       if (is_educator) {
+        const { education_assignments } = body;
+
         await sql`
             INSERT INTO education (person_id, is_educator) 
             VALUES (${id}, true) 
             ON CONFLICT (person_id) DO UPDATE SET is_educator = true
         `;
 
-        if (school_id) {
-          await sql`
-                INSERT INTO educator_schools (person_id, school_id, position)
-                VALUES (${id}, ${school_id}, ${edu_position || null})
-                ON CONFLICT (person_id, school_id) DO UPDATE SET position = EXCLUDED.position
-            `;
+        if (Array.isArray(education_assignments)) {
+          const pid = parseInt(id);
+          // Delete old assignments to replace with new ones
+          // We need to be careful with cascading deletes. 
+          // teaching_assignments references educator_schools(person_id, school_id)
+          // educator_schools is deleted here.
+          await sql`DELETE FROM educator_schools WHERE person_id = ${pid}`;
 
-          // Delete old subjects for this school-person combo
-          await sql`DELETE FROM teaching_assignments WHERE person_id = ${id} AND school_id = ${school_id}`;
-
-          if (Array.isArray(edu_subjects) && edu_subjects.length > 0) {
-            for (const subjId of edu_subjects) {
+          for (const asgn of education_assignments) {
+            const sid = parseInt(asgn.school_id);
+            if (!isNaN(sid)) {
               await sql`
-                        INSERT INTO teaching_assignments (person_id, school_id, subject_id)
-                        VALUES (${id}, ${school_id}, ${subjId})
+                INSERT INTO educator_schools (person_id, school_id, position, grade_levels)
+                VALUES (${pid}, ${sid}, ${asgn.position || null}, ${asgn.grade_levels || null})
+              `;
+
+              if (Array.isArray(asgn.subjects) && asgn.subjects.length > 0) {
+                for (const subjId of asgn.subjects) {
+                  const sbid = parseInt(subjId);
+                  if (!isNaN(sbid)) {
+                    await sql`
+                      INSERT INTO teaching_assignments (person_id, school_id, subject_id)
+                      VALUES (${pid}, ${sid}, ${sbid})
                     `;
+                  }
+                }
+              }
             }
           }
         }
       } else {
         await sql`DELETE FROM education WHERE person_id = ${id}`;
         await sql`DELETE FROM educator_schools WHERE person_id = ${id}`;
-        await sql`DELETE FROM teaching_assignments WHERE person_id = ${id}`;
       }
 
       // Handle Politician Role
@@ -382,6 +394,7 @@ exports.handler = async (event) => {
               id: es.school_id,
               name: es.school_name,
               position: es.position,
+              grade_levels: es.grade_levels,
               city: es.city,
               region: es.region,
               subjects: allTeachingAssignments

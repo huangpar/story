@@ -8,6 +8,7 @@ import { Education } from "./education";
 import { Add } from "./add";
 import { Politicians } from "./politicians";
 import { Entertainers } from "./entertainers";
+import { Educators } from "./educators";
 
 
 
@@ -22,6 +23,7 @@ function App() {
       <Route path="/add" element={<Add />} />
       <Route path="/politicians" element={<Politicians />} />
       <Route path="/entertainers" element={<Entertainers />} />
+      <Route path="/educators" element={<Educators />} />
     </Routes>
   );
 }

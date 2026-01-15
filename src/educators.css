@@ -1,0 +1,235 @@
+.educators-page {
+    min-height: 100vh;
+    background-color: #0f172a;
+    color: white;
+    padding-bottom: 50px;
+}
+
+.educators-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.educators-container .head {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.educationTitle {
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #EAB308, #EC4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+}
+
+.educator-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s;
+}
+
+.educator-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(234, 179, 8, 0.3);
+}
+
+.ed-info h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+}
+
+.ed-info p {
+    margin: 4px 0 20px 0;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.section-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #EAB308;
+    margin-bottom: 12px;
+}
+
+.school-assignment-row {
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.school-main-inputs {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.ed-input {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+.ed-input:focus {
+    outline: none;
+    border-color: #EC4899;
+    box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.remove-btn:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.add-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(234, 179, 8, 0.1);
+    color: #EAB308;
+    border: 1px dashed #EAB308;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.add-btn:hover {
+    background: rgba(234, 179, 8, 0.2);
+}
+
+.subject-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subject-selection label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.subjects-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.subject-chip {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #94a3b8;
+}
+
+.subject-chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f8fafc;
+}
+
+.subject-chip.active {
+    background: rgba(236, 72, 153, 0.2);
+    border-color: #EC4899;
+    color: #EC4899;
+}
+
+/* Custom Dropdown Styling (reusing pattern from other pages) */
+.custom-dropdown {
+    position: relative;
+    min-width: 200px;
+}
+
+.dropdown-header {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.dropdown-header.has-value {
+    color: #f8fafc;
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin-top: 4px;
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background: rgba(234, 179, 8, 0.1);
+}
+
+.gradient-text-item {
+    font-size: 0.9rem;
+}
+
+.arrow {
+    transition: transform 0.2s;
+    color: #94a3b8;
+}
+
+.arrow.open {
+    transform: rotate(180deg);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+}
