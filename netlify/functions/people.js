@@ -54,7 +54,8 @@ exports.handler = async (event) => {
         region: String(body.region || body.Region || ""),
         district: String(body.district || body.Location || ""),
         party: String(body.party || body.Party || ""),
-        fid: fid ? `{${parseInt(fid)}}` : null,
+        // FIX: Error logs show 'fid' is INTEGER, but 'mid' is ARRAY (integer[])
+        fid: fid ? parseInt(fid) : null,
         mid: mid ? `{${parseInt(mid)}}` : null,
         sid: sid ? `{${parseInt(sid)}}` : null
       };
