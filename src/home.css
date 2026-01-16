@@ -1,0 +1,291 @@
+/* Wrapper for the entire card component */
+.home-card-wrapper {
+    position: relative;
+    height: 100%;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+.home-card-wrapper:hover {
+    transform: translateY(-0.5rem);
+    /* hover:-translate-y-2 */
+}
+
+/* Premium glow effect */
+.home-card-glow {
+    position: absolute;
+    inset: -0.25rem;
+    /* -inset-1 */
+    border-radius: 1rem;
+    /* rounded-2xl */
+    opacity: 0;
+    filter: blur(24px);
+    /* blur-xl */
+    transition: all 0.5s ease;
+    background: linear-gradient(135deg, var(--glow-from), var(--glow-via), var(--glow-to));
+    /* category.metallic */
+}
+
+.home-card-wrapper:hover .home-card-glow {
+    opacity: 0.3;
+    /* group-hover:opacity-30 */
+}
+
+/* Main card container */
+.home-card-inner {
+    position: relative;
+    height: 100%;
+    border-radius: 1rem;
+    /* rounded-2xl */
+    padding: 2rem;
+    /* p-8 */
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    /* from-slate-800/90 to-slate-900/90 */
+    backdrop-filter: blur(24px);
+    /* backdrop-blur-xl */
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    /* border-amber-500/20 */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    /* shadow-2xl */
+    transition: all 0.5s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-card-wrapper:hover .home-card-inner {
+    border-color: rgba(251, 191, 36, 0.4);
+    /* group-hover:border-amber-400/40 */
+}
+
+/* Content container */
+.home-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+    /* space-y-6 */
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+/* Luxury icon circle */
+.home-card-icon-circle {
+    position: relative;
+    width: 5rem;
+    /* w-20 */
+    height: 5rem;
+    border-radius: 9999px;
+    /* rounded-full */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+    background: linear-gradient(135deg, var(--icon-from), var(--icon-via), var(--icon-to));
+    /* category.color */
+    margin: 0 auto;
+}
+
+.home-card-wrapper:hover .home-card-icon-circle {
+    box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.2);
+    /* group-hover:shadow-amber-500/20 */
+}
+
+/* Inner glow of icon circle */
+.home-card-icon-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background: linear-gradient(135deg, var(--glow-from), var(--glow-via), var(--glow-to));
+    /* category.metallic */
+}
+
+.home-card-wrapper:hover .home-card-icon-glow {
+    opacity: 0.2;
+    /* group-hover:opacity-20 */
+}
+
+/* Icon SVG styling */
+.home-card-icon {
+    position: relative;
+    z-index: 10;
+    width: 2.25rem;
+    /* size-9 */
+    height: 2.25rem;
+    color: #FEF3C7;
+    /* text-amber-100 */
+}
+
+/* Title */
+.home-card-title {
+    font-size: 1.5rem;
+    /* text-2xl */
+    color: #FEF3C7;
+    /* text-amber-100 */
+    letter-spacing: 0.025em;
+    /* tracking-wide */
+    transition: color 0.5s ease;
+    margin: 0;
+    font-weight: 400;
+}
+
+.home-card-wrapper:hover .home-card-title {
+    color: #FFFBEB;
+    /* group-hover:text-amber-50 */
+}
+
+/* Elegant divider */
+.home-card-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    /* gap-3 */
+    width: 100%;
+    justify-content: center;
+}
+
+.divider-line {
+    height: 1px;
+    /* h-px */
+    flex: 1;
+}
+
+.divider-line-left {
+    background: linear-gradient(to right, transparent, rgba(245, 158, 11, 0.5) 50%, rgba(245, 158, 11, 0.5));
+}
+
+.divider-line-right {
+    background: linear-gradient(to left, transparent, rgba(245, 158, 11, 0.5) 50%, rgba(245, 158, 11, 0.5));
+}
+
+.divider-star {
+    width: 0.75rem;
+    /* size-3 */
+    height: 0.75rem;
+    color: rgba(251, 191, 36, 0.6);
+    /* text-amber-400/60 */
+}
+
+/* Hover text "ENTER" */
+.home-card-enter {
+    color: #94A3B8;
+    /* text-slate-400 */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    font-size: 0.75rem;
+    /* text-xs */
+    letter-spacing: 0.1em;
+    /* tracking-widest */
+    text-transform: uppercase;
+}
+
+.home-card-wrapper:hover .home-card-enter {
+    opacity: 1;
+    /* group-hover:opacity-100 */
+}
+
+/* Corner Accents */
+.corner-accent {
+    position: absolute;
+    width: 0.75rem;
+    /* w-3 */
+    height: 0.75rem;
+    /* h-3 */
+    transition: border-color 0.5s ease;
+    border-color: rgba(245, 158, 11, 0.3);
+    /* border-amber-500/30 */
+    border-style: solid;
+    border-width: 0;
+}
+
+.home-card-wrapper:hover .corner-accent {
+    border-color: rgba(251, 191, 36, 0.6);
+    /* group-hover:border-amber-400/60 */
+}
+
+.corner-tr {
+    top: 0.75rem;
+    /* top-3 */
+    right: 0.75rem;
+    /* right-3 */
+    border-top-width: 1px;
+    border-right-width: 1px;
+}
+
+.corner-bl {
+    bottom: 0.75rem;
+    /* bottom-3 */
+    left: 0.75rem;
+    /* left-3 */
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+}
+
+/* Category Specific Colors using Custom Properties */
+.category-politics {
+    --icon-from: #2563EB;
+    /* blue-600 */
+    --icon-via: #4338CA;
+    /* indigo-700 */
+    --icon-to: #6B21A8;
+    /* purple-800 */
+
+    --glow-from: #60A5FA;
+    /* blue-400 */
+    --glow-via: #67E8F9;
+    /* cyan-300 */
+    --glow-to: #BFDBFE;
+    /* blue-200 */
+}
+
+.category-entertainment {
+    --icon-from: #DB2777;
+    /* pink-600 */
+    --icon-via: #BE123C;
+    /* rose-700 */
+    --icon-to: #6B21A8;
+    /* purple-800 */
+
+    --glow-from: #F472B6;
+    /* pink-400 */
+    --glow-via: #FDA4AF;
+    /* rose-300 */
+    --glow-to: #FBCFE8;
+    /* pink-200 */
+}
+
+.category-people {
+    --icon-from: #059669;
+    /* emerald-600 */
+    --icon-via: #0F766E;
+    /* teal-700 */
+    --icon-to: #166534;
+    /* green-800 */
+
+    --glow-from: #34D399;
+    /* emerald-400 */
+    --glow-via: #5EEAD4;
+    /* teal-300 */
+    --glow-to: #A7F3D0;
+    /* emerald-200 */
+}
+
+.category-education {
+    --icon-from: #D97706;
+    /* amber-600 */
+    --icon-via: #C2410C;
+    /* orange-700 */
+    --icon-to: #854D0E;
+    /* yellow-800 */
+
+    --glow-from: #FACC15;
+    /* yellow-400 */
+    --glow-via: #FCD34D;
+    /* amber-300 */
+    --glow-to: #FEF08A;
+    /* yellow-200 */
+}

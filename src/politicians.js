@@ -117,11 +117,16 @@ export function Politicians() {
 
     return (
         <div className="politicians-page">
+            <div className="bg-layer">
+                <div className="bg-wash"></div>
+                <div className="orb orb-indigo"></div>
+                <div className="orb orb-purple"></div>
+            </div>
             <h1 className="header">
                 <div className="header-center">
-                    <Sparkles size={35} color="#EAB308" />
+                    {/* <Sparkles size={35} color="#EAB308" /> */}
                     <Link to="/"><span className="gradient-text">The Republic/Storia</span></Link>
-                    <Sparkles size={35} color="#EC4899" />
+                    {/* <Sparkles size={35} color="#EC4899" /> */}
                 </div>
             </h1>
 

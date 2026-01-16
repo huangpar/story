@@ -1,8 +1,48 @@
 .politicians-page {
-    background-image: linear-gradient(to bottom right, #DBEAFE, #FAF5FF, #E0E7FF);
-    min-height: 100vh;
+    background-image: linear-gradient(to bottom right, #0F172A, #1E1B4B, #0F172A);
     color: white;
     padding-bottom: 50px;
+    min-height: 100vh;
+}
+
+.politicians-page .bg-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.politicians-page .bg-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right,
+      rgba(99, 102, 241, 0.05),
+      transparent,
+      rgba(168, 85, 247, 0.05));
+}
+
+.politicians-page .orb {
+  position: absolute;
+  width: 24rem;
+  height: 24rem;
+  border-radius: 9999px;
+  filter: blur(64px);
+}
+
+.politicians-page .orb-indigo {
+  top: 5rem;
+  right: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(129, 140, 248, 0.1),
+      transparent);
+}
+
+.politicians-page .orb-purple {
+  bottom: 5rem;
+  left: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(192, 132, 252, 0.10),
+      transparent);
 }
 
 .politicians-page .header {
@@ -29,18 +69,16 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background: linear-gradient(to right, #F8F7FC, #FAF7FB);
-    /* border: 5px solid #93C5FD; */
-    box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
+    background: linear-gradient(to right, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     border-radius: 25px;
 }
 
 .politician-card {
-    background: white;
-    border: 2px solid #E5E7EB !important;
-    box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     padding: 20px;
     display: flex;
@@ -51,15 +89,16 @@
 .pol-info h3 {
     margin: 0 0 5px 0;
     font-size: 1.2rem;
-    background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
+    color: #FEF3C7;
+    /* background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
 }
 
 .pol-info p {
     margin: 0;
-    color: #6B7280;
+    color: #94A3B8;
     font-size: 0.9rem;
 }
 
@@ -71,10 +110,11 @@
 
 .pol-role label {
     font-weight: 500;
-    background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
+    color: #FEF3C7;
+    /* background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
 }
 
 .head a {
@@ -96,7 +136,7 @@
 
 .dropdown-header {
     background: white;
-    border: 2px solid #E5E7EB;
+    border: 2px solid rgba(245, 158, 11, 0.2);
     border-radius: 5px;
     padding: 5px 10px;
     cursor: pointer;
@@ -110,17 +150,18 @@
 
 /* Apply gradient to the text in header if selected, assuming we want it consistent */
 .dropdown-header.has-value span:first-child {
-    background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
+    color: #FEF3C7;
+    /* background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
     font-weight: 500;
 }
 
 .dropdown-header .arrow {
     margin-left: 10px;
     transition: transform 0.2s;
-    color: #93C5FD;
+    color: rgba(245, 158, 11, 0.2);
 }
 
 .dropdown-header .arrow.open {
@@ -133,7 +174,7 @@
     left: 0;
     right: 0;
     background: white;
-    border: 2px solid #BFDBFE;
+    border: 2px solid rgba(245, 158, 11, 0.2);
     border-radius: 5px;
     z-index: 100;
     max-height: 200px;
@@ -152,10 +193,11 @@
 }
 
 .gradient-text-item {
-    background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
+    color: #FEF3C7;
+    /* background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
     font-weight: 500;
 }
 

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
 // forcing rebuild
 import './politics.css';
-import { Sparkles, Gavel } from 'lucide-react';
+import { Sparkles, Gavel, Star } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -25,11 +25,16 @@ export function Politics() {
 
     return (
         <div className="politics">
+            <div className="bg-layer">
+                <div className="bg-wash"></div>
+                <div className="orb orb-indigo"></div>
+                <div className="orb orb-purple"></div>
+            </div>
             <h1 className="header">
                 <div className="header-center">
-                    <Sparkles size={35} color="#EAB308" />
+                    {/* <Sparkles size={35} color="#EAB308" /> */}
                     <Link to="/"><span className="gradient-text">The Republic/Storia</span></Link>
-                    <Sparkles size={35} color="#EC4899" />
+                    {/* <Sparkles size={35} color="#EC4899" /> */}
                 </div>
                 <Link to="/politicians" className="addPerson">
                     <Users className="users" size={25} color="#ffffffff" />
@@ -67,41 +72,68 @@ function DefaultView({ onSelect, peopleList = [] }) {
             <div className="container">
                 <div className="row row-cols-1 row-cols-md-3 g-5">
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-left">
-                        <div className="card rotate-left">
-                            <div className="card-body" onClick={() => onSelect("governors")}>
-                                <div className="circle"><Gavel className="sparkle" /></div>
-                                <h5 className="card-title">Governors</h5>
-                                <div className="divider">
-                                    <div className="dash"></div>
-                                    <div className="diamond">✦</div>
-                                    <div className="dash"></div>
+                        <div className="home-card-wrapper category-politics">
+                            <div className="home-card-glow"></div>
+                            <div className="home-card-inner" onClick={() => onSelect("governors")}>
+                                <div className="home-card-content">
+                                    <div className="home-card-icon-circle">
+                                        <div className="home-card-icon-glow"></div>
+                                        <Gavel className="home-card-icon" />
+                                    </div>
+                                    <h2 className="home-card-title">Governors</h2>
+                                    <div className="home-card-divider">
+                                        <div className="divider-line divider-line-left"></div>
+                                        <Star className="divider-star" />
+                                        <div className="divider-line divider-line-left"></div>
+                                    </div>
+                                    <p className="home-card-enter">Enter</p>
                                 </div>
+                                <div className="corner-accent corner-tr"></div>
+                                <div className="corner-accent corner-bl"></div>
                             </div>
                         </div>
                     </div>
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-left">
-                        <div className="card rotate-left">
-                            <div className="card-body" onClick={() => onSelect("senate")}>
-                                <div className="circle"><Gavel className="sparkle" /></div>
-                                <h5 className="card-title">Senate</h5>
-                                <div className="divider">
-                                    <div className="dash"></div>
-                                    <div className="diamond">✦</div>
-                                    <div className="dash"></div>
+                        <div className="home-card-wrapper category-politics">
+                            <div className="home-card-glow"></div>
+                            <div className="home-card-inner" onClick={() => onSelect("senate")}>
+                                <div className="home-card-content">
+                                    <div className="home-card-icon-circle">
+                                        <div className="home-card-icon-glow"></div>
+                                        <Gavel className="home-card-icon" />
+                                    </div>
+                                    <h2 className="home-card-title">Senators</h2>
+                                    <div className="home-card-divider">
+                                        <div className="divider-line divider-line-left"></div>
+                                        <Star className="divider-star" />
+                                        <div className="divider-line divider-line-left"></div>
+                                    </div>
+                                    <p className="home-card-enter">Enter</p>
                                 </div>
+                                <div className="corner-accent corner-tr"></div>
+                                <div className="corner-accent corner-bl"></div>
                             </div>
                         </div>
                     </div>
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-left">
-                        <div className="card rotate-left">
-                            <div className="card-body" onClick={() => onSelect("highCourt")}>
-                                <div className="circle"><Gavel className="sparkle" /></div>
-                                <h5 className="card-title">High Court</h5>
-                                <div className="divider">
-                                    <div className="dash"></div>
-                                    <div className="diamond">✦</div>
-                                    <div className="dash"></div>
+                        <div className="home-card-wrapper category-politics">
+                            <div className="home-card-glow"></div>
+                            <div className="home-card-inner" onClick={() => onSelect("highCourt")}>
+                                <div className="home-card-content">
+                                    <div className="home-card-icon-circle">
+                                        <div className="home-card-icon-glow"></div>
+                                        <Gavel className="home-card-icon" />
+                                    </div>
+                                    <h2 className="home-card-title">High Court</h2>
+                                    <div className="home-card-divider">
+                                        <div className="divider-line divider-line-left"></div>
+                                        <Star className="divider-star" />
+                                        <div className="divider-line divider-line-left"></div>
+                                    </div>
+                                    <p className="home-card-enter">Enter</p>
                                 </div>
+                                <div className="corner-accent corner-tr"></div>
+                                <div className="corner-accent corner-bl"></div>
                             </div>
                         </div>
                     </div>
@@ -225,7 +257,7 @@ function DetailView({
         </div>,
         senate: <div>
             <div className="senateWrap">
-                <div className="d-flex justify-content-center mb-5">
+                <div className="d-flex justify-content-center mb-1">
                     <div className="position-relative">
                         <div className="glow-bg position-absolute top-0 start-0 w-100 h-100 rounded-pill"></div>
                         <div className="glow-pill position-relative px-5 py-3 rounded-pill shadow-lg">
@@ -234,67 +266,67 @@ function DetailView({
                     </div>
                 </div>
                 <div className="senators">
-                    <div className="senatorBox seat-1" style={{ position: "absolute", top: "91.6%", left: "3%" }}>
+                    <div className="senatorBox seat-1" style={{ position: "absolute", top: "91.6%", left: "2.0%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(0)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-2" style={{ position: "absolute", top: "71.4%", left: "4.6%" }}>
+                    <div className="senatorBox seat-2" style={{ position: "absolute", top: "72.3%", left: "3.4%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(1)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-3" style={{ position: "absolute", top: "52.5%", left: "9.3%" }}>
+                    <div className="senatorBox seat-3" style={{ position: "absolute", top: "54.1%", left: "7.6%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(2)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-4" style={{ position: "absolute", top: "36.3%", left: "16.8%" }}>
+                    <div className="senatorBox seat-4" style={{ position: "absolute", top: "38.1%", left: "14.3%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(3)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-5" style={{ position: "absolute", top: "23.8%", left: "26.5%" }}>
+                    <div className="senatorBox seat-5" style={{ position: "absolute", top: "25.3%", left: "23.1%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(4)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-6" style={{ position: "absolute", top: "16.0%", left: "37.8%" }}>
+                    <div className="senatorBox seat-6" style={{ position: "absolute", top: "16.3%", left: "33.6%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(5)}</div>
                         </div>
                     </div>
-                    <div className="chancellorBox" style={{ position: "absolute", top: "13.3%", left: "50%", transform: "translate(-50%, -50%)", width: "auto" }}>
+                    <div className="chancellorBox" style={{ position: "absolute", top: "10.0%", left: "50%", transform: "translate(-50%, -50%)", width: "auto" }}>
                         <div className="chancellorContent">
                             <div className="senatorName" style={{ fontWeight: 'bold' }}>{chancellor ? chancellor.name : "Chancellor"}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-7" style={{ position: "absolute", top: "16.0%", left: "62.2%" }}>
+                    <div className="senatorBox seat-7" style={{ position: "absolute", top: "16.3%", left: "66.4%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(6)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-8" style={{ position: "absolute", top: "23.8%", left: "73.5%" }}>
+                    <div className="senatorBox seat-8" style={{ position: "absolute", top: "25.3%", left: "76.9%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(7)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-9" style={{ position: "absolute", top: "36.3%", left: "83.2%" }}>
+                    <div className="senatorBox seat-9" style={{ position: "absolute", top: "38.1%", left: "85.7%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(8)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-10" style={{ position: "absolute", top: "52.5%", left: "90.7%" }}>
+                    <div className="senatorBox seat-10" style={{ position: "absolute", top: "54.1%", left: "92.4%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(9)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-11" style={{ position: "absolute", top: "71.4%", left: "95.4%" }}>
+                    <div className="senatorBox seat-11" style={{ position: "absolute", top: "72.3%", left: "96.6%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(10)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-12" style={{ position: "absolute", top: "91.6%", left: "97%" }}>
+                    <div className="senatorBox seat-12" style={{ position: "absolute", top: "91.6%", left: "98.0%" }}>
                         <div className="senatorContent">
                             <div className="senatorName">{formatSenator(11)}</div>
                         </div>
@@ -304,9 +336,9 @@ function DetailView({
                         <svg width="100%" height="100%" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
                             <defs>
                                 <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stopColor="#3b82f6" />
-                                    <stop offset="50%" stopColor="#8b5cf6" />
-                                    <stop offset="100%" stopColor="#ec4899" />
+                                    <stop offset="0%" stopColor="#2563EB" />
+                                    <stop offset="50%" stopColor="#4338CA" />
+                                    <stop offset="100%" stopColor="#6B21A8" />
                                 </linearGradient>
                             </defs>
                             <path

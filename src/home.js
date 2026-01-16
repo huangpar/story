@@ -1,84 +1,96 @@
 import { Link } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
-import { Users } from 'lucide-react';
+import { Sparkles, Star, Users } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.css';
+import './home.css';
+
+const categories = [
+    {
+        id: 1,
+        title: 'Politics',
+        cssClass: 'category-politics',
+        path: '/politics',
+    },
+    {
+        id: 2,
+        title: 'Entertainment',
+        cssClass: 'category-entertainment',
+        path: '/entertainment',
+    },
+    {
+        id: 3,
+        title: 'People',
+        cssClass: 'category-people',
+        path: '/people',
+    },
+    {
+        id: 4,
+        title: 'Education',
+        cssClass: 'category-education',
+        path: '/education',
+    },
+];
 
 export function Home() {
     return (
         <div className="home">
             <main className="home">
-                <h1 className="header"> 
+                <div className="bg-layer">
+                    <div className="bg-wash"></div>
+                    <div className="orb orb-amber"></div>
+                    <div className="orb orb-purple"></div>
+                </div>
+                <h1 className="header">
                     <div className="header-center">
-                        <Sparkles size={35} color="#EAB308" />
+                        <div className="deco"></div>
                         <Link to="/"><span className="gradient-text">The Republic/Storia</span></Link>
-                        <Sparkles size={35} color="#EC4899" />
+                        <div className="deco"></div>
                     </div>
-                    <Link to="/add" className="addPerson">
-                        <Users className="users" size={30} color="#ffffffff"/>
-                    </Link>
+
                 </h1>
-                <div className="container">
-                    <div className="row row-cols-1 row-cols-md-4 g-3">
-                        <div className="col p-3 card-wrapper-left">
-                            <Link to="/politics">
-                                <div className="card rotate-left">
-                                    <div className="card-body">
-                                        <div className="circle"><Sparkles className="sparkle" /></div>
-                                        <h5 className="card-title">Politics</h5>
-                                        <div className="divider">
-                                            <div className="dash"></div>
-                                            <div className="diamond">✦</div>
-                                            <div className="dash"></div>
+                <div className="container" style={{ marginTop: '50px' }}>
+                    <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                        {categories.map((category) => (
+                            <div key={category.id} className="col">
+                                <Link to={category.path} style={{ textDecoration: 'none' }}>
+                                    <div className={`home-card-wrapper ${category.cssClass}`}>
+                                        {/* Premium glow effect */}
+                                        <div className="home-card-glow"></div>
+
+                                        {/* Main card */}
+                                        <div className="home-card-inner">
+                                            <div className="home-card-content">
+                                                {/* Luxury icon circle */}
+                                                <div className="home-card-icon-circle">
+                                                    <div className="home-card-icon-glow"></div>
+                                                    <Star className="home-card-icon" />
+                                                </div>
+
+                                                {/* Title */}
+                                                <h2 className="home-card-title">
+                                                    {category.title}
+                                                </h2>
+
+                                                {/* Elegant divider */}
+                                                <div className="home-card-divider">
+                                                    <div className="divider-line divider-line-left"></div>
+                                                    <Star className="divider-star" />
+                                                    <div className="divider-line divider-line-right"></div>
+                                                </div>
+
+                                                {/* Hover text */}
+                                                <p className="home-card-enter">
+                                                    Enter
+                                                </p>
+                                            </div>
+
+                                            {/* Corner accents */}
+                                            <div className="corner-accent corner-tr"></div>
+                                            <div className="corner-accent corner-bl"></div>
                                         </div>
                                     </div>
-                                </div>
-                            </Link>
-                        </div>
-                        <div className="col p-3 card-wrapper-centerleft">
-                            <Link to="/entertainment">
-                                <div className="card rotate-centerleft">
-                                    <div className="card-body">
-                                        <div className="circle"><Sparkles className="sparkle"/></div>
-                                        <h5 className="card-title">Entertainment</h5>
-                                        <div className="divider">
-                                            <div className="dash"></div>
-                                            <div className="diamond">✦</div>
-                                            <div className="dash"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
-                        <div className="col p-3 card-wrapper-centerright">
-                            <Link to="/people">
-                                <div className="card rotate-centerright">
-                                    <div className="card-body">
-                                        <div className="circle"><Sparkles className="sparkle"/></div>
-                                        <h5 className="card-title">People</h5>
-                                        <div className="divider">
-                                            <div className="dash"></div>
-                                            <div className="diamond">✦</div>
-                                            <div className="dash"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
-                        <div className="col p-3 card-wrapper-right">
-                            <Link to="/education">
-                                <div className="card rotate-right">
-                                    <div className="card-body">
-                                        <div className="circle"><Sparkles className="sparkle"/></div>
-                                        <h5 className="card-title">Education</h5>
-                                        <div className="divider">
-                                            <div className="dash"></div>
-                                            <div className="diamond">✦</div>
-                                            <div className="dash"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
+                                </Link>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </main>

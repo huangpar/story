@@ -2,8 +2,49 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-image: linear-gradient(to bottom right, #DBEAFE, #FAF5FF, #E0E7FF);
+  position: relative;
+  background-image: linear-gradient(to bottom right, #0F172A, #1E1B4B, #0F172A);
   padding-bottom: 70px;
+}
+
+.politics .bg-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.politics .bg-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right,
+      rgba(99, 102, 241, 0.05),
+      transparent,
+      rgba(168, 85, 247, 0.05));
+}
+
+.politics .orb {
+  position: absolute;
+  width: 24rem;
+  height: 24rem;
+  border-radius: 9999px;
+  filter: blur(64px);
+}
+
+.politics .orb-indigo {
+  top: 5rem;
+  right: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(129, 140, 248, 0.1),
+      transparent);
+}
+
+.politics .orb-purple {
+  bottom: 5rem;
+  left: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(192, 132, 252, 0.10),
+      transparent);
 }
 
 .politics .header {
@@ -23,17 +64,17 @@
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  background: linear-gradient(to right, #DB2777, #9333EA);
+  background: linear-gradient(to right, #2563EB, #4F46E5);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: 0;
-  box-shadow: 0 4px 10px rgba(219, 39, 119, 0.3);
   transition: transform 0.2s;
 }
 
 .politics .addPerson:hover {
   transform: scale(1.05);
+  box-shadow: 0 0px 10px #60A5FA;
 }
 
 .politics .gradient-text {
@@ -61,10 +102,10 @@
   margin-top: 0;
 }
 
-.politics .politicsinfo .container>.row>[class*="col-"] {
+/* .politics .politicsinfo .container>.row>[class*="col-"] {
   display: flex;
   justify-content: center;
-}
+} */
 
 .politics .rotate-left {
   transform: rotate(0deg);
@@ -94,7 +135,7 @@
   transition: all 300ms ease;
 }
 
-.politics .card:hover {
+/* .politics .card:hover {
   min-height: 300px;
   width: 100%;
   max-width: 80%;
@@ -103,11 +144,10 @@
   border-radius: 25px;
   border: 2px solid #93C5FD !important;
   padding: 1rem;
-  /* keep content clear of the border */
   box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
-}
+} */
 
 .politics .card .card-title {
   font-size: 1.25rem;
@@ -115,8 +155,12 @@
   line-height: 2rem;
 }
 
+.politicsinfo .back {
+  color: #FCD34D;
+}
+
 .politicsinfo .back:hover {
-  color: #4F46E5;
+  color: #FDE68A;
 }
 
 .executive {
@@ -125,12 +169,13 @@
   justify-content: space-around;
   align-items: center;
   margin-bottom: 30px;
-  background: linear-gradient(to right, #EFF6FF, #FAF5FF);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  backdrop-filter: blur(24px);
   padding: 10px;
   border-radius: 25px;
-  border: 1px solid rgba(191, 219, 254, 0.5);
+  border: 1px solid rgba(245, 158, 11, 0.2);
   margin: 0 5%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .president,
@@ -142,12 +187,9 @@
 
 .president h2,
 .vicePresident h2 {
-  background: linear-gradient(to right, #60A5FA, #6366F1, #A855F7);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #FEF3C7;
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 2rem;
   margin-bottom: 0;
 }
@@ -155,29 +197,29 @@
 
 .president p,
 .vicePresident p {
-  color: #6B7280;
+  color: #94A3B8;
   margin-bottom: 0;
 }
 
 .spacer {
-  width: .25rem;
+  width: .1rem;
   height: 3rem;
   margin: 7px 0;
   border-radius: 20px;
-  background: linear-gradient(to bottom, #60A5FA, #6366F1, #A855F7);
+  background: linear-gradient(to bottom, transparent, rgba(245, 158, 11, 0.5), transparent);
 }
 
 .politicsinfo {
   /* flex: 1; */
-  /* min-height: 0; */
-  background: linear-gradient(to right, #F8F7FC, #FAF7FB);
+  min-height: 100%;
+  background: linear-gradient(to right, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
   min-width: 1200px;
-  margin: 0 auto auto auto;
+  margin: 0 auto 0 auto;
   padding: 30px 50px;
   border-radius: 25px;
   position: relative;
-  /* border: 5px solid #93C5FD; */
-  box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
 
 .politicsinfo .head {
@@ -194,23 +236,32 @@
 .politicsTitle {
   /* margin-bottom: 30px; */
   font-size: 20pt;
-  background: linear-gradient(to right, #2563EB, #4F46E5, #9333EA);
+  background: linear-gradient(to right, #A5B4FC, #BFDBFE, #A5B4FC);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.politicsinfo .glow-bg {
+/* .politicsinfo .glow-bg {
   background: linear-gradient(90deg, #3b82f6, #9333ea);
-  /* blue-500 -> purple-600 */
   filter: blur(24px);
   opacity: 0.5;
   z-index: 0;
-}
+}  */
 
 .politicsinfo .glow-pill {
-  background: linear-gradient(90deg, #3b82f6, #9333ea);
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
   z-index: 1;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.politicsinfo .glow-pill h1 {
+  color: #FEF3C7 !important;
+}
+
+.govName {
+  color: #94A3B8;
 }
 
 /* .governorTitle {
@@ -228,10 +279,11 @@
   display: flex;
   justify-content: center;
   position: relative;
-  border: 2px solid #BFDBFE !important;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   min-height: 100px;
   padding: 40px 14px 14px;
-  background: linear-gradient(125deg, white, #EFF6FF);
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
   border-radius: 25px;
 }
 
@@ -242,7 +294,7 @@
   transform: translateX(-50%);
   width: 32px;
   height: 32px;
-  background: linear-gradient(125deg, #3B82F6, #A855F7);
+  background: linear-gradient(125deg, #2563EB, #4338CA, #6B21A8);
   display: grid;
   place-items: center;
   font-weight: 700;
@@ -257,7 +309,7 @@
   transform: translateX(-50%);
   width: 150px;
   height: 32px;
-  background: linear-gradient(125deg, #3B82F6, #A855F7);
+  background: linear-gradient(125deg, #2563EB, #4338CA, #6B21A8);
   display: grid;
   place-items: center;
   font-weight: 700;
@@ -307,7 +359,7 @@
 .senators {
   display: flex;
   gap: 10px;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   position: relative;
   height: 600px;
   /* Give enough vertical room for the arc and boxes */
@@ -335,6 +387,8 @@
   z-index: 10;
   pointer-events: auto;
   transform: translate(-50%, -50%);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   /* Center the box on its absolute coordinates */
 }
 
@@ -355,18 +409,18 @@
   flex-direction: column;
   align-items: center;
   padding: 8px 15px;
-  border: 2px solid #BFDBFE !important;
+  /* border: 1px solid rgba(245, 158, 11, 0.2); */
   border-radius: 15px;
-  background: linear-gradient(125deg, white, #EFF6FF);
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
   width: auto;
   min-width: 120px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .senatorName {
   white-space: nowrap;
   font-weight: 500;
-  color: #1E40AF;
+  color: #94A3B8;
 }
 
 .chancellorBox {
@@ -377,6 +431,7 @@
   border-radius: 15px;
   width: 100px;
   margin: 5px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .chancellorAura {
@@ -396,9 +451,10 @@
   flex-direction: column;
   align-items: center;
   padding: 10px 10px;
-  border: 2px solid #fbbf24 !important;
+  border: 1px solid #775602 !important;
   border-radius: 15px;
-  background: linear-gradient(125deg, white, #FFFBEB);
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   /* width: 120px; */
 }
 
@@ -411,7 +467,7 @@
   height: 450px;
   border-top-left-radius: 1000px;
   border-top-right-radius: 1000px;
-  border-image: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%) 1;
+  border-image: linear-gradient(90deg, #2563EB 0%, #4338CA 50%, #6B21A8 100%) 1;
   border-top: 2px solid;
   border-left: 2px solid;
   border-right: 2px solid;
@@ -424,11 +480,16 @@
   flex-direction: column;
   align-items: center;
   padding: 20px 40px;
-  border: 2px solid #BFDBFE !important;
+  border: 1px solid rgba(245, 158, 11, 0.2);
   border-radius: 15px;
-  background: linear-gradient(125deg, white, #EFF6FF);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
   min-width: 150px;
   width: auto;
+}
+
+.justiceName{
+  color: #94A3B8;
 }
 
 .justices {
@@ -443,7 +504,7 @@
   grid-column: 1 / -1;
   width: 90%;
   height: 10px;
-  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+  background: linear-gradient(90deg, #2563EB 0%, #4338CA 50%, #6B21A8 100%);
   margin: 20px auto 20px auto;
   border-radius: 5px;
 }

@@ -12,24 +12,24 @@
 }
 
 .add-person-form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    gap: 30px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  gap: 30px;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    gap: 30px;
-    padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  gap: 30px;
+  padding-bottom: 30px;
 }
 
 h2 {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 /* label {
@@ -53,10 +53,8 @@ h2 {
   left: -15px;
   right: -15px;
   bottom: -15px;
-  background: linear-gradient(
-    125deg,
-    #9333EA, #DB2777, #F97316
-  );
+  background: linear-gradient(125deg,
+      #9333EA, #DB2777, #F97316);
   filter: blur(28px);
   opacity: 0.5;
   z-index: 0;
@@ -66,7 +64,7 @@ h2 {
 }
 
 /* Ensure form content renders above the glow */
-.form-wrapper > * {
+.form-wrapper>* {
   position: relative;
   z-index: 2;
 }
@@ -80,30 +78,29 @@ h2 {
   z-index: 3;
 }
 
-.home {
+/* .home {
     padding-bottom: 70px;
-}
+} */
 
 h2 {
-    color: #DB2777;
+  color: #DB2777;
 }
 
 input {
-    color: #DB2777;
-    border-color: #9333EA;
-    border-radius: 15px; 
+  color: #DB2777;
+  border-color: #9333EA;
+  border-radius: 15px;
 }
 
 button {
-    background: linear-gradient(125deg,#9333EA, #DB2777, #F97316);
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 15px;
+  background: linear-gradient(125deg, #9333EA, #DB2777, #F97316);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 15px;
 }
 
 .add-person-form label {
   display: flex;
   gap: 10px;
 }
-
