@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
 // forcing rebuild
 import './politics.css';
-import { Sparkles, Gavel, Star } from 'lucide-react';
+import { Gavel, Star } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.css';

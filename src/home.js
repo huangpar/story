@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, Star, Users } from 'lucide-react';
+import { Star } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './home.css';
 
