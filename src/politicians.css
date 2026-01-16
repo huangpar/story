@@ -135,7 +135,7 @@
 }
 
 .dropdown-header {
-    background: white;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
     border: 2px solid rgba(245, 158, 11, 0.2);
     border-radius: 5px;
     padding: 5px 10px;
@@ -173,7 +173,7 @@
     top: 110%;
     left: 0;
     right: 0;
-    background: white;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
     border: 2px solid rgba(245, 158, 11, 0.2);
     border-radius: 5px;
     z-index: 100;

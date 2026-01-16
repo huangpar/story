@@ -1,7 +1,7 @@
 .entertainment {
   display: flex;
   flex-direction: column;
-  background-image: linear-gradient(to bottom right, #FAE8FF, #FDF2F8, #F3E8FF);
+  background-image: linear-gradient(to bottom right, #0F172A, #4A044E, #0F172A);
   min-height: 100vh;
   color: #374151;
 }
@@ -68,7 +68,7 @@
 .entertainmentTitle {
   font-size: 20pt;
   /* font-weight: 700; */
-  background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
+  background: linear-gradient(to right, #F0ABFC, #FBCFE8, #F0ABFC);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
