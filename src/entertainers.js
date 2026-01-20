@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import './entertainers.css';
 
