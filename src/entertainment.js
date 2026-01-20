@@ -77,15 +77,24 @@ function DefaultView({ onSelect, loading }) {
                 <div className="row row-cols-1 row-cols-md-3 g-5">
                     {studios.map(studio => (
                         <div key={studio} className="col-md-6 col-lg-4 p-3 card-wrapper-centerleft">
-                            <div className="card rotate-centerleft">
-                                <div className="card-body" onClick={() => onSelect(studio.toLowerCase())}>
-                                    <div className="circle"><Clapperboard className="sparkle" /></div>
-                                    <h5 className="card-title">{studio}</h5>
-                                    <div className="divider">
-                                        <div className="dash"></div>
-                                        <div className="diamond">✦</div>
-                                        <div className="dash"></div>
+                            <div className="home-card-wrapper category-entertainment">
+                                <div className="home-card-glow"></div>
+                                <div className="home-card-inner" onClick={() => onSelect(studio.toLowerCase())}>
+                                    <div className="home-card-content">
+                                        <div className="home-card-icon-circle">
+                                            <div className="home-card-icon-glow"></div>
+                                            <Clapperboard className="sparkle" />
+                                        </div>
+                                        <h2 className="home-card-title">{studio}</h2>
+                                        <div className="home-card-divider">
+                                            <div className="divider-line divider-line-left"></div>
+                                            <div className="diamond">✦</div>
+                                            <div className="divider-line divider-line-right"></div>
+                                        </div>
+                                        <p className="home-card-enter">Enter</p>
                                     </div>
+                                    <div className="corner-accent corner-tr"></div>
+                                    <div className="corner-accent corner-bl"></div>
                                 </div>
                             </div>
                         </div>

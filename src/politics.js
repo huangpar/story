@@ -84,7 +84,7 @@ function DefaultView({ onSelect, peopleList = [] }) {
                                     <div className="home-card-divider">
                                         <div className="divider-line divider-line-left"></div>
                                         <Star className="divider-star" />
-                                        <div className="divider-line divider-line-left"></div>
+                                        <div className="divider-line divider-line-right"></div>
                                     </div>
                                     <p className="home-card-enter">Enter</p>
                                 </div>

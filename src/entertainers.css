@@ -1,5 +1,5 @@
 .entertainers-page {
-    background-image: linear-gradient(to bottom right, #FAE8FF, #FDF2F8, #F3E8FF);
+    background-image: linear-gradient(to bottom right, #0F172A, #4A044E, #0F172A);
     min-height: 100vh;
     color: white;
     padding-bottom: 50px;
@@ -29,8 +29,9 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background: linear-gradient(to right, #F8F7FC, #FAF7FB);
-    box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
+    background: linear-gradient(to right, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    border: 1px solid rgba(217, 70, 239, 0.2);
     border-radius: 25px;
 }
 
@@ -50,7 +51,7 @@
 .ent-info h3 {
     margin: 0 0 5px 0;
     font-size: 1.4rem;
-    background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
+    background: linear-gradient(to right, #F0ABFC, #FBCFE8, #F0ABFC);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -212,7 +213,7 @@
 .storiaTitle {
     font-weight: 600;
     font-size: 1.5rem;
-    background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
+    background: linear-gradient(to right, #F0ABFC, #FBCFE8, #F0ABFC);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
