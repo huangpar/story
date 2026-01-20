@@ -222,11 +222,14 @@ export function Entertainers() {
 
     return (
         <div className="entertainers-page">
+            <div className="bg-layer">
+                <div className="bg-wash"></div>
+                <div className="orb orb-fuchsia"></div>
+                <div className="orb orb-pink"></div>
+            </div>
             <h1 className="header">
                 <div className="header-center">
-                    <Sparkles size={35} color="#EAB308" />
                     <Link to="/"><span className="gradient-text">The Republic/Storia</span></Link>
-                    <Sparkles size={35} color="#EC4899" />
                 </div>
             </h1>
 

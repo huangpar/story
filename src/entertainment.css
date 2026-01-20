@@ -6,6 +6,46 @@
   color: #374151;
 }
 
+.entertainment .bg-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.entertainment .bg-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right,
+      rgba(217, 70, 239, 0.05),
+      transparent,
+      rgba(236, 72, 153, 0.05));
+}
+
+.politicians-page .orb {
+  position: absolute;
+  width: 24rem;
+  height: 24rem;
+  border-radius: 9999px;
+  filter: blur(64px);
+}
+
+.politicians-page .orb-fuchsia {
+  top: 5rem;
+  right: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(232, 121, 249, 0.1),
+      transparent);
+}
+
+.politicians-page .orb-purple {
+  bottom: 5rem;
+  left: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(244, 114, 182, 0.1),
+      transparent);
+}
+
 .entertainment .header {
   margin-top: 0;
   padding-bottom: 50px;

@@ -36,8 +36,8 @@ export function Entertainment() {
         <div className="entertainment">
             <div className="bg-layer">
                 <div className="bg-wash"></div>
-                <div className="orb orb-indigo"></div>
-                <div className="orb orb-purple"></div>
+                <div className="orb orb-fuchsia"></div>
+                <div className="orb orb-pink"></div>
             </div>
             <h1 className="header">
                 <div className="header-center">

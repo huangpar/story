@@ -36,11 +36,10 @@
 }
 
 .entertainer-card {
-    background: white;
-    border: 2px solid #E5E7EB !important;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(245, 158, 11, 0.2) !important;
     box-shadow:
-        0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+        0 25px 50px -12px rgba(0, 0, 0, 0.5);
     border-radius: 15px;
     padding: 25px;
     display: flex;
@@ -59,7 +58,7 @@
 
 .ent-info p {
     margin: 0;
-    color: #6B7280;
+    color: #94A3B8;
     font-size: 0.95rem;
 }
 
@@ -80,7 +79,7 @@
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    background: linear-gradient(to right, #C026D3, #DB2777);
+    background: linear-gradient(to right, #F0ABFC, #FBCFE8, #F0ABFC);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -227,15 +226,15 @@
 }
 
 .dropdown-header {
-    background: #F9FAFB;
-    border: 2px solid #E5E7EB;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9)) !important;
+    border: 2px solid rgba(245, 158, 11, 0.2) !important;
     border-radius: 8px;
     padding: 8px 15px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #9CA3AF;
+    color: #444;
     transition: all 0.2s;
 }
 
@@ -250,10 +249,7 @@
 }
 
 .entertainer-card .dropdown-header.has-value span:first-child {
-    background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #FEF3C7;
     font-weight: 600;
 }
 
@@ -271,13 +267,13 @@
     top: 115%;
     left: 0;
     right: 0;
-    background: white;
-    border: 2px solid #F0ABFC;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    border: 2px solid rgba(245, 158, 11, 0.2);
     border-radius: 12px;
     z-index: 100;
     max-height: 250px;
     overflow-y: auto;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     padding: 8px;
 }
 
@@ -293,10 +289,7 @@
 }
 
 .entertainer-card .gradient-text-item {
-    background: linear-gradient(to right, #C026D3, #9333EA, #DB2777);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #FEF3C7;
     font-weight: 500;
 }
 
