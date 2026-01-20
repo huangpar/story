@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './entertainment.css';
-import { Sparkles, Users, Clapperboard, Star, ArrowLeft } from 'lucide-react';
+import { Users, Clapperboard, Star, ArrowLeft } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 
 export function Entertainment() {
@@ -88,7 +88,7 @@ function DefaultView({ onSelect, loading }) {
                                         <h2 className="home-card-title">{studio}</h2>
                                         <div className="home-card-divider">
                                             <div className="divider-line divider-line-left"></div>
-                                            <div className="diamond">✦</div>
+                                            <Star className="divider-star" />
                                             <div className="divider-line divider-line-right"></div>
                                         </div>
                                         <p className="home-card-enter">Enter</p>
