@@ -95,9 +95,9 @@
     flex: 1;
     padding: 8px 15px;
     border-radius: 8px;
-    border: 2px solid #E5E7EB;
-    background: #F9FAFB;
-    color: #374151;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    color: #FEF3C7;
     font-size: 0.95rem;
     transition: all 0.2s;
 }
@@ -116,13 +116,13 @@
 
 .show-chip {
     padding: 6px 16px;
-    background: #F3F4F6;
-    border: 2px solid #E5E7EB;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(245, 158, 11, 0.2);
     border-radius: 20px;
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 500;
-    color: #4B5563;
+    color: #FEF3C7;
     transition: all 0.2s;
     user-select: none;
 }
@@ -297,7 +297,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background: #F9FAFB;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    border: 2px solid rgba(245, 158, 11, 0.2);
     padding: 12px;
     border-radius: 10px;
 }
@@ -311,7 +312,7 @@
 .show-range-header h4 {
     margin: 0;
     font-size: 0.9rem;
-    color: #4B5563;
+    color: #FEF3C7;
     font-weight: 600;
 }
 
