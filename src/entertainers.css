@@ -128,14 +128,14 @@
 }
 
 .show-chip:hover {
-    background: #FDF2F8;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
     border-color: #FBCFE8;
 }
 
 .show-chip.active {
     background: linear-gradient(to right, #FBCFE8, #F3E8FF);
-    color: #701A75;
-    border-color: #F0ABFC;
+    color: #FEF3C7;
+    border-color: rgba(245, 158, 11, 0.2);
     box-shadow: 0 2px 4px rgba(240, 171, 252, 0.2);
 }
 
