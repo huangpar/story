@@ -32,13 +32,26 @@ h2 {
   margin-bottom: 10px;
 }
 
-/* label {
+label {
     display: flex;
     flex-direction: column;
     font-size: 1.2rem;
     font-weight: 500;
     width: 50%;
-    color: #DB2777;
+    color: #FEF3C7;
+}
+
+/* .add-container {
+    max-width: 700px;
+    margin: 0 auto auto auto;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(245, 158, 11, 0.2) !important;
+    border-radius: 25px;
 } */
 
 .form-wrapper {
@@ -87,20 +100,28 @@ h2 {
 }
 
 input {
-  color: #DB2777;
-  border-color: #9333EA;
+  color: #FEF3C7;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  border: 2px solid rgba(245, 158, 11, 0.2);
   border-radius: 15px;
+  font-size: .95rem;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 button {
-  background: linear-gradient(125deg, #9333EA, #DB2777, #F97316);
+  background: linear-gradient(125deg, #059669, #0D9488);
   border: none;
   color: white;
   padding: 10px 20px;
-  border-radius: 15px;
+  border-radius: 25px;
+  flex: 1 1;
 }
 
-.add-person-form label {
+.container label {
   display: flex;
   gap: 10px;
 }

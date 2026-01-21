@@ -22,7 +22,7 @@
       rgba(236, 72, 153, 0.05));
 }
 
-.politicians-page .orb {
+.entertainment .orb {
   position: absolute;
   width: 24rem;
   height: 24rem;
@@ -30,7 +30,7 @@
   filter: blur(64px);
 }
 
-.politicians-page .orb-fuchsia {
+.entertainment .orb-fuchsia {
   top: 5rem;
   right: 5rem;
   background: linear-gradient(to bottom right,
@@ -38,7 +38,7 @@
       transparent);
 }
 
-.politicians-page .orb-purple {
+.entertainment .orb-purple {
   bottom: 5rem;
   left: 5rem;
   background: linear-gradient(to bottom right,
@@ -371,7 +371,7 @@
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  background: linear-gradient(to right, #DB2777, #9333EA);
+  background: linear-gradient(125deg, #DB2777, #BE123C, #6B21A8);
   display: flex;
   align-items: center;
   justify-content: center;

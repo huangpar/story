@@ -65,21 +65,62 @@ code {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-image: linear-gradient(to bottom right, #CCFBF1, #ECFEFF, #D1FAE5);
+  background-image: linear-gradient(to bottom right, #0F172A, #022C22, #0F172A);
   padding-bottom: 70px;
 }
+
+.people .bg-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.people .bg-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right,
+      rgba(16, 185, 129, 0.05),
+      transparent,
+      rgba(20, 184, 166, 0.05));
+}
+
+.people .orb {
+  position: absolute;
+  width: 24rem;
+  height: 24rem;
+  border-radius: 9999px;
+  filter: blur(64px);
+}
+
+.people .orb-emerald {
+  top: 5rem;
+  right: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(52, 211, 153, 0.1),
+      transparent);
+}
+
+.people .orb-teal {
+  bottom: 5rem;
+  left: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(45, 212, 191, 0.1),
+      transparent);
+}
+
 
 .info {
   /* flex: 1; */
   /* min-height: 0; */
-  background: linear-gradient(to right, #F8F7FC, #FAF7FB);
+  background: linear-gradient(to right, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
   min-width: 1200px;
-  margin: 0 auto auto auto;
+  margin: 0 auto 0 auto;
   padding: 30px 50px;
   border-radius: 25px;
   position: relative;
-  /* border: 5px solid #5EEAD4; */
-  box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
 
 .info .head {
@@ -97,7 +138,7 @@ code {
 .people .info .container {
   display: flex;
   justify-content: center;
-  padding-left: 0;
+  /* padding-left: 0; */
   /* don't change global container padding layout */
 }
 
@@ -115,11 +156,11 @@ code {
   margin-top: 0;
 }
 
-.people .info .container>.row>[class*="col-"] {
+/* .people .info .container>.row>[class*="col-"] {
   display: flex;
   justify-content: center;
   margin-top: 0;
-}
+} */
 
 /* Ensure direct children render above the white background */
 .info>* {
@@ -130,7 +171,7 @@ code {
 .peopleTitle {
   /* margin-bottom: 30px; */
   font-size: 20pt;
-  background: linear-gradient(to right, #059669, #16A34A, #0D9488);
+  background: linear-gradient(to right, #6EE7B7, #99F6E4, #6EE7B7);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -139,35 +180,29 @@ code {
 .region {
   text-align: center;
   /* font-weight: bold; */
-  color: black;
-  padding: 3px 25px;
-  margin: 0px 10px;
+  color: #166534;
+  padding: 8px 25px;
+  margin: 0px 5px;
   /* background: linear-gradient(125deg,#10B981,#14B8A6); */
-  border-radius: 20px 20px 20px 20px;
+  border-radius: 20px;
   flex: 1;
   cursor: pointer;
   position: relative;
   z-index: 1;
-  transition:
-    background 300ms ease,
-    color 250ms ease,
-    border-radius 300ms ease,
-    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 350ms ease;
-  will-change: transform, background;
+  transition: all 0.3s ease;
+  /* will-change: transform, background; */
 }
 
-/* .region:hover {
-  color: black;
-  z-index: 1;
-  background: linear-gradient(125deg,#10B981,#14B8A6) !important;
-  border-radius: 20px 20px 20px 20px;
-} */
+.region:hover:not(.active) {
+  background: #CCFBF1;
+}
 
 .region.active {
-  padding: 3px 25px;
-  background: linear-gradient(125deg, #10B981, #14B8A6) !important;
-  border-radius: 20px 20px 20px 20px;
+  /* padding: 3px 25px; */
+  background: linear-gradient(125deg, #059669, #0D9488) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.3);
+  /* border-radius: 20px 20px 20px 20px; */
   color: white;
 }
 
@@ -193,10 +228,12 @@ code {
   justify-content: flex-start;
   /* align-items: stretch; */
   /* margin-bottom: 0; */
-  max-width: 700px;
-  margin: 30px auto 50px;
-  padding: 5px 0px;
-  background: #E0F9F6;
+  max-width: 900px;
+  margin: 0 auto 40px;
+  padding: 5px;
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   border-radius: 25px;
 }
 
@@ -252,7 +289,7 @@ code {
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  background: linear-gradient(to right, #DB2777, #9333EA);
+  background: linear-gradient(125deg, #059669, #0F766E, #166534);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -728,11 +765,12 @@ main.home a {
   display: flex;
   justify-content: center;
   position: relative;
-  border: 2px solid #99F6E4;
+  border: 1px solid rgba(245, 158, 11, 0.2);
   min-height: 220px;
   padding: 40px 16px 16px;
-  background: white;
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
   border-radius: 25px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .districtNum {
@@ -775,6 +813,7 @@ main.home a {
   text-align: center;
   line-height: 1.4;
   cursor: pointer;
+  color: #94A3B8;
 }
 
 .person {
@@ -836,13 +875,13 @@ main.home a {
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  color: #6B7280;
+  color: #FCD34D;
   font-weight: 600;
   transition: color 0.2s;
 }
 
 .info .back:hover {
-  color: #059669;
+  color: #FDE68A;
 }
 
 .form-group {

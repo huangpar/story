@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './education.css';
-import { Sparkles, Users, GraduationCap, School, BookOpen, ArrowLeft } from 'lucide-react';
+import { Star, Users, GraduationCap, School, BookOpen, ArrowLeft } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 
 export function Education() {
@@ -33,11 +33,16 @@ export function Education() {
 
     return (
         <div className="education">
+            <div className="bg-layer">
+                <div className="bg-wash"></div>
+                <div className="orb orb-amber"></div>
+                <div className="orb orb-orange"></div>
+            </div>
             <h1 className="header">
                 <div className="header-center">
-                    <Sparkles size={35} color="#EAB308" />
+                    {/* <Sparkles size={35} color="#EAB308" /> */}
                     <Link to="/"><span className="gradient-text">The Republic/Storia</span></Link>
-                    <Sparkles size={35} color="#EC4899" />
+                    {/* <Sparkles size={35} color="#EC4899" /> */}
                 </div>
                 <Link to="/educators" className="addPerson">
                     <Users className="users" size={25} color="#ffffffff" />
@@ -70,16 +75,24 @@ function DefaultView({ onSelect, schools, loading }) {
                 <div className="row row-cols-1 row-cols-md-3 g-5">
                     {schools.map(school => (
                         <div key={school.id} className="col-md-6 col-lg-4 p-3 card-wrapper-centerleft">
-                            <div className="card rotate-right">
-                                <div className="card-body" onClick={() => onSelect(school.id)}>
-                                    <div className="circle"><GraduationCap className="sparkle" /></div>
-                                    <h5 className="card-title">{school.name}</h5>
-                                    <div className="divider">
-                                        <div className="dash"></div>
-                                        <div className="diamond">✦</div>
-                                        <div className="dash"></div>
+                            <div className="home-card-wrapper category-entertainment">
+                                <div className="home-card-glow"></div>
+                                <div className="home-card-inner" onClick={() => onSelect(school.id)}>
+                                    <div className="home-card-content">
+                                        <div className="home-card-icon-circle">
+                                            <div className="home-card-icon-glow"></div>
+                                            <GraduationCap className="sparkle" />
+                                        </div>
+                                        <h2 className="home-card-title">{school.name}</h2>
+                                        <div className="home-card-divider">
+                                            <div className="divider-line divider-line-left"></div>
+                                            <Star className="divider-star" />
+                                            <div className="divider-line divider-line-right"></div>
+                                        </div>
+                                        <p className="card-text text-white-50 small mt-2">{school.city}, {school.region}</p>
                                     </div>
-                                    <p className="card-text text-white-50 small mt-2">{school.city}, {school.region}</p>
+                                    <div className="corner-accent corner-tr"></div>
+                                    <div className="corner-accent corner-bl"></div>
                                 </div>
                             </div>
                         </div>

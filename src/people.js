@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import FamilyTreeWrapper from './FamilyTreeWrapper';
 import { useEffect, useState } from "react";
-import { Sparkles, BookUser } from 'lucide-react';
+import { Star, BookUser } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import CamelotLayout from "./camelot";
@@ -142,11 +142,16 @@ export function People() {
 
     return (
         <div className="people">
+            <div className="bg-layer">
+                <div className="bg-wash"></div>
+                <div className="orb orb-emerald"></div>
+                <div className="orb orb-teal"></div>
+            </div>
             <h1 className="header">
                 <div className="header-center">
-                    <Sparkles size={35} color="#EAB308" />
+                    {/* <Sparkles size={35} color="#EAB308" /> */}
                     <Link to="/"><span className="gradient-text">The Republic/Storia</span></Link>
-                    <Sparkles size={35} color="#EC4899" />
+                    {/* <Sparkles size={35} color="#EC4899" /> */}
                 </div>
                 <Link to="/add" className="addPerson">
                     <Users className="users" size={25} color="#ffffffff" />
@@ -186,41 +191,68 @@ function DefaultView({ onSelect }) {
             <div className="container">
                 <div className="row row-cols-1 row-cols-md-3 g-5">
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-centerright">
-                        <div className="card rotate-centerright">
-                            <div className="card-body" onClick={() => onSelect("republic")}>
-                                <div className="circle"><BookUser className="sparkle" /></div>
-                                <h5 className="card-title">The Republic</h5>
-                                <div className="divider">
-                                    <div className="dash"></div>
-                                    <div className="diamond">✦</div>
-                                    <div className="dash"></div>
+                        <div className="home-card-wrapper category-people">
+                            <div className="home-card-glow"></div>
+                            <div className="home-card-inner" onClick={() => onSelect("republic")}>
+                                <div className="home-card-content">
+                                    <div className="home-card-icon-circle">
+                                        <div className="home-card-icon-glow"></div>
+                                        <BookUser className="sparkle" />
+                                    </div>
+                                    <h2 className="home-card-title">The Republic</h2>
+                                    <div className="home-card-divider">
+                                        <div className="divider-line divider-line-left"></div>
+                                        <Star className="divider-star" />
+                                        <div className="divider-line divider-line-right"></div>
+                                    </div>
+                                    <p className="home-card-enter">Enter</p>
                                 </div>
+                                <div className="corner-accent corner-tr"></div>
+                                <div className="corner-accent corner-bl"></div>
                             </div>
                         </div>
                     </div>
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-centerright">
-                        <div className="card rotate-centerright">
-                            <div className="card-body" onClick={() => onSelect("storia")}>
-                                <div className="circle"><BookUser className="sparkle" /></div>
-                                <h5 className="card-title">Storia</h5>
-                                <div className="divider">
-                                    <div className="dash"></div>
-                                    <div className="diamond">✦</div>
-                                    <div className="dash"></div>
+                        <div className="home-card-wrapper category-people">
+                            <div className="home-card-glow"></div>
+                            <div className="home-card-inner" onClick={() => onSelect("storia")}>
+                                <div className="home-card-content">
+                                    <div className="home-card-icon-circle">
+                                        <div className="home-card-icon-glow"></div>
+                                        <BookUser className="sparkle" />
+                                    </div>
+                                    <h2 className="home-card-title">Storia</h2>
+                                    <div className="home-card-divider">
+                                        <div className="divider-line divider-line-left"></div>
+                                        <Star className="divider-star" />
+                                        <div className="divider-line divider-line-right"></div>
+                                    </div>
+                                    <p className="home-card-enter">Enter</p>
                                 </div>
+                                <div className="corner-accent corner-tr"></div>
+                                <div className="corner-accent corner-bl"></div>
                             </div>
                         </div>
                     </div>
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-centerright">
-                        <div className="card rotate-centerright">
-                            <div className="card-body" onClick={() => onSelect("familyTree")}>
-                                <div className="circle"><BookUser className="sparkle" /></div>
-                                <h5 className="card-title">Family Tree</h5>
-                                <div className="divider">
-                                    <div className="dash"></div>
-                                    <div className="diamond">✦</div>
-                                    <div className="dash"></div>
+                        <div className="home-card-wrapper category-people">
+                            <div className="home-card-glow"></div>
+                            <div className="home-card-inner" onClick={() => onSelect("familyTree")}>
+                                <div className="home-card-content">
+                                    <div className="home-card-icon-circle">
+                                        <div className="home-card-icon-glow"></div>
+                                        <BookUser className="sparkle" />
+                                    </div>
+                                    <h2 className="home-card-title">Family Tree</h2>
+                                    <div className="home-card-divider">
+                                        <div className="divider-line divider-line-left"></div>
+                                        <Star className="divider-star" />
+                                        <div className="divider-line divider-line-right"></div>
+                                    </div>
+                                    <p className="home-card-enter">Enter</p>
                                 </div>
+                                <div className="corner-accent corner-tr"></div>
+                                <div className="corner-accent corner-bl"></div>
                             </div>
                         </div>
                     </div>

@@ -2,9 +2,49 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-image: linear-gradient(to bottom right, #FEF3C7, #FEFCE8, #FFEDD5);
+  background-image: linear-gradient(to bottom right, #0F172A, #451A03, #0F172A);
   padding-bottom: 70px;
   color: white;
+}
+
+.education .bg-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.education .bg-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right,
+      rgba(245, 158, 11, 0.05),
+      transparent,
+      rgba(249, 115, 22, 0.05));
+}
+
+.education .orb {
+  position: absolute;
+  width: 24rem;
+  height: 24rem;
+  border-radius: 9999px;
+  filter: blur(64px);
+}
+
+.education .orb-amber {
+  top: 5rem;
+  right: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(251, 191, 36, 0.1),
+      transparent);
+}
+
+.education .orb-orange {
+  bottom: 5rem;
+  left: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(251, 146, 60, 0.1),
+      transparent);
 }
 
 .education .header {
@@ -23,7 +63,7 @@
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  background: linear-gradient(to right, #DB2777, #9333EA);
+  background: linear-gradient(125deg, #D97706, #C2410C, #854D0E);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,13 +84,14 @@
 }
 
 .educationinfo {
-  background: linear-gradient(to right, #F8F7FC, #FAF7FB);
+  background: linear-gradient(to right, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
   min-width: 1200px;
-  margin: 0 auto auto auto;
+  margin: 0 auto 0 auto;
   padding: 30px 50px;
   border-radius: 25px;
   position: relative;
-  box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
 
 .educationTitle {
@@ -58,7 +99,7 @@
   /* font-weight: 800;
   text-align: center; */
   margin-bottom: 0px;
-  background: linear-gradient(to right, #F59E0B, #F97316, #EAB308);
+  background: linear-gradient(to right, #FCD34D, #FEF08A, #FCD34D);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

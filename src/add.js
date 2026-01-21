@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
+// import { Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import './add.css';
 
@@ -47,19 +47,24 @@ export function Add() {
     };
 
     return (
-        <div className="home">
+        <div className="people">
+            <div className="bg-layer">
+                <div className="bg-wash"></div>
+                <div className="orb orb-emerald"></div>
+                <div className="orb orb-teal"></div>
+            </div>
             <h1 className="header">
                 <div className="header-center">
-                    <Sparkles size={35} color="#EAB308" />
                     <Link to="/"><span className="gradient-text">The Republic/Storia</span></Link>
-                    <Sparkles size={35} color="#EC4899" />
                 </div>
             </h1>
-            <div className="form-wrapper">
-                <div className="add-person-form">
-                    <h2>Add a New Person</h2>
+            <div className="info">
+                <div className="head">
+                    <h1 className="peopleTitle">Add a New Person</h1>
+                </div>
+                <div className="add-container">
                     <form onSubmit={handleSubmit}>
-                        <label>Name:
+                        <label>Name
                             <input
                                 type="text"
                                 name="name"
@@ -68,7 +73,7 @@ export function Add() {
                                 required
                             />
                         </label>
-                        <label>Region:
+                        <label>Region
                             <input
                                 type="text"
                                 name="region"
@@ -77,7 +82,7 @@ export function Add() {
                                 required
                             />
                         </label>
-                        <label>Location:
+                        <label>Location
                             <input
                                 type="text"
                                 name="location"
@@ -86,7 +91,7 @@ export function Add() {
                                 required
                             />
                         </label>
-                        <label>Party:
+                        <label>Party
                             <input
                                 type="text"
                                 name="party"

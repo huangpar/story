@@ -1,8 +1,48 @@
 .educators-page {
     min-height: 100vh;
-    background-image: linear-gradient(to bottom right, #FEF3C7, #FEFCE8, #FFEDD5);
+    background-image: linear-gradient(to bottom right, #0F172A, #451A03, #0F172A);
     color: white;
-    padding-bottom: 50px;
+    padding-bottom: 70px;
+}
+
+.educators-page .bg-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.educators-page .bg-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right,
+      rgba(245, 158, 11, 0.05),
+      transparent,
+      rgba(249, 115, 22, 0.05));
+}
+
+.educators-page .orb {
+  position: absolute;
+  width: 24rem;
+  height: 24rem;
+  border-radius: 9999px;
+  filter: blur(64px);
+}
+
+.educators-page .orb-amber {
+  top: 5rem;
+  right: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(251, 191, 36, 0.1),
+      transparent);
+}
+
+.educators-page .orb-orange {
+  bottom: 5rem;
+  left: 5rem;
+  background: linear-gradient(to bottom right,
+      rgba(251, 146, 60, 0.1),
+      transparent);
 }
 
 .educators-page .header {
@@ -28,8 +68,9 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background: linear-gradient(to right, #F8F7FC, #FAF7FB);
-    box-shadow: rgb(204, 204, 204) 0px 25px 50px -12px;
+    background: linear-gradient(to right, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     border-radius: 25px;
 }
 
@@ -41,14 +82,14 @@
 .educationTitle {
     font-size: 1.5rem;
     font-weight: 600;
-    background: linear-gradient(to right, #F59E0B, #F97316, #EAB308);
+    background: linear-gradient(to right, #FCD34D, #FEF08A, #FCD34D);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
 }
 
 .educator-card .dropdown-header.has-value span:first-child {
-    background: linear-gradient(to right, #F59E0B, #F97316, #EAB308);
+    background: linear-gradient(to right, #FCD34D, #FEF08A, #FCD34D);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -56,14 +97,13 @@
 }
 
 .educator-card {
-    background: white;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
     /* backdrop-filter: blur(10px); */
-    border: 2px solid #E5E7EB !important;
+    border: 1px solid rgba(245, 158, 11, 0.2);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 24px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     /* transition: transform 0.2s; */
     display: flex;
     flex-direction: column;
@@ -78,7 +118,7 @@
 .ed-info h3 {
     margin: 0 0 5px 0;
     font-size: 1.4rem;
-    background: linear-gradient(to right, #F59E0B, #F97316, #EAB308);
+    background: linear-gradient(to right, #FCD34D, #FEF08A, #FCD34D);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -116,9 +156,8 @@
 }
 
 .ed-input {
-    background: #f9fafb;
-    border: 2px solid #e5e7eb;
-    color: #374151;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    color: rgba(245, 158, 11, 0.2);
     padding: 8px 12px;
     border-radius: 8px;
     font-size: 0.9rem;
@@ -128,7 +167,7 @@
 .ed-input:focus {
     outline: none;
     border-color: #FCD34D;
-    background: white;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
 }
 
 .remove-btn {

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, ChevronDown, Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, Plus, Trash2 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import './educators.css';
 
@@ -211,11 +211,16 @@ export function Educators() {
 
     return (
         <div className="educators-page">
+            <div className="bg-layer">
+                <div className="bg-wash"></div>
+                <div className="orb orb-amber"></div>
+                <div className="orb orb-orange"></div>
+            </div>
             <h1 className="header">
                 <div className="header-center">
-                    <Sparkles size={35} color="#EAB308" />
+                    {/* <Sparkles size={35} color="#EAB308" /> */}
                     <Link to="/"><span className="gradient-text">The Republic/Storia</span></Link>
-                    <Sparkles size={35} color="#EC4899" />
+                    {/* <Sparkles size={35} color="#EC4899" /> */}
                 </div>
             </h1>
 
