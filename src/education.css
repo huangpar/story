@@ -191,11 +191,11 @@
   margin-top: 0;
 }
 
-.educationinfo .container>.row>[class*="col-"] {
+/* .educationinfo .container>.row>[class*="col-"] {
   display: flex;
   justify-content: center;
   margin-top: 0;
-}
+} */
 
 /* Tab Bar */
 .education-bar {
@@ -251,6 +251,8 @@
   border-radius: 25px;
   overflow: hidden;
   backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
 }
 
 .edu-header {
@@ -274,14 +276,16 @@
 }
 
 .edu-content {
-  padding: 25px;
+  padding: 0 25px 25px 25px;
+  display: flex;
+  flex-direction: column;
 }
 
 .staff-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border-top: 1px solid #F3F4F6;
+  border-top: none;
 }
 
 .staff-member {
