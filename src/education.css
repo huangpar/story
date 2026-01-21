@@ -116,13 +116,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #6B7280;
+  color: #FCD34D;
   font-weight: 600;
   transition: color 0.2s;
 }
 
 .educationinfo .back:hover {
-  color: #F97316;
+  color: #FDE68A;
 }
 
 .education .card-title {
@@ -202,28 +202,28 @@
   display: flex;
   justify-content: center;
   gap: 15px;
-  margin-bottom: 40px;
-  background: #FEFCE8;
-  padding: 10px;
+  margin: 0 auto 40px;
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  padding: 5px;
   border-radius: 100px;
   width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid #FEF08A;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .edu-tab {
-  padding: 10px 25px;
-  border-radius: 50px;
+  padding: 8px 25px;
+  margin: 0 5px;
+  border-radius: 20px;
+  flex: 1;
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   color: #854D0E;
 }
 
 .edu-tab:hover {
   background: #FEF9C3;
-  color: white;
 }
 
 .edu-tab.active {
@@ -245,21 +245,21 @@
 }
 
 .edu-card.detail {
-  background: white;
-  border: 2px solid #E5E7EB;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   border-radius: 25px;
   overflow: hidden;
   backdrop-filter: blur(10px);
 }
 
 .edu-header {
-  background: linear-gradient(to right, #FFF7ED, #FEFCE8);
+  /* background: linear-gradient(to right, #FFF7ED, #FEFCE8); */
   padding: 25px;
   display: flex;
   align-items: center;
   gap: 15px;
-  border-bottom: 2px solid #FFEDD5;
+  /* border-bottom: 2px solid #FFEDD5; */
 }
 
 .edu-icon {
@@ -270,7 +270,7 @@
   font-size: 1.25rem;
   margin: 0;
   font-weight: 700;
-  color: #1F2937;
+  color: #FCD34D;
 }
 
 .edu-content {
@@ -314,16 +314,18 @@
 }
 
 /* Glow Elements */
-.glow-bg.edu {
+/* .glow-bg.edu {
   background: linear-gradient(90deg, #F59E0B, #EAB308);
   filter: blur(24px);
   opacity: 0.3;
   z-index: 0;
-}
+} */
 
 .glow-pill.edu {
   background: linear-gradient(90deg, #F59E0B, #EAB308);
   z-index: 1;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.3);
 }
 
 /* Loading indicator */

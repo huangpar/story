@@ -75,7 +75,7 @@ function DefaultView({ onSelect, schools, loading }) {
                 <div className="row row-cols-1 row-cols-md-3 g-5">
                     {schools.map(school => (
                         <div key={school.id} className="col-md-6 col-lg-4 p-3 card-wrapper-centerleft">
-                            <div className="home-card-wrapper category-entertainment">
+                            <div className="home-card-wrapper category-education">
                                 <div className="home-card-glow"></div>
                                 <div className="home-card-inner" onClick={() => onSelect(school.id)}>
                                     <div className="home-card-content">
@@ -89,7 +89,7 @@ function DefaultView({ onSelect, schools, loading }) {
                                             <Star className="divider-star" />
                                             <div className="divider-line divider-line-right"></div>
                                         </div>
-                                        <p className="card-text text-white-50 small mt-2">{school.city}, {school.region}</p>
+                                        <p className="home-card-enter">Enter</p>
                                     </div>
                                     <div className="corner-accent corner-tr"></div>
                                     <div className="corner-accent corner-bl"></div>

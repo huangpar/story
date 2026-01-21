@@ -99,7 +99,7 @@ h2 {
   color: #DB2777;
 }
 
-input {
+.add-container input {
   color: #FEF3C7;
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
   border: 2px solid rgba(245, 158, 11, 0.2);
@@ -112,7 +112,7 @@ input {
   padding-bottom: 0.75rem;
 }
 
-button {
+.add-container button {
   background: linear-gradient(125deg, #059669, #0D9488);
   border: none;
   color: white;
