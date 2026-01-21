@@ -7,6 +7,7 @@ import { ArrowLeft } from 'lucide-react';
 import CamelotLayout from "./camelot";
 import StorybrookeLayout from "./storybrooke";
 import CapitolLayout from './capitol';
+import GenericLayout from './GenericLayout';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -90,7 +91,7 @@ export function People() {
     useEffect(() => {
         console.log("useEffect fired, view =", view);
 
-        if (view !== "republic" && view !== "familyTree") return;
+        if (view === "default") return;
 
         fetch("/.netlify/functions/people?nocache=1", {
             cache: "no-store",
@@ -133,6 +134,11 @@ export function People() {
                 console.log("COUNT AFTER GROUPING:", groupedCount);
             })
             .catch(err => console.error("fetch error:", err));
+    }, [view]);
+
+    useEffect(() => {
+        if (view === "republic") setActiveTab("camelot");
+        if (view === "greatHouses") setActiveTab("houseStark");
     }, [view]);
 
     useEffect(() => {
@@ -215,13 +221,13 @@ function DefaultView({ onSelect }) {
                     <div className="col-md-6 col-lg-4 p-3 card-wrapper-centerright">
                         <div className="home-card-wrapper category-people">
                             <div className="home-card-glow"></div>
-                            <div className="home-card-inner" onClick={() => onSelect("storia")}>
+                            <div className="home-card-inner" onClick={() => onSelect("greatHouses")}>
                                 <div className="home-card-content">
                                     <div className="home-card-icon-circle">
                                         <div className="home-card-icon-glow"></div>
                                         <BookUser className="sparkle" />
                                     </div>
-                                    <h2 className="home-card-title">Storia</h2>
+                                    <h2 className="home-card-title">Great Houses</h2>
                                     <div className="home-card-divider">
                                         <div className="divider-line divider-line-left"></div>
                                         <Star className="divider-star" />
@@ -272,7 +278,18 @@ function DetailView({
     peopleList
 }) {
     const VIEWS = {
-        storia: <div></div>,
+        greatHouses: <div>
+            <div className="bar">
+                <div className={`region pos-0 ${activeTab === "houseStark" ? "active" : ""}`} onClick={() => setActiveTab("houseStark")}>Coruscant (Planet 18)</div>
+                <div className={`region pos-1 ${activeTab === "houseLannister" ? "active" : ""}`} onClick={() => setActiveTab("houseLannister")}>Storia (Planet 19)</div>
+                <div className={`region pos-2 ${activeTab === "houseTargaryen" ? "active" : ""}`} onClick={() => setActiveTab("houseTargaryen")}>Cludo (Planet 17)</div>
+            </div>
+            <div className='map'>
+                {activeTab === "houseStark" && <GenericLayout regionName="House Stark" groupedPeople={groupedPeople} refreshData={refreshData} peopleList={peopleList} />}
+                {activeTab === "houseLannister" && <GenericLayout regionName="House Lannister" groupedPeople={groupedPeople} refreshData={refreshData} peopleList={peopleList} />}
+                {activeTab === "houseTargaryen" && <GenericLayout regionName="House Targaryen" groupedPeople={groupedPeople} refreshData={refreshData} peopleList={peopleList} />}
+            </div>
+        </div>,
         republic: <div>
             <div className="bar">
                 <div className={`region pos-0 ${activeTab === "camelot" ? "active" : ""}`} onClick={() => setActiveTab("camelot")}>Camelot</div>

@@ -277,7 +277,7 @@ function ScheduleTable({ school, staff, subjects, onRefresh }) {
     const [dayType, setDayType] = useState("regular");
     const [localStaff, setLocalStaff] = useState(staff);
     const [isEditing, setIsEditing] = useState(false);
-    const periods = [1, 2, 3, 4, 5, 6, 7, 8];
+    const periods = [1, 2, 3, 4];
 
     useEffect(() => {
         setLocalStaff(staff);
