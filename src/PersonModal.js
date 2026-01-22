@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { X } from 'lucide-react';
 import './index.css';
 
 export default function PersonModal({ person, onClose, onSave, peopleList = [] }) {
@@ -131,6 +132,13 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
     return (
         <div className="modalOverlay" onClick={onClose}>
             <div className="modalBox" onClick={e => e.stopPropagation()}>
+                <button className="modalClose" onClick={onClose} aria-label="Close modal">
+                    <X size={20} />
+                </button>
+
+                <div className="corner-accent corner-tr"></div>
+                <div className="corner-accent corner-bl"></div>
+
                 <h3>Edit {person.name}</h3>
 
                 <div className="form-group">
