@@ -7,9 +7,11 @@ import { ArrowLeft } from 'lucide-react';
 import CamelotLayout from "./camelot";
 import StorybrookeLayout from "./storybrooke";
 import CapitolLayout from './capitol';
-import GenericLayout from './GenericLayout';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import CoruscantLayout from './GenericLayout';
+import StoriaLayout from './storia';
+import CludoLayout from './cludo';
 
 function normalize(str) {
     return String(str).trim().replace(/\s+/g, " ");
@@ -138,7 +140,7 @@ export function People() {
 
     useEffect(() => {
         if (view === "republic") setActiveTab("camelot");
-        if (view === "greatHouses") setActiveTab("houseStark");
+        if (view === "greatHouses") setActiveTab("storia");
     }, [view]);
 
     useEffect(() => {
@@ -280,14 +282,14 @@ function DetailView({
     const VIEWS = {
         greatHouses: <div>
             <div className="bar">
-                <div className={`region pos-0 ${activeTab === "houseStark" ? "active" : ""}`} onClick={() => setActiveTab("houseStark")}>Coruscant (Planet 18)</div>
-                <div className={`region pos-1 ${activeTab === "houseLannister" ? "active" : ""}`} onClick={() => setActiveTab("houseLannister")}>Storia (Planet 19)</div>
-                <div className={`region pos-2 ${activeTab === "houseTargaryen" ? "active" : ""}`} onClick={() => setActiveTab("houseTargaryen")}>Cludo (Planet 17)</div>
+                <div className={`region pos-0 ${activeTab === "coruscant" ? "active" : ""}`} onClick={() => setActiveTab("coruscant")}>Coruscant (Planet 18)</div>
+                <div className={`region pos-1 ${activeTab === "storia" ? "active" : ""}`} onClick={() => setActiveTab("storia")}>Storia (Planet 19)</div>
+                <div className={`region pos-2 ${activeTab === "cludo" ? "active" : ""}`} onClick={() => setActiveTab("cludo")}>Cludo (Planet 17)</div>
             </div>
             <div className='map'>
-                {activeTab === "houseStark" && <GenericLayout regionName="House Stark" groupedPeople={groupedPeople} refreshData={refreshData} peopleList={peopleList} />}
-                {activeTab === "houseLannister" && <GenericLayout regionName="House Lannister" groupedPeople={groupedPeople} refreshData={refreshData} peopleList={peopleList} />}
-                {activeTab === "houseTargaryen" && <GenericLayout regionName="House Targaryen" groupedPeople={groupedPeople} refreshData={refreshData} peopleList={peopleList} />}
+                {activeTab === "coruscant" && <CoruscantLayout />}
+                {activeTab === "storia" && <StoriaLayout />}
+                {activeTab === "cludo" && <CludoLayout />}
             </div>
         </div>,
         republic: <div>
