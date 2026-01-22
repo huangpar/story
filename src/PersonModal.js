@@ -116,6 +116,7 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 id: person.id,
                 region: formData.region,
                 district: formData.district,
+                party: person.Party || person.party || "", // Preserve existing party value
                 fid: fid,
                 mid: mid,
                 sid: sid,
