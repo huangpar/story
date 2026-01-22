@@ -50,14 +50,24 @@ exports.handler = async (event) => {
       } catch (migErr) { console.error("Auto-migration during PUT failed:", migErr); }
 
       // Update main people table
+      const toIntArray = (v) => {
+        if (v === undefined || v === null) return null;
+        if (Array.isArray(v)) {
+          const arr = v.map(x => parseInt(x)).filter(n => !isNaN(n));
+          return arr.length ? arr : null;
+        }
+        const n = parseInt(v);
+        return isNaN(n) ? null : [n];
+      };
+
       const updatePayload = {
         region: String(body.region || body.Region || ""),
         district: String(body.district || body.Location || ""),
         party: String(body.party || body.Party || ""),
-        // FIX: Error logs show 'fid' is INTEGER, but 'mid' is ARRAY (integer[])
+        // fid is a single integer, mid/sid are integer[]
         fid: fid ? parseInt(fid) : null,
-        mid: mid ? `{${parseInt(mid)}}` : null,
-        sid: sid ? `{${parseInt(sid)}}` : null
+        mid: toIntArray(mid),
+        sid: toIntArray(sid)
       };
 
       console.log(`PUT: Updating people ${id} with:`, JSON.stringify(updatePayload));

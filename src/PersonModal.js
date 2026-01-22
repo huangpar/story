@@ -82,16 +82,35 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
             // Helper to parse comma-separated names to array of IDs
             const parseNamesToIds = (str) => {
                 if (!str) return null;
-                return str.split(',')
+                const names = str.split(',')
                     .map(s => s.trim())
-                    .filter(s => s.length > 0)
-                    .map(name => getId(name))
-                    .filter(id => id !== null); // Filter out unresolved names
+                    .filter(s => s.length > 0);
+                
+                const ids = names.map(name => getId(name));
+                const unresolved = names.filter((name, idx) => ids[idx] === null);
+                
+                if (unresolved.length > 0) {
+                    throw new Error(`Could not find person(s): ${unresolved.join(', ')}`);
+                }
+                
+                return ids.length > 0 ? ids : null;
             };
 
             const fid = formData.fidName ? getId(formData.fidName) : null;
+            if (formData.fidName && fid === null) {
+                throw new Error(`Could not find person: ${formData.fidName}`);
+            }
+
             const mid = parseNamesToIds(formData.midNames);
             const sid = parseNamesToIds(formData.sidNames);
+
+            // Build education_assignments array in the format backend expects
+            const education_assignments = formData.is_educator && formData.school_id ? [{
+                school_id: parseInt(formData.school_id),
+                position: formData.edu_position || null,
+                subjects: Array.isArray(formData.edu_subjects) ? formData.edu_subjects.map(s => parseInt(s)).filter(id => !isNaN(id)) : [],
+                schedules: [] // PersonModal doesn't currently support schedules
+            }] : [];
 
             const payload = {
                 id: person.id,
@@ -101,12 +120,10 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 mid: mid,
                 sid: sid,
                 is_educator: formData.is_educator,
-                school_id: formData.school_id || null,
-                edu_position: formData.edu_position || null,
-                edu_subjects: formData.edu_subjects,
+                education_assignments: education_assignments,
                 is_politician: formData.is_politician,
                 is_entertainer: formData.is_entertainer,
-                entertainer_position: formData.ent_position,
+                entertainer_position: formData.ent_position || null,
             };
 
             const res = await fetch("/.netlify/functions/people", {
@@ -115,13 +132,16 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error("Failed to update");
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+                throw new Error(errorData.error || `Failed to update: HTTP ${res.status}`);
+            }
 
             if (onSave) onSave(); // Callback to refresh data
             onClose();
         } catch (error) {
             console.error("Save failed", error);
-            alert("Failed to save changes. Ensure all names are correct.");
+            alert(error.message || "Failed to save changes. Ensure all names are correct.");
         } finally {
             setSaving(false);
         }
