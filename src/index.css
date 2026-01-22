@@ -995,7 +995,7 @@ main.home a {
 
 .toggles {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1rem;
   margin: 1.5rem 0;
   text-align: left;

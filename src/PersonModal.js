@@ -136,8 +136,6 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                     <X size={20} />
                 </button>
 
-                <div className="corner-accent corner-tr"></div>
-                <div className="corner-accent corner-bl"></div>
 
                 <h3>Edit {person.name}</h3>
 
