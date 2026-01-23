@@ -436,6 +436,7 @@
 }
 
 .senatorDistrict {
+  white-space: nowrap;
   font-size: 0.75rem;
   color: #60A5FA;
   font-weight: 700;
