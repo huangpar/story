@@ -267,31 +267,31 @@ function DetailView({
                     </div>
                 </div>
                 <div className="senators">
-                    <div className="senatorBox seat-1" style={{ position: "absolute", top: "91.6%", left: "2.0%" }}>
+                    <div className="senatorBox seat-1" style={{ position: "absolute", top: "91.6%", left: "1.0%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(0)}</div>
                             <div className="senatorName">{formatSenator(0)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-2" style={{ position: "absolute", top: "72.3%", left: "3.4%" }}>
+                    <div className="senatorBox seat-2" style={{ position: "absolute", top: "75.3%", left: "3.0%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(1)}</div>
                             <div className="senatorName">{formatSenator(1)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-3" style={{ position: "absolute", top: "54.1%", left: "7.6%" }}>
+                    <div className="senatorBox seat-3" style={{ position: "absolute", top: "59.1%", left: "5.6%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(2)}</div>
                             <div className="senatorName">{formatSenator(2)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-4" style={{ position: "absolute", top: "38.1%", left: "14.3%" }}>
+                    <div className="senatorBox seat-4" style={{ position: "absolute", top: "43.1%", left: "12.3%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(3)}</div>
                             <div className="senatorName">{formatSenator(3)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-5" style={{ position: "absolute", top: "25.3%", left: "23.1%" }}>
+                    <div className="senatorBox seat-5" style={{ position: "absolute", top: "29.3%", left: "20.1%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(4)}</div>
                             <div className="senatorName">{formatSenator(4)}</div>
@@ -314,31 +314,31 @@ function DetailView({
                             <div className="senatorName">{formatSenator(6)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-8" style={{ position: "absolute", top: "25.3%", left: "76.9%" }}>
+                    <div className="senatorBox seat-8" style={{ position: "absolute", top: "29.3%", left: "79.9%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(7)}</div>
                             <div className="senatorName">{formatSenator(7)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-9" style={{ position: "absolute", top: "38.1%", left: "85.7%" }}>
+                    <div className="senatorBox seat-9" style={{ position: "absolute", top: "43.1%", left: "87.7%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(8)}</div>
                             <div className="senatorName">{formatSenator(8)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-10" style={{ position: "absolute", top: "54.1%", left: "92.4%" }}>
+                    <div className="senatorBox seat-10" style={{ position: "absolute", top: "59.1%", left: "94.4%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(9)}</div>
                             <div className="senatorName">{formatSenator(9)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-11" style={{ position: "absolute", top: "72.3%", left: "96.6%" }}>
+                    <div className="senatorBox seat-11" style={{ position: "absolute", top: "75.3%", left: "97.0%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(10)}</div>
                             <div className="senatorName">{formatSenator(10)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-12" style={{ position: "absolute", top: "91.6%", left: "98.0%" }}>
+                    <div className="senatorBox seat-12" style={{ position: "absolute", top: "91.6%", left: "99.0%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(11)}</div>
                             <div className="senatorName">{formatSenator(11)}</div>
