@@ -279,13 +279,13 @@ function DetailView({
                             <div className="senatorName">{formatSenator(1)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-3" style={{ position: "absolute", top: "59.1%", left: "5.6%" }}>
+                    <div className="senatorBox seat-3" style={{ position: "absolute", top: "59.1%", left: "4.6%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(2)}</div>
                             <div className="senatorName">{formatSenator(2)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-4" style={{ position: "absolute", top: "43.1%", left: "12.3%" }}>
+                    <div className="senatorBox seat-4" style={{ position: "absolute", top: "43.1%", left: "11.3%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(3)}</div>
                             <div className="senatorName">{formatSenator(3)}</div>
@@ -320,13 +320,13 @@ function DetailView({
                             <div className="senatorName">{formatSenator(7)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-9" style={{ position: "absolute", top: "43.1%", left: "87.7%" }}>
+                    <div className="senatorBox seat-9" style={{ position: "absolute", top: "43.1%", left: "88.7%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(8)}</div>
                             <div className="senatorName">{formatSenator(8)}</div>
                         </div>
                     </div>
-                    <div className="senatorBox seat-10" style={{ position: "absolute", top: "59.1%", left: "94.4%" }}>
+                    <div className="senatorBox seat-10" style={{ position: "absolute", top: "59.1%", left: "95.4%" }}>
                         <div className="senatorContent">
                             <div className="senatorDistrict">{formatDistrict(9)}</div>
                             <div className="senatorName">{formatSenator(9)}</div>
