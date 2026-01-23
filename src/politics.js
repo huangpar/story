@@ -176,6 +176,7 @@ function DetailView({
 
     const formatSenator = (index) => senators[index] ? senators[index].name : "Vacant";
     const formatDistrict = (index) => senators[index] ? (senators[index].Location || senators[index].district || "") : "";
+    const formatChancellorDistrict = () => chancellor ? (chancellor.Location || chancellor.district || "") : "";
     const formatJustice = (index) => justices[index] ? justices[index].name : "Vacant";
 
     const VIEWS = {
@@ -305,6 +306,7 @@ function DetailView({
                     </div>
                     <div className="chancellorBox" style={{ position: "absolute", top: "10.0%", left: "50%", transform: "translate(-50%, -50%)", width: "auto" }}>
                         <div className="chancellorContent">
+                            <div className="senatorDistrict">{formatChancellorDistrict()}</div>
                             <div className="senatorName" style={{ fontWeight: 'bold' }}>{chancellor ? chancellor.name : "Chancellor"}</div>
                         </div>
                     </div>

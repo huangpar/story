@@ -392,6 +392,24 @@
   /* Center the box on its absolute coordinates */
 }
 
+.senatorDistrict {
+  font-size: 0.75rem;
+  color: #CBD5FF;
+  opacity: 0.95;
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(37,99,235,0.06), rgba(107,33,168,0.06));
+  font-weight: 600;
+  text-align: center;
+}
+
+.chancellorBox .senatorDistrict {
+  font-size: 0.9rem;
+  padding: 6px 10px;
+  background: linear-gradient(90deg, rgba(37,99,235,0.12), rgba(107,33,168,0.12));
+}
+
 /* .senatorAura {
   position: absolute;
   inset: -1px;
