@@ -73,6 +73,10 @@ export default function CoruscantLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Palpatine</h2>
+                                    <div className="executive">
+                                        <p>Head: Sheev Palpatine</p>
+                                        <p>Seat: Theed Palace</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -83,6 +87,10 @@ export default function CoruscantLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Snoke</h2>
+                                    <div className="executive">
+                                        <p>Head: Alistair Snoke</p>
+                                        <p>Seat: Corvax Fortress</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -93,6 +101,10 @@ export default function CoruscantLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Talzin</h2>
+                                    <div className="executive">
+                                        <p>Head: Edward Talzin</p>
+                                        <p>Seat: Peridia Castle</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
