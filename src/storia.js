@@ -9,9 +9,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Pendragon</h2>
-                                    <div className="executive">
-                                        <p>Head: Leo Pendragon</p>
-                                        <p>Seat: </p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Leo Pendragon</p>
+                                        <p className="houseDetail">Seat: Dragonskeep</p>
                                     </div>
                                 </div>
                             </div>
@@ -23,9 +23,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House LeFay</h2>
-                                    <div className="executive">
-                                        <p>Head: Valmont LeFay</p>
-                                        <p>Seat: Greystone Keep</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Valmont LeFay</p>
+                                        <p className="houseDetail">Seat: Greystone Keep</p>
                                     </div>
                                 </div>
                             </div>
@@ -37,9 +37,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Tremaine</h2>
-                                    <div className="executive">
-                                        <p>Head: Ralph Tremaine</p>
-                                        <p>Seat: Gadleigh Castle</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Ralph Tremaine</p>
+                                        <p className="houseDetail">Seat: Gadleigh Castle</p>
                                     </div>
                                 </div>
                             </div>
@@ -51,9 +51,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Belfrey</h2>
-                                    <div className="executive">
-                                        <p>Head: Claude Belfrey</p>
-                                        <p>Seat: Howlester Fort</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Claude Belfrey</p>
+                                        <p className="houseDetail">Seat: Howlester Fort</p>
                                     </div>
                                 </div>
                             </div>
@@ -65,9 +65,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Gothel</h2>
-                                    <div className="executive">
-                                        <p>Head: Eloise Gothel</p>
-                                        <p>Seat: Blackspire</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Eloise Gothel</p>
+                                        <p className="houseDetail">Seat: Blackspire</p>
                                     </div>
                                 </div>
                             </div>
@@ -79,9 +79,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Mergen</h2>
-                                    <div className="executive">
-                                        <p>Head: Randolph Mergen</p>
-                                        <p>Seat: Agrabah</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Randolph Mergen</p>
+                                        <p className="houseDetail">Seat: Agrabah</p>
                                     </div>
                                 </div>
                             </div>
@@ -93,9 +93,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Swaly</h2>
-                                    <div className="executive">
-                                        <p>Head: Maude Swaly</p>
-                                        <p>Seat: Himeji Castle</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Maude Swaly</p>
+                                        <p className="houseDetail">Seat: Himeji Castle</p>
                                     </div>
                                 </div>
                             </div>
@@ -107,9 +107,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Gowen</h2>
-                                    <div className="executive">
-                                        <p>Head: Evelyn Gowen</p>
-                                        <p>Seat: Longdale Castle</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Evelyn Gowen</p>
+                                        <p className="houseDetail">Seat: Longdale Castle</p>
                                     </div>
                                 </div>
                             </div>
@@ -121,9 +121,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Olophant</h2>
-                                    <div className="executive">
-                                        <p>Head: Reginald Olophant</p>
-                                        <p>Seat: Scatterby Castle</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Reginald Olophant</p>
+                                        <p className="houseDetail">Seat: Scatterby Castle</p>
                                     </div>
                                 </div>
                             </div>
@@ -135,9 +135,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Aldridge</h2>
-                                    <div className="executive">
-                                        <p>Head: Helena Aldridge</p>
-                                        <p>Seat: Bellton Keep</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Helena Aldridge</p>
+                                        <p className="houseDetail">Seat: Bellton Keep</p>
                                     </div>
                                 </div>
                             </div>
@@ -149,11 +149,11 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Ganondorf (Former)</h2>
-                                    <div className="executive">
-                                        <p>Head: Helena Aldridge</p>
-                                        <p>Seat: Bellton Keep</p>
-                                        <p>* Replaced by House Aldgridge</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Helena Aldridge</p>
+                                        <p className="houseDetail">Seat: Bellton Keep</p>
                                     </div>
+                                    <p className="houseDetail">* Replaced by House Aldgridge</p>
                                 </div>
                             </div>
                         </div>
@@ -164,9 +164,9 @@ export default function StoriaLayout() {
                             <div className="home-card-inner">
                                 <div className="home-card-content">
                                     <h2 className="home-card-title">House Atlantica</h2>
-                                    <div className="executive">
-                                        <p>Head: Triton Atlantica</p>
-                                        <p>Seat: Atlantis</p>
+                                    <div className="detailBox">
+                                        <p className="houseDetail">Head: Triton Atlantica</p>
+                                        <p className="houseDetail">Seat: Atlantis</p>
                                     </div>
                                 </div>
                             </div>

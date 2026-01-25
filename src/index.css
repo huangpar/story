@@ -1072,3 +1072,15 @@ main.home a {
   color: #F8FAFC;
   transform: translateY(-2px);
 }
+
+.detailBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 40px;
+}
+
+.houseDetail {
+  color: #94A3B8;
+}
