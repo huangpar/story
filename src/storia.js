@@ -151,7 +151,7 @@ export default function StoriaLayout() {
                                     <h2 className="home-card-title">House Ganondorf (Former)</h2>
                                     <div className="detailBox">
                                         <p className="houseDetail">Head: Helena Aldridge</p>
-                                        <p className="houseDetail">Seat: Bellton Keep</p>
+                                        <p className="houseDetail">Seat: Hyrule Manor</p>
                                     </div>
                                     <p className="houseDetail">* Replaced by House Aldgridge</p>
                                 </div>
