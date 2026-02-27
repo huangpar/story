@@ -67,7 +67,6 @@
     gap: 1.5rem;
     /* space-y-6 */
     width: 100%;
-    height: 100%;
     justify-content: center;
 }
 
@@ -131,6 +130,28 @@
     transition: color 0.5s ease;
     margin: 0;
     font-weight: 400;
+}
+
+.home-card-subtitle {
+    font-size: 1.25rem;
+    /* text-2xl */
+    color: #eedd9a;
+    /* text-amber-100 */
+    letter-spacing: 0.025em;
+    /* tracking-wide */
+    transition: color 0.5s ease;
+    margin: 0;
+    font-weight: 400;
+}
+
+.home-card-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.75rem;
+    /* rounded-lg */
+    object-fit: cover;
+    transition: transform 0.5s ease;
+   
 }
 
 .home-card-wrapper:hover .home-card-title {

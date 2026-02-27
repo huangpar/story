@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import CoruscantLayout from './GenericLayout';
 import StoriaLayout from './storia';
 import CludoLayout from './cludo';
+import Lyssia from './Lyssia';
 
 function normalize(str) {
     return String(str).trim().replace(/\s+/g, " ");
@@ -282,14 +283,16 @@ function DetailView({
     const VIEWS = {
         greatHouses: <div>
             <div className="bar">
+                <div className={`region pos-2 ${activeTab === "cludo" ? "active" : ""}`} onClick={() => setActiveTab("cludo")}>Cludo (Planet 17)</div>
                 <div className={`region pos-0 ${activeTab === "coruscant" ? "active" : ""}`} onClick={() => setActiveTab("coruscant")}>Coruscant (Planet 18)</div>
                 <div className={`region pos-1 ${activeTab === "storia" ? "active" : ""}`} onClick={() => setActiveTab("storia")}>Storia (Planet 19)</div>
-                <div className={`region pos-2 ${activeTab === "cludo" ? "active" : ""}`} onClick={() => setActiveTab("cludo")}>Cludo (Planet 17)</div>
+                <div className={`region pos-3 ${activeTab === "lyssia" ? "active" : ""}`} onClick={() => setActiveTab("lyssia")}>Lyssia (Planet 20)</div>
             </div>
             <div className='map'>
                 {activeTab === "coruscant" && <CoruscantLayout />}
                 {activeTab === "storia" && <StoriaLayout />}
                 {activeTab === "cludo" && <CludoLayout />}
+                {activeTab === "lyssia" && <Lyssia />}
             </div>
         </div>,
         republic: <div>
