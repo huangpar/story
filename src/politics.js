@@ -264,7 +264,7 @@ function DetailView({
                         <div></div>
                         <div className="governorBox">
                             <div className="districtName">Capitol</div>
-                            <div className={`govName ${getGovernorParty("Capitol")}`}>{getGovernor("Capitol")}</div>
+                            <div className={getGovernorParty("Capitol")}}>{getGovernor("Capitol")}</div>
                         </div>
                     </div>
                 </div>

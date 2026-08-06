@@ -19,9 +19,11 @@ app.get('/api/people', async (req, res) => {
         p.*,
         CASE WHEN pol.person_id IS NOT NULL THEN true ELSE false END as is_politician,
         CASE WHEN ent.person_id IS NOT NULL THEN true ELSE false END as is_entertainer,
-        CASE WHEN edu.person_id IS NOT NULL THEN true ELSE false END as is_educator
+        CASE WHEN edu.person_id IS NOT NULL THEN true ELSE false END as is_educator,
+        r.name as role_name
       FROM people p
       LEFT JOIN politician_role pol ON p.id = pol.person_id
+      LEFT JOIN roles r ON pol.role_id = r.id
       LEFT JOIN entertainment ent ON p.id = ent.person_id
       LEFT JOIN education edu ON p.id = edu.person_id
     `);
@@ -41,6 +43,7 @@ app.get('/api/people', async (req, res) => {
         is_educator: row.is_educator ?? false,
         is_politician: row.is_politician ?? false,
         is_entertainer: row.is_entertainer ?? false,
+        role_name: row.role_name,
         Region: row.region,
         Location: row.district,
         Party: row.party,
