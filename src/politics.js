@@ -191,7 +191,6 @@ function DetailView({
     const formatDistrict = (index) => senators[index] ? (senators[index].Location || senators[index].district || "") : "";
     const formatChancellorDistrict = () => chancellor ? (chancellor.Location || chancellor.district || "") : "";
     const formatJustice = (index) => justices[index] ? justices[index].name : "Vacant";
-    const getJusticeParty = (index) => justices[index] ? (justices[index].Party || "") : "";
 
     const VIEWS = {
         governors: <div>
