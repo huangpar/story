@@ -7,6 +7,7 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
     const [formData, setFormData] = useState({
         region: "",
         district: "",
+        party: "",
         fidName: "",
         midNames: "",
         sidNames: "",
@@ -54,6 +55,7 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
             setFormData({
                 region: person.Region || "",
                 district: person.Location || "",
+                party: person.Party || person.party || "",
                 fidName: fidName,
                 midNames: midNames,
                 sidNames: sidNames,
@@ -117,7 +119,7 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 id: person.id,
                 region: formData.region,
                 district: formData.district,
-                party: person.Party || person.party || "", // Preserve existing party value
+                party: formData.party,
                 fid: fid,
                 mid: mid,
                 sid: sid,
@@ -128,15 +130,10 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 entertainer_position: formData.ent_position || null,
             };
 
-            const res = await fetch("/.netlify/functions/people", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
+            const res = await api.updatePerson(person.id, payload);
 
-            if (!res.ok) {
-                const errorData = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
-                throw new Error(errorData.error || `Failed to update: HTTP ${res.status}`);
+            if (res && res.error) {
+                throw new Error(res.error || `Failed to update person`);
             }
 
             if (onSave) onSave(); // Callback to refresh data
@@ -169,6 +166,11 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
                 <div className="form-group">
                     <label>District</label>
                     <input name="district" value={formData.district} onChange={handleChange} />
+                </div>
+
+                <div className="form-group">
+                    <label>Party</label>
+                    <input name="party" value={formData.party} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
