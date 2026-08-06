@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 // import { Sparkles } from 'lucide-react';
 import { useState } from 'react';
+import { api } from './api';
 import './add.css';
 
 export function Add() {
@@ -25,21 +26,9 @@ export function Add() {
         setStatus('Submitting...');
 
         try {
-            const response = await fetch('/.netlify/functions/people', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (response.ok) {
-                setStatus('Person added successfully!');
-                setFormData({ name: '', region: '', location: '', party: '' });
-            } else {
-                const errorData = await response.json();
-                setStatus(`Error: ${errorData.error || 'Failed to add person'}`);
-            }
+            await api.createPerson(formData);
+            setStatus('Person added successfully!');
+            setFormData({ name: '', region: '', location: '', party: '' });
         } catch (error) {
             console.error('Error adding person:', error);
             setStatus('Error: Failed to connect to server');

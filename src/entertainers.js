@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
+import { api } from './api';
 import './entertainers.css';
 
 function CustomDropdown({ value, options, onChange, placeholder = "-- None --" }) {
@@ -54,9 +55,9 @@ export function Entertainers() {
 
     useEffect(() => {
         Promise.all([
-            fetch("/.netlify/functions/people").then(res => res.json()),
-            fetch("/.netlify/functions/companies").then(res => res.json()),
-            fetch("/.netlify/functions/shows").then(res => res.json())
+            api.getPeople(),
+            api.getCompanies(),
+            api.getShows()
         ]).then(([peopleData, compData, showData]) => {
             const peopleArr = Object.values(peopleData);
             console.log("Entertainers Page Debug:", {

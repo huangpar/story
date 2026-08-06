@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { X } from 'lucide-react';
+import { api } from './api';
 import './index.css';
 
 export default function PersonModal({ person, onClose, onSave, peopleList = [] }) {
@@ -30,8 +31,8 @@ export default function PersonModal({ person, onClose, onSave, peopleList = [] }
     };
 
     useEffect(() => {
-        fetch("/.netlify/functions/schools").then(res => res.json()).then(data => setSchools(data));
-        fetch("/.netlify/functions/subjects").then(res => res.json()).then(data => setSubjects(data));
+        api.getSchools().then(data => setSchools(data));
+        api.getSubjects().then(data => setSubjects(data));
     }, []);
 
     useEffect(() => {

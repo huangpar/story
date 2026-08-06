@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { api } from './api';
 import './entertainment.css';
 import { Users, Clapperboard, Star, ArrowLeft } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
@@ -12,9 +13,9 @@ export function Entertainment() {
 
     useEffect(() => {
         Promise.all([
-            fetch("/.netlify/functions/companies").then(res => res.json()),
-            fetch("/.netlify/functions/shows").then(res => res.json()),
-            fetch("/.netlify/functions/people").then(res => res.json())
+            api.getCompanies(),
+            api.getShows(),
+            api.getPeople()
         ]).then(([compData, showData, peopleData]) => {
             setCompanies(Array.isArray(compData) ? compData : []);
             setShows(Array.isArray(showData) ? showData : []);

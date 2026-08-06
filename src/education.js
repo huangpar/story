@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { api } from './api';
 import './education.css';
 import { Star, Users, GraduationCap, School, BookOpen, ArrowLeft } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
@@ -13,9 +14,9 @@ export function Education() {
     const fetchData = () => {
         setLoading(true);
         Promise.all([
-            fetch("/.netlify/functions/schools").then(res => res.json()),
-            fetch("/.netlify/functions/subjects").then(res => res.json()),
-            fetch("/.netlify/functions/people").then(res => res.json())
+            api.getSchools(),
+            api.getSubjects(),
+            api.getPeople()
         ]).then(([schData, subjData, peopleData]) => {
             setSchools(Array.isArray(schData) ? schData : []);
             setSubjects(Array.isArray(subjData) ? subjData : []);

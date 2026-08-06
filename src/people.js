@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import FamilyTreeWrapper from './FamilyTreeWrapper';
 import { useEffect, useState } from "react";
+import { api } from './api';
 import { Star, BookUser } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
@@ -96,36 +97,28 @@ export function People() {
 
         if (view === "default") return;
 
-        fetch("/.netlify/functions/people?nocache=1", {
-            cache: "no-store",
-            headers: { "accept": "application/json" },
-        })
-            .then(async (res) => {
-                const ct = res.headers.get("content-type") || "";
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-                if (!ct.includes("application/json")) {
-                    const text = await res.text();
-                    throw new Error(
-                        `Expected JSON but got ${ct}. First 200 chars:\n` + text.slice(0, 200)
-                    );
-                }
-
-                return res.json();
-            })
+        api.getPeople()
             .then((json) => {
                 console.log("RAW function JSON:", json);
+
+                // Debug: show first person in the data
+                const sampleKey = Object.keys(json)[0];
+                if (sampleKey) {
+                    console.log("SAMPLE PERSON:", json[sampleKey]);
+                }
 
                 // create flat list for lookups
                 const flat = Array.isArray(json)
                     ? json
-                    : Object.entries(json).map(([name, val]) => ({ ...val, name }));
+                    : Object.entries(json).map(([id, val]) => ({ ...val, id: val.id || id }));
                 setPeopleList(flat);
+                console.log("FLAT LIST LENGTH:", flat.length);
 
                 const grouped = group(json);
                 setGroupedPeople(grouped);
 
                 console.log("GROUPED REGIONS:", Object.keys(grouped));
+                console.log("GROUPED DATA:", grouped);
 
                 const rawCount = Array.isArray(json) ? json.length : Object.keys(json).length;
                 console.log("RAW COUNT:", rawCount);

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ChevronDown, Plus, Trash2 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
+import { api } from './api';
 import './educators.css';
 
 function CustomDropdown({ value, options, onChange, placeholder = "-- Select School --" }) {
@@ -56,9 +57,9 @@ export function Educators() {
         const fetchData = async () => {
             try {
                 const [peopleData, schoolData, subjectData] = await Promise.all([
-                    fetch("/.netlify/functions/people").then(res => res.json()),
-                    fetch("/.netlify/functions/schools").then(res => res.json()),
-                    fetch("/.netlify/functions/subjects").then(res => res.json())
+                    api.getPeople(),
+                    api.getSchools(),
+                    api.getSubjects()
                 ]);
 
                 const peopleArr = Array.isArray(peopleData) ? peopleData : Object.values(peopleData);

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
+import { api } from './api';
 import './politicians.css';
 
 function CustomDropdown({ value, options, onChange }) {
@@ -54,8 +55,8 @@ export function Politicians() {
 
     useEffect(() => {
         Promise.all([
-            fetch("/.netlify/functions/people").then(res => res.json()),
-            fetch("/.netlify/functions/roles").then(res => res.json())
+            api.getPeople(),
+            api.getRoles()
         ]).then(([peopleData, rolesData]) => {
             // peopleData is now keyed by ID and contains 'name' inside
             const peopleArr = Object.values(peopleData);
@@ -97,11 +98,7 @@ export function Politicians() {
                 role_id: roleId
             };
 
-            const res = await fetch("/.netlify/functions/people", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
+            const res = await api.updatePerson(person.id, payload);
 
             if (!res.ok) throw new Error("Failed to save role");
             // console.log("Saved role");
