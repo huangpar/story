@@ -100,7 +100,7 @@ export function Politicians() {
 
             const res = await api.updatePerson(person.id, payload);
 
-            if (!res.ok) throw new Error("Failed to save role");
+            if (res && res.error) throw new Error(res.error || "Failed to save role");
             // console.log("Saved role");
 
         } catch (error) {

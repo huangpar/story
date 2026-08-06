@@ -111,6 +111,46 @@ app.get('/api/subjects', async (req, res) => {
   }
 });
 
+// PUT person (local dev mock)
+app.put('/api/people/:id', async (req, res) => {
+  const { id } = req.params;
+  const { region, district, party, fid, mid, sid, is_politician, role_id } = req.body;
+  try {
+    await pool.query(
+      `UPDATE people 
+       SET region = $1, district = $2, party = $3, fid = $4, mid = $5, sid = $6 
+       WHERE id = $7`,
+      [region || null, district || null, party || null, fid || null, mid || null, sid || null, id]
+    );
+
+    if (is_politician !== undefined) {
+      if (is_politician) {
+        await pool.query(
+          'INSERT INTO politics (person_id, is_politician) VALUES ($1, true) ON CONFLICT (person_id) DO UPDATE SET is_politician = true',
+          [id]
+        );
+        if (role_id) {
+          await pool.query(
+            'DELETE FROM politician_role WHERE person_id = $1 AND role_id != $2',
+            [id, role_id]
+          );
+          await pool.query(
+            'INSERT INTO politician_role (person_id, role_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+            [id, role_id]
+          );
+        }
+      } else {
+        await pool.query('DELETE FROM politics WHERE person_id = $1', [id]);
+        await pool.query('DELETE FROM politician_role WHERE person_id = $1', [id]);
+      }
+    }
+    res.json({ message: 'Success' });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'Failed to update person' });
+  }
+});
+
 app.listen(process.env.PORT || 3001, () => {
   console.log(`Server running on port ${process.env.PORT || 3001}`);
 });
