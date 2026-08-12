@@ -28,7 +28,7 @@ export default function Lyssia() {
         },
         {
             animal: "Stags",
-            name: "House",
+            name: "House Oshika",
             head: "Lady Averil Oshika",
             seat: "Stormdale",
             image: "/Stag.png",
@@ -44,7 +44,7 @@ export default function Lyssia() {
         },
         {
             animal: "Boars",
-            name: "House",
+            name: "House Eber",
             head: "Lord Daniel Eber",
             seat: "Redmire",
             image: "/Boar.png",
@@ -52,7 +52,7 @@ export default function Lyssia() {
         },
         {
             animal: "Rams",
-            name: "House",
+            name: "House Bouc",
             head: "Lord Reginald Bouc",
             seat: "Haggard",
             image: "/Ram.png",
