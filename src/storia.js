@@ -142,7 +142,7 @@ export default function StoriaLayout() {
             </div>  
             
                                 <div style={{ margin: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                                    <img src="/storiafinalcopy.png" className="home-card-image" style={{ width: '80%', height: 'auto', display: 'block', objectFit: 'contain', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))' }} />
+                                    <img src="/storiafinalcopy.png" alt="map" className="home-card-image" style={{ width: '80%', height: 'auto', display: 'block', objectFit: 'contain', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))' }} />
                                 </div>
                                     
         </div>
