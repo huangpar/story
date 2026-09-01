@@ -1,3 +1,5 @@
+import { RegexIcon } from "lucide-react";
+
 export default function StoriaLayout() {
     const houses = [
         {
@@ -6,7 +8,8 @@ export default function StoriaLayout() {
             head: "Leo Pendragon",
             seat: "Dragonskeep",
             image: "/pendragon.png",
-            color: "#f50b0b"
+            color: "#f50b0b",
+            region: "The Highlands"
         },
         {
             animal: "Wolves",
@@ -14,7 +17,8 @@ export default function StoriaLayout() {
             head: "Valmont Lefay",
             seat: "Greystone Keep",
             image: "/lefay.png",
-            color: "#0351b1" 
+            color: "#0351b1" ,
+            region: "The Outlands"
         },
         {
             animal: "stag",
@@ -22,7 +26,8 @@ export default function StoriaLayout() {
             head: "Ralph Tremaine",
             seat: "Gadleigh Castle",
             image: "/tremaine.png",
-            color: "#226d44" 
+            color: "#226d44",
+            region: "The Bridge" 
         },
         {
             animal: "axe",
@@ -30,7 +35,8 @@ export default function StoriaLayout() {
             head: "Claude Belfrey",
             seat: "Howlester Fort",
             image: "/belfrey.png",
-            color: "#fceb00" 
+            color: "#fceb00",
+            region: "Eastmarch"
         },
         {
             animal: "heart",
@@ -38,15 +44,17 @@ export default function StoriaLayout() {
             head: "Eloise Gothel",
             seat: "Blackspire",
             image: "/gothel.png",
-            color: "#030100"
+            color: "#030100",
+            region: "Westreach"
         },
         {
             animal: "sun",
             name: "House Mergen",
             head: "Randolph Mergen",
-            seat: "Agrabah",
+            seat: "Solara",
             image: "/mergen.png",
-            color: "#fbfbff" 
+            color: "#fbfbff",
+            region: "Agrabah" 
         },
         {
             animal: "moon",
@@ -54,7 +62,8 @@ export default function StoriaLayout() {
             head: "Maude Swaly",
             seat: "Himeji Castle",
             image: "/swaly.png",
-            color: "#6f0ba8" 
+            color: "#6f0ba8",
+            region: "The Frostwood"
         },
         {
             animal: "fish",
@@ -62,7 +71,8 @@ export default function StoriaLayout() {
             head: "Evelyn Gowen",
             seat: "Longdale Castle",
             image: "/gowen.png",
-            color: "#703a08" 
+            color: "#703a08",
+            region: "The Riverward"
         },
         {
             animal: "flower",
@@ -70,7 +80,8 @@ export default function StoriaLayout() {
             head: "Reginald Olophant",
             seat: "Scatterby Castle",
             image: "/olophant.png",
-            color: "#ec87cb" 
+            color: "#ec87cb",
+            region: "The Storm Coast"
         },
         {
             animal: "dove",
@@ -78,7 +89,8 @@ export default function StoriaLayout() {
             head: "Helena Aldridge",
             seat: "Bellton Keep",
             image: "/aldridge.png",
-            color: "#703a08" 
+            color: "#703a08",
+            region: "The Greenheart"
         },
         {
             animal: "raven",
@@ -86,7 +98,8 @@ export default function StoriaLayout() {
             head: "Phineas Ganondorf",
             seat: "Hyrule Manor",
             image: "/ganondorf.png",
-            color: "#174e23" 
+            color: "#174e23",
+            region: "The Greenheart"
         },
         {
             animal: "trident",
@@ -94,7 +107,8 @@ export default function StoriaLayout() {
             head: "Triton Atlantica",
             seat: "Atlantis",
             image: "/atlantica.png",
-            color: "#1ba095" // red-500
+            color: "#1ba095",
+            region: "The Sea"
         }
     ];
     return(
@@ -117,9 +131,9 @@ export default function StoriaLayout() {
                                                 <p className="houseDetail" style={{ margin: '0 0 0.25rem 0', color: '#cbd5e1', fontSize: '0.9rem' }}>Head: <span style={{ color: '#f8fafc' }}>{house.head}</span></p>
                                                 <p className="houseDetail" style={{ margin: 0, color: '#cbd5e1', fontSize: '0.9rem' }}>Seat: <span style={{ color: '#f8fafc' }}>{house.seat}</span></p>
                                             </div>
-                                            {/* <div className="row2">
-                                                <p className="houseDetail" style={{ margin: 0, color: '#cbd5e1', fontSize: '0.9rem' }}>Other People: <span style={{ color: '#f8fafc' }}>{house.other}</span></p>
-                                            </div> */}
+                                            <div className="row2">
+                                                <p className="houseRegion" style={{ margin: 0, color: '#cbd5e1', fontSize: '0.9rem' }}>Region: <span style={{ color: '#f8fafc' }}>{house.region}</span></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +141,12 @@ export default function StoriaLayout() {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div>  
+            
+                                <div style={{ margin: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+                                    <img src="/storiafinalcopy.png" className="home-card-image" style={{ width: '80%', height: 'auto', display: 'block', objectFit: 'contain', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))' }} />
+                                </div>
+                                    
         </div>
     );
 }
