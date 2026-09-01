@@ -1,5 +1,3 @@
-import { RegexIcon } from "lucide-react";
-
 export default function StoriaLayout() {
     const houses = [
         {
